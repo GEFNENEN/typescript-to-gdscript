@@ -13,6 +13,12 @@ export interface TransformerDelegate {
   readonly currentClassName: string;
   readonly currentAccessorName: string | null;
   setCurrentAccessorName(name: string | null): void;
+  /** [Local patch] Set while emitting a `static` function body, so
+   *  `emitPropertyAccess` knows `self` is illegal and finds members bare. */
+  __inStaticFunc?: boolean;
+  /** [Local patch] Block-body lambdas awaiting body-splicing by the statement
+   *  writer (`writeStatementLine`). Indexed by the \u0001<id>\u0001 markers. */
+  __argLambdas?: (ts.ArrowFunction | ts.FunctionExpression)[];
 
   // ── Expression / statement visitors ─────────────────────────
   emitExpression(node: ts.Expression): string;
