@@ -537,6 +537,15 @@ export function emitBinaryOp(node: SyntaxNode, ctx: GdToTsContext): string {
     return `${leftStr} instanceof ${rightStr}`;
   }
 
+  // GD `x not in y` -> TS `!(x in y)` (tree-sitter: children [x, "not", "in", y])
+  if (
+    opText === 'not' &&
+    node.children.some((c) => !c.isNamed && c.text === 'in')
+  ) {
+    const leftStr = left ? emitExpr(left, ctx) : '';
+    const rightStr = right ? emitExpr(right, ctx) : '';
+    return `!(${leftStr} in ${rightStr})`;
+  }
   // Check if this is an arithmetic op on operator-overloaded types (Vector2, Color, etc.)
   const mathFn = GD_OPS_MAP[opText];
   if (mathFn && left) {
