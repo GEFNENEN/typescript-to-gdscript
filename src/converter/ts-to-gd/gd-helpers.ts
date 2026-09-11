@@ -18,7 +18,17 @@ export function tryEmitGdAs(
   if (node.arguments.length >= 2) {
     const value = t.emitExpression(node.arguments[0]!);
     const type = t.emitExpression(node.arguments[1]!);
-    return `${value} as ${type}`;
+    const cast = `${value} as ${type}`;
+    // Local patch: `x as T.foo` parses as `x as (T.foo)` in GDScript, so a cast
+    // used as the receiver of a member/element access or a call must be parenthesised.
+    const parent = node.parent;
+    const needsParens =
+      !!parent &&
+      (ts.isPropertyAccessExpression(parent) ||
+        ts.isElementAccessExpression(parent) ||
+        ts.isCallExpression(parent)) &&
+      parent.expression === node;
+    return needsParens ? `(${cast})` : cast;
   }
   return null;
 }
@@ -151,7 +161,16 @@ function emitOpsHelper(
   method: string,
   args: ts.NodeArray<ts.Expression>,
 ): string {
-  const operands = args.map((a) => t.emitExpression(a));
+  // Local patch: a binary operand must stay parenthesised, otherwise
+  // `gd.ops.mul(a, 1.0 + b)` emits `(a * 1.0 + b)` and loses precedence.
+  const operands = args.map((a) => {
+    const text = t.emitExpression(a);
+    // Parenthesise binary AND ternary operands: `a % (b if c else d)` must keep
+    // the operator scoped to the whole operand, not just the true branch.
+    return (ts.isBinaryExpression(a) || ts.isConditionalExpression(a))
+      ? `(${text})`
+      : text;
+  });
 
   // Unary operators (1 arg)
   if (method === 'plus' && operands.length === 1) return `+${operands[0]}`;
@@ -263,7 +282,7 @@ export function processGdEval(
     }, Infinity);
     for (const line of rawLines) {
       if (line.trim() === '') continue;
-      out.push(line.slice(minTabs));
+      out.push(line.slice(minTabs).replace(/\t/g, '    '));
     }
   } else {
     // Space indentation: convert indent levels to tabs
@@ -290,7 +309,7 @@ export function processGdEval(
 
       spaceToDepth.set(spaces, depth);
       prevSpaces = spaces;
-      out.push('\t'.repeat(depth) + lineContent);
+      out.push('    '.repeat(depth) + lineContent);
     }
   }
   return out;
