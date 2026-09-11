@@ -9,7 +9,7 @@ import {
   isStaticFunction,
 } from './type-inference.ts';
 import { getAnnotations } from './members.ts';
-import { emitBody } from './statements.ts';
+import { emitBody, emitAssignment, emitAugmentedAssignment } from './statements.ts';
 import { emitExpr } from './expressions.ts';
 import { isReferenceType } from '../common/index.ts';
 import { escapeTsBindingName } from './identifiers.ts';
@@ -252,6 +252,14 @@ export function emitParams(paramsNode: SyntaxNode, ctx: GdToTsContext): string {
         ctx,
       );
       const valueText = value?.text?.trim() ?? '';
+      // GD `param := default` (inferred type) — emit without an annotation.
+      if (typeNode?.type === SyntaxType.InferredType || rawType === ':=') {
+        const valueStr =
+          valueText === 'null' ? 'null' : value ? emitExpr(value, ctx) : '';
+        params.push(`${name} = ${valueStr}`);
+        paramIndex++;
+        continue;
+      }
       // `param: Type = null` → `param: Type | null = null` (all types get
       // widened — see existing tests). For non-null defaults, widen only
       // reference types (IN rule).
@@ -366,7 +374,17 @@ export function emitLambda(node: SyntaxNode, ctx: GdToTsContext): string {
       stmt.namedChildren.length > 0
     ) {
       const expr = stmt.namedChildren[0]!;
-      result = `${asyncPrefix}(${params})${returnType} => { ${emitExpr(expr, ctx)}; }`;
+      // Local patch: assignments are GD *statements* with their own emitters;
+      // routing them through emitExpr hit the "Unhandled expression" fallback.
+      let emitted;
+      if (expr.type === SyntaxType.Assignment) {
+        emitted = emitAssignment(expr, ctx);
+      } else if (expr.type === SyntaxType.AugmentedAssignment) {
+        emitted = emitAugmentedAssignment(expr, ctx);
+      } else {
+        emitted = emitExpr(expr, ctx);
+      }
+      result = `${asyncPrefix}(${params})${returnType} => { ${emitted}; }`;
     } else {
       const body = bodyNode ? emitBody(bodyNode, ctx, 2) : '';
       result = `${asyncPrefix}(${params})${returnType} => {\n${body}\n  }`;
