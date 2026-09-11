@@ -131,10 +131,6 @@ export function visitPropertyDeclaration(
   }
 
   const decorators = getDecorators(node, t);
-  for (const dec of decorators) {
-    t.emitter.writeLine(dec, pos.line, pos.col);
-  }
-
   const isStatic = node.modifiers?.some(
     (m) => m.kind === ts.SyntaxKind.StaticKeyword,
   );
@@ -155,6 +151,12 @@ export function visitPropertyDeclaration(
   const staticPrefix = isStatic ? 'static ' : '';
   let decl = `${staticPrefix}var ${name}`;
   if (gdType) decl += `: ${gdType}`;
+  else if (!node.initializer && decorators.some((d) => d.startsWith('@export'))) {
+    // Local patch: an exported field whose type has no GDScript equivalent
+    // (e.g. an addon class outside the typings) must still carry a type —
+    // `@export var x` alone is a parse error.
+    decl += ': Variant';
+  }
 
   if (
     node.initializer &&
@@ -164,7 +166,9 @@ export function visitPropertyDeclaration(
     decl += ` = ${t.emitExpression(node.initializer)}`;
   }
 
-  t.emitter.writeLine(decl, pos.line, pos.col);
+  // Local patch: keep annotations on the same line as the declaration (`@export var x: T`).
+  const decPrefix = decorators.length > 0 ? `${decorators.join(' ')} ` : '';
+  t.emitter.writeLine(`${decPrefix}${decl}`, pos.line, pos.col);
 
   if (node.initializer && t.isBlockLambda(node.initializer)) {
     t.emitLambdaBody(node.initializer);
@@ -288,24 +292,37 @@ export function visitMethodDeclaration(
   const isAbstract = node.modifiers?.some(
     (m) => m.kind === ts.SyntaxKind.AbstractKeyword,
   );
-  if (isAbstract) t.emitter.writeLine('@abstract', pos.line, pos.col);
-
   const isStatic = node.modifiers?.some(
     (m) => m.kind === ts.SyntaxKind.StaticKeyword,
   );
   const staticPrefix = isStatic ? 'static ' : '';
-
+  // Local patch: GDScript abstract functions are declared WITHOUT a body and
+  // without a trailing colon: `@abstract func f() -> T`. Emitting `:` + `pass`
+  // produced "Parse Error: An abstract function cannot have a body."
+  if (isAbstract) {
+    t.emitter.writeLine(
+      `@abstract ${staticPrefix}func ${name}(${params})${returnAnnotation}`,
+      pos.line,
+      pos.col,
+    );
+    return;
+  }
   t.emitter.writeLine(
     `${staticPrefix}func ${name}(${params})${returnAnnotation}:`,
     pos.line,
     pos.col,
   );
   t.emitter.indent();
+  // Local patch: inside a static function `self` is illegal; `emitPropertyAccess`
+  // reads this flag to emit member access bare.
+  const prevStatic = t.__inStaticFunc;
+  t.__inStaticFunc = isStatic;
   if (node.body) {
     t.visitBlock(node.body);
   } else {
     t.emitter.writeLine('pass', pos.line, pos.col);
   }
+  t.__inStaticFunc = prevStatic;
   t.emitter.dedent();
 }
 
