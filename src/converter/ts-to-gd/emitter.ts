@@ -9,7 +9,8 @@ export class GDScriptEmitter {
   private currentLine = 1;
   private currentColumn = 0;
   private indentLevel = 0;
-  private indentStr = '\t';
+  // Local patch: emit 4-space indentation to match docs/GODOT_CODING.md (upstream hardcodes '\t')
+  private indentStr = '    ';
   private sourceMapper: SourceMapper | null = null;
   private sourceFile: string;
 
@@ -65,7 +66,9 @@ export class GDScriptEmitter {
   /** Write text followed by a newline, with mapping at column 0 (line start). */
   writeLine(text: string, originalLine: number, originalColumn: number): void {
     const indent = this.indentStr.repeat(this.indentLevel);
-    this.write(indent + text, originalLine, originalColumn);
+    // Safety net: internal lambda-argument markers must never reach the output.
+    const clean = text.replace(/\u0001\d*\u0001|\u0001|\u0002/g, '');
+    this.write(indent + clean, originalLine, originalColumn);
     this.write('\n');
   }
 
