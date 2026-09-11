@@ -34,6 +34,10 @@ export function emitExpression(
   if (node.kind === ts.SyntaxKind.ThisKeyword) {
     return 'self';
   }
+  // super -> GDScript `super` keyword (bare call or property receiver)
+  if (node.kind === ts.SyntaxKind.SuperKeyword) {
+    return 'super';
+  }
 
   // null keyword
   if (node.kind === ts.SyntaxKind.NullKeyword) return 'null';
@@ -207,6 +211,11 @@ export function emitExpression(
       '`yield` is not supported; use `await` instead',
     );
     return node.getText(t.ctx.sourceFile);
+  }
+
+  // typeof(x) -> GDScript global `typeof(x)` (GDScript-shaped TS: `typeof` means GD's typeof)
+  if (ts.isTypeOfExpression(node)) {
+    return `typeof(${t.emitExpression(node.expression)})`;
   }
 
   // Fallback -- unsupported expression
@@ -398,6 +407,14 @@ export function emitPropertyAccess(
   }
 
   checkPromiseMethodAccess(t, node);
+  // Local patch: inside a static function `self` is illegal in GDScript.
+  // Static members are reachable bare, so drop the `self.` prefix.
+  if (
+    t.__inStaticFunc &&
+    node.expression.kind === ts.SyntaxKind.ThisKeyword
+  ) {
+    return node.name.text;
+  }
   // Inside a get/set accessor body, `this.<accessorName>` refers to the
   // GDScript backing field, which must be emitted as a bare identifier
   // (emitting `self.<name>` would recursively call the accessor).
@@ -413,7 +430,14 @@ export function emitPropertyAccess(
     ts.isIdentifier(node.expression) &&
     node.expression.text === t.currentClassName
   ) {
-    return `self.${node.name.text}`;
+    // Local patch: `self.` is only valid for INSTANCE members. For a NAMED class
+    // keep the qualifier (`Foo.X`) — a bare name would not resolve from inside a
+    // nested class. Anonymous classes (`_Foo`, i.e. no `class_name` in the emitted
+    // file) have no qualifiable identifier, so emit the member bare.
+    if (t.currentClassName && t.currentClassName.startsWith('_')) {
+      return node.name.text;
+    }
+    return `${node.expression.text}.${node.name.text}`;
   }
   const obj = t.emitExpression(node.expression);
   const prop = node.name.text;
@@ -574,7 +598,24 @@ export function emitCallExpression(
     }
   }
 
-  const args = node.arguments.map((a) => t.emitExpression(a)).join(', ');
+  // Block-body lambdas passed as call arguments: emit the header here and
+  // register the node so the statement writer can splice the body in after
+  // this line (GDScript allows the closing `)` on its own line).
+  const argLambdaIds: number[] = [];
+  const args = node.arguments
+    .map((a) => {
+      const text = t.emitExpression(a);
+      if (isBlockLambda(a)) {
+        t.__argLambdas = t.__argLambdas || [];
+        const id = t.__argLambdas.length;
+        t.__argLambdas.push(a);
+        argLambdaIds.push(id);
+        return `${text}\u0001${id}\u0001`;
+      }
+      return text;
+    })
+    .join(', ');
+  const argLambdaClose = argLambdaIds.length > 0 ? '\u0002' : '';
 
   // Handle gd.* helper calls
   if (ts.isPropertyAccessExpression(node.expression)) {
@@ -601,21 +642,53 @@ export function emitCallExpression(
     if (isSelfExpression(obj)) {
       // Check if it's a method call or function (property) call via type checker
       const symbol = t.ctx.checker.getSymbolAtLocation(node.expression);
+      let isStaticMethod = false;
       if (symbol) {
         const declarations = symbol.getDeclarations();
         if (declarations && declarations.length > 0) {
           const decl = declarations[0]!;
           if (ts.isPropertyDeclaration(decl)) {
-            return `self.${method}.call(${args})`;
+            // Local patch: inside a static function `self` is illegal.
+            return t.__inStaticFunc
+              ? `${method}.call(${args}${argLambdaClose})`
+              : `self.${method}.call(${args}${argLambdaClose})`;
+          }
+          // Local patch: GDScript rejects `self.static_method()` ("not found in base self"),
+          // so static members are always called bare. Check every declaration —
+          // the symbol may alias several (interface/method/overloads).
+          if (
+            declarations.some(
+              (d) =>
+                ts.isMethodDeclaration(d) &&
+                d.modifiers?.some(
+                  (m) => m.kind === ts.SyntaxKind.StaticKeyword,
+                ),
+            )
+          ) {
+            isStaticMethod = true;
           }
         }
       }
+      if (isStaticMethod || t.__inStaticFunc) {
+        return `${method}(${args}${argLambdaClose})`;
+      }
       // Method call or default
-      return `self.${method}(${args})`;
+      return `self.${method}(${args}${argLambdaClose})`;
     }
   }
 
   const callee = t.emitExpression(node.expression);
+  // Local patch: `StringName("literal")` folds back to the `&"literal"` GDScript
+  // shorthand. Required in `match` patterns (a call expression is not a valid
+  // pattern) and matches the project's original code style.
+  if (
+    ts.isIdentifier(node.expression) &&
+    node.expression.text === 'StringName' &&
+    node.arguments.length === 1 &&
+    ts.isStringLiteralLike(node.arguments[0])
+  ) {
+    return `&"${t.escapeGdString(node.arguments[0].text)}"`;
+  }
 
   // Check if the callee is a Callable type (function variable, parameter)
   // In GDScript, Callable values must be invoked via .call()
@@ -632,14 +705,14 @@ export function emitCallExpression(
             type.getCallSignatures().length > 0 &&
             !type.getConstructSignatures().length
           ) {
-            return `${callee}.call(${args})`;
+            return `${callee}.call(${args}${argLambdaClose})`;
           }
         }
       }
     }
   }
 
-  return `${callee}(${args})`;
+  return `${callee}(${args}${argLambdaClose})`;
 }
 
 /**
@@ -786,8 +859,23 @@ export function emitBinaryExpression(
       }
     }
   }
-  const left = t.emitExpression(node.left);
-  const right = t.emitExpression(node.right);
+  const parentOp = node.operatorToken.getText(t.ctx.sourceFile);
+  // Local patch: keep precedence when a child is itself a binary expression with a
+  // different operator (`a * (b + c)` must not flatten to `a * b + c`). Same-operator
+  // chains (`a + b + c`) stay flat.
+  const operandText = (child: ts.Expression): string => {
+    const text = t.emitExpression(child);
+    if (ts.isConditionalExpression(child)) {
+      return `(${text})`;
+    }
+    if (ts.isBinaryExpression(child)) {
+      const childOp = child.operatorToken.getText(t.ctx.sourceFile);
+      if (childOp !== parentOp) return `(${text})`;
+    }
+    return text;
+  };
+  const left = operandText(node.left);
+  const right = operandText(node.right);
   const op = binaryOperator(node.operatorToken.kind);
   return `${left} ${op} ${right}`;
 }
