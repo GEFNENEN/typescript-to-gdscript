@@ -29,11 +29,48 @@ export function visitBlock(t: TransformerDelegate, block: ts.Block): void {
   }
 }
 
+/**
+ * Write one statement line, splicing in the bodies of any block-body lambdas
+ * that appeared as call arguments in that line.
+ *
+ * `emitCallExpression` marks each such lambda header with \u0001<id>\u0001 and
+ * the point where the closing `)` belongs with \u0002, because a GDScript call
+ * with an inline multi-line lambda must place the closing paren *after* the
+ * body. Nothing may consume those markers except this function.
+ */
+export function writeStatementLine(
+  t: TransformerDelegate,
+  text: string,
+  pos: { line: number; col: number },
+): void {
+  const lambdas = t.__argLambdas ?? [];
+  t.__argLambdas = [];
+  if (lambdas.length === 0 || !text.includes('\u0001')) {
+    t.emitter.writeLine(text.replace(/\u0002/g, ''), pos.line, pos.col);
+    return;
+  }
+  const re = /\u0001(\d+)\u0001|\u0002/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    const seg = text.slice(last, m.index);
+    if (seg) t.emitter.writeLine(seg, pos.line, pos.col);
+    last = re.lastIndex;
+    if (m[1] !== undefined) {
+      const lambda = lambdas[Number(m[1])];
+      if (lambda) t.emitLambdaBody(lambda);
+    }
+  }
+  const tail = text.slice(last);
+  if (tail) t.emitter.writeLine(tail, pos.line, pos.col);
+}
+
 export function visitStatement(
   t: TransformerDelegate,
   node: ts.Statement,
 ): void {
   const pos = t.getLineAndCol(node);
+  t.__argLambdas = [];
 
   if (ts.isVariableStatement(node)) {
     visitVariableStatement(t, node);
@@ -47,11 +84,11 @@ export function visitStatement(
         visitStatement,
       );
     } else {
-      t.emitter.writeLine(t.emitExpression(node.expression), pos.line, pos.col);
+      writeStatementLine(t, t.emitExpression(node.expression), pos);
     }
   } else if (ts.isReturnStatement(node)) {
     const expr = node.expression ? ` ${t.emitExpression(node.expression)}` : '';
-    t.emitter.writeLine(`return${expr}`, pos.line, pos.col);
+    writeStatementLine(t, `return${expr}`, pos);
   } else if (ts.isIfStatement(node)) {
     visitIfStatement(t, node);
   } else if (ts.isForOfStatement(node)) {
@@ -155,11 +192,7 @@ export function visitVariableStatement(
       ? ` = ${t.emitExpression(decl.initializer)}`
       : '';
 
-    t.emitter.writeLine(
-      `var ${name}${typeAnnotation}${init}`,
-      pos.line,
-      pos.col,
-    );
+    writeStatementLine(t, `var ${name}${typeAnnotation}${init}`, pos);
 
     // If the initializer was a block lambda, emit its body after the declaration line
     if (decl.initializer && t.isBlockLambda(decl.initializer)) {
@@ -314,16 +347,36 @@ export function visitSwitchStatement(
   );
   t.emitter.indent();
 
-  for (const clause of node.caseBlock.clauses) {
+  // Local patch: GDScript `match` has no fall-through, so consecutive TS `case`
+  // labels that share one body must fold into ONE branch with a comma-separated
+  // pattern list (`a, b, c:`). Emitting them separately turned the earlier labels
+  // into `pass` branches and silently changed behaviour (and broke typed returns).
+  const clauses = node.caseBlock.clauses;
+  for (let ci = 0; ci < clauses.length; ci++) {
+    const clause = clauses[ci];
     const clausePos = t.getLineAndCol(clause);
     if (ts.isCaseClause(clause)) {
+      const patterns = [t.emitExpression(clause.expression)];
+      let bodyClause = clause;
+      // Fall-through labels (empty bodies) fold into the label that carries the body.
+      while (
+        bodyClause.statements.filter((s) => !ts.isBreakStatement(s)).length === 0 &&
+        ci + 1 < clauses.length &&
+        ts.isCaseClause(clauses[ci + 1]!)
+      ) {
+        ci++;
+        bodyClause = clauses[ci] as ts.CaseClause;
+        patterns.push(t.emitExpression(bodyClause.expression));
+      }
       t.emitter.writeLine(
-        `${t.emitExpression(clause.expression)}:`,
+        `${patterns.join(', ')}:`,
         clausePos.line,
         clausePos.col,
       );
       t.emitter.indent();
-      const stmts = clause.statements.filter((s) => !ts.isBreakStatement(s));
+      const stmts = bodyClause.statements.filter(
+        (s) => !ts.isBreakStatement(s),
+      );
       if (stmts.length === 0) {
         t.emitter.writeLine('pass', clausePos.line, clausePos.col);
       } else {
