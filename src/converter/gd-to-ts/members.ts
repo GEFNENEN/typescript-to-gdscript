@@ -81,8 +81,19 @@ export function emitSignalParamTypes(
   paramsNode: SyntaxNode,
   ctx: GdToTsContext,
 ): string {
+  // Local patch: emit LABELLED tuple elements so the GD signal parameter
+  // names survive the round-trip (`signal x(state: State)` → `gd.signal<[state: State | null]>()`),
+  // instead of falling back to arg1/arg2 on the way back.
   const types: string[] = [];
+  let index = 0;
   for (const child of paramsNode.namedChildren) {
+    index++;
+    const nameChild = child.namedChildren?.find(
+      (c) => c.type === SyntaxType.Identifier,
+    );
+    const label = nameChild?.text
+      ? escapeTsBindingName(nameChild.text)
+      : `arg${index}`;
     if (child.type === SyntaxType.TypedParameter) {
       const typeNode = child.childForFieldName('type');
       const rawType = typeNode?.text ?? '';
@@ -90,9 +101,9 @@ export function emitSignalParamTypes(
         ? escapeSelfClassType(gdTypeToTs(rawType), ctx)
         : 'any';
       const widened = widenInType(rawType, baseType, ctx);
-      types.push(widened ?? 'any');
+      types.push(`${label}: ${widened ?? 'any'}`);
     } else if (child.type === SyntaxType.Identifier) {
-      types.push('any');
+      types.push(`${label}: any`);
     }
   }
   return types.join(', ');
