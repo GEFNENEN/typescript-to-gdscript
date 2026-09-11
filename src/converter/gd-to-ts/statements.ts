@@ -59,6 +59,18 @@ export function emitBody(
       continue;
     }
 
+    if (child.type === SyntaxType.ConstStatement) {
+      // Local `const NAME := value` inside a function body -> TS local const.
+      const name = child.childForFieldName('name')?.text ?? '';
+      const value = child.childForFieldName('value');
+      if (name && value) {
+        ctx.localVars?.add(name);
+        lines.push(
+          `${indent}const ${escapeTsBindingName(name)} = ${emitExpr(value, ctx)};`,
+        );
+      }
+      continue;
+    }
     if (child.type === SyntaxType.IfStatement) {
       lines.push(emitIfStatement(child, ctx, depth));
       continue;
