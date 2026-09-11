@@ -77,6 +77,12 @@ export function emitClassHeader(
     t.emitter.writeLine('@abstract', pos.line, pos.col);
   }
 
+  // Local patch: emit `class_name` before `extends` (project style in docs/GODOT_CODING.md).
+  const classNameEarly = node.name?.getText(t.ctx.sourceFile) ?? '';
+  if (classNameEarly && !isAnonymousClassName(classNameEarly)) {
+    t.emitter.writeLine(`class_name ${classNameEarly}`, pos.line, pos.col);
+  }
+
   // extends — rewritten to `extends "res://…"` when the base type
   // resolves to an imported anonymous class (which has no
   // `class_name`, so a string-literal path is the only valid form).
@@ -143,10 +149,7 @@ export function emitClassHeader(
   // GD has `class_name G_Foo`). Treating it as a normal identifier
   // keeps the round-trip predictable: whatever TS shows is what the
   // user reads in the .gd file too.
-  const className = node.name?.getText(t.ctx.sourceFile) ?? '';
-  if (className && !isAnonymousClassName(className)) {
-    t.emitter.writeLine(`class_name ${className}`, pos.line, pos.col);
-  }
+  const className = classNameEarly;
 
   // `const X = preload("res://…")` lines for renamed and anonymous
   // imports. Emitted between `class_name`/`extends` and the class
