@@ -16,6 +16,13 @@ export interface TransformerDelegate {
   /** [Local patch] Set while emitting a `static` function body, so
    *  `emitPropertyAccess` knows `self` is illegal and finds members bare. */
   __inStaticFunc?: boolean;
+
+  /** [Local patch] True while emitting a constructor body (`_init`), so
+   *  `emitExpression` can drop bare `super()` calls that GDScript cannot
+   *  express when the parent class has no real `_init` (Godot engine classes
+   *  and plain project base classes). Calls like `super(args)` for a parent
+   *  that DOES define a constructor, or `super.method()`, are still emitted. */
+  __inConstructor?: boolean;
   /** [Local patch] Block-body lambdas awaiting body-splicing by the statement
    *  writer (`writeStatementLine`). Indexed by the \u0001<id>\u0001 markers. */
   __argLambdas?: (ts.ArrowFunction | ts.FunctionExpression)[];

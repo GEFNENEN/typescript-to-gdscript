@@ -562,6 +562,15 @@ export function emitCallExpression(
   t: TransformerDelegate,
   node: ts.CallExpression,
 ): string {
+  // [Local patch] Drop a bare `super()` call inside a constructor body. GDScript
+  // has no `super()` syntax for parents without a real `_init` (engine classes,
+  // plain project base classes). If the parent DOES define a constructor, the
+  // user writes `super(args)` (which still has a SuperKeyword callee but carries
+  // arguments) and we must keep it so GDScript calls the parent `_init`.
+  if (t.__inConstructor && node.expression.kind === ts.SyntaxKind.SuperKeyword && node.arguments.length === 0) {
+    return '';
+  }
+
   // Optional chaining on calls (?.) -> not supported
   if (node.questionDotToken) {
     t.addDiagnostic(

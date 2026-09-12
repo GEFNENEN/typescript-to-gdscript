@@ -8,6 +8,23 @@ import { tsTypeNodeToGdType } from '../common/index.ts';
 import type { TransformerDelegate } from './transformer-types.ts';
 import { visitGdGetsetProperty } from './gd-getset.ts';
 
+// [Local patch] True when `node` is a bare `super()` call expression (e.g. the
+// `super();` that TS requires at the top of a derived-constructor body). GDScript
+// cannot express `super()` when the parent class has no real `_init` (Godot engine
+// classes and plain project base classes), so the constructor emitter drops it.
+function isBareSuperCall(node: ts.Statement): boolean {
+  if (!ts.isExpressionStatement(node)) return false;
+  const expr = node.expression;
+  if (!ts.isCallExpression(expr)) return false;
+  // Only a truly bare `super()` (no arguments) is dropped — `super(args)` (used
+  // when the parent declares a real constructor) must be preserved.
+  return (
+    expr.expression.kind === ts.SyntaxKind.SuperKeyword &&
+    expr.arguments.length === 0
+  );
+}
+
+
 // ── Signals ──────────────────────────────────────────────────
 
 export function isSignalProperty(
@@ -259,11 +276,35 @@ export function visitConstructor(
   const params = t.emitParameters(node.parameters);
   t.emitter.writeLine(`func _init(${params}):`, pos.line, pos.col);
   t.emitter.indent();
+  // [Local patch] Track constructor-body emission so `emitExpression` can drop
+  // bare `super()` calls (GDScript cannot express `super()` when the parent
+  // class has no real `_init`). `super(args)` for a parent that DOES define a
+  // constructor, and `super.method()`, are still emitted normally.
+  const prevCtor = t.__inConstructor;
+  t.__inConstructor = true;
   if (node.body) {
-    t.visitBlock(node.body);
+    // Inline the body walk so bare `super()` statements are skipped without
+    // disturbing surrounding comments or other statements.
+    const stmts = node.body.statements;
+    if (stmts.length === 0) {
+      t.emitter.writeLine('pass', pos.line, pos.col);
+    } else {
+      let emitted = 0;
+      for (const stmt of stmts) {
+        if (isBareSuperCall(stmt)) continue;
+        t.emitLeadingComments(stmt);
+        t.visitStatement(stmt);
+        emitted++;
+      }
+      // If every statement was a dropped `super()`, GDScript still needs a body.
+      if (emitted === 0) {
+        t.emitter.writeLine('pass', pos.line, pos.col);
+      }
+    }
   } else {
     t.emitter.writeLine('pass', pos.line, pos.col);
   }
+  t.__inConstructor = prevCtor;
   t.emitter.dedent();
 }
 
