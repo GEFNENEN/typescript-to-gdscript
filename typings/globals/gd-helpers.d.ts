@@ -184,7 +184,7 @@ declare const gd: {
   ): U['prototype'];
   as<T, U>(
     value: T,
-    type: new (...args: any[]) => U,
+    type: abstract new (...args: any[]) => U,
   ): T extends U ? U : U | null;
 
   /** GDScript `is` check for primitive types (int, float, bool, String). Use `instanceof` for class types. */
