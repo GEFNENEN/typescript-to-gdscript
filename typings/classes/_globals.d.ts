@@ -1980,6 +1980,41 @@ declare function Color8(r8: int, g8: int, b8: int, a8?: int): Color;
  * **Note:** {@link assert} is a keyword, not a function. So you cannot access it as a {@link Callable} or use it inside expressions.
  */
 declare function assert(condition: boolean, message?: string): void;
+declare const CONNECT_DEFERRED: int;
+declare const CONNECT_PERSIST: int;
+declare const CONNECT_ONE_SHOT: int;
+declare const CONNECT_REFERENCE_COUNTED: int;
+declare const CONNECT_APPEND_SOURCE_OBJECT: int;
+declare const GROW_DIRECTION_BEGIN: int;
+declare const GROW_DIRECTION_END: int;
+declare const GROW_DIRECTION_BOTH: int;
+declare const STRETCH_SCALE: int;
+declare const STRETCH_TILE: int;
+declare const STRETCH_KEEP: int;
+declare const STRETCH_KEEP_CENTERED: int;
+declare const STRETCH_KEEP_ASPECT: int;
+declare const STRETCH_KEEP_ASPECT_CENTERED: int;
+declare const STRETCH_KEEP_ASPECT_COVERED: int;
+declare const PRESET_TOP_LEFT: int;
+declare const PRESET_TOP_RIGHT: int;
+declare const PRESET_BOTTOM_LEFT: int;
+declare const PRESET_BOTTOM_RIGHT: int;
+declare const PRESET_CENTER_LEFT: int;
+declare const PRESET_CENTER_TOP: int;
+declare const PRESET_CENTER_RIGHT: int;
+declare const PRESET_CENTER_BOTTOM: int;
+declare const PRESET_CENTER: int;
+declare const PRESET_LEFT_WIDE: int;
+declare const PRESET_TOP_WIDE: int;
+declare const PRESET_RIGHT_WIDE: int;
+declare const PRESET_BOTTOM_WIDE: int;
+declare const PRESET_VCENTER_WIDE: int;
+declare const PRESET_HCENTER_WIDE: int;
+declare const PRESET_MODE_MINSIZE: int;
+declare const PRESET_MODE_KEEP_WIDTH: int;
+declare const PRESET_MODE_KEEP_HEIGHT: int;
+declare const PRESET_MODE_KEEP_SIZE: int;
+declare const PRESET_FULL_RECT: int;
 /**
  * Returns a single character (as a {@link String} of length 1) of the given Unicode code point `code`.
  * This is the inverse of {@link ord}. See also {@link String.chr} and {@link String.unicode_at}.
