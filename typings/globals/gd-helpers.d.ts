@@ -188,10 +188,20 @@ declare const gd: {
   ): T extends U ? U : U | null;
   /** Loose variant-as fallback: `gd.as(variant, SomeType)` where SomeType has no `__variant_converts`. */
   as(value: any, type: abstract new (...args: any[]) => any): any;
-  /** Loose variant-as fallback for built-in container/primitive type values. */
+  /**
+   * Loose variant-as fallback for built-in container/primitive type values.
+   * `int` / `float` / `bool` are aliases of `number` / `boolean` in the
+   * typings, so `typeof int` is `typeof number` — they cannot be narrowed by
+   * their type argument the way class types can, and the value must be
+   * accepted as `any`. Mirrors the `is` overload set above.
+   */
   as(value: any, type: typeof String): any;
   as(value: any, type: ArrayConstructor): any;
   as(value: any, type: typeof Dictionary): any;
+  as(value: any, type: typeof int): any;
+  as(value: any, type: typeof float): any;
+  as(value: any, type: typeof bool): any;
+  as(value: any, type: typeof StringName): any;
 
   /** GDScript `is` check for primitive types (int, float, bool, String). Use `instanceof` for class types. */
   is(value: unknown, type: typeof int): value is int;
