@@ -186,6 +186,9 @@ declare const gd: {
     value: T,
     type: abstract new (...args: any[]) => U,
   ): T extends U ? U : U | null;
+  /** Loose variant-as fallback: `gd.as(variant, SomeType)` where SomeType has no `__variant_converts`. */
+  as(value: any, type: abstract new (...args: any[]) => any): any;
+  as(value: any, type: any): any;
 
   /** GDScript `is` check for primitive types (int, float, bool, String). Use `instanceof` for class types. */
   is(value: unknown, type: typeof int): value is int;
