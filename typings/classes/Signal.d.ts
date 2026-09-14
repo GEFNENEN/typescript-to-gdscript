@@ -36,7 +36,7 @@ declare class Signal<T extends any[] = any[]> {
   /** Returns `true` if any {@link Callable} is connected to this signal. */
   has_connections(): boolean;
   /** Returns `true` if the specified {@link Callable} is connected to this signal. */
-  is_connected(callable: (...args: T) => void): boolean;
+  is_connected(callable: ((...args: T) => void) | Callable): boolean;
   /**
    * Returns `true` if this {@link Signal} has no object and the signal name is empty. Equivalent to `signal == Signal()`.
    */
