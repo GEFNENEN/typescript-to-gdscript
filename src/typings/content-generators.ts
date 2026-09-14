@@ -365,9 +365,11 @@ export function generateScriptTypingContent(
     lines.push(`    get_node<P extends string & ScriptPaths>(path: P): _GDGetNode<ScriptTree, P>;`);
     lines.push(`    get_node<P extends '/root' | \`/root/\${string}\`>(path: P): _GDGetRootNode<ScriptTree, P>;`);
     lines.push(`    get_node(path: string): Node | null;`);
+    lines.push(`    get_node(path: NodePath): Node | null;`);
     lines.push(`    get_node_or_null<P extends string & ScriptPaths>(path: P): _GDGetNodeOrNull<ScriptTree, P>;`);
     lines.push(`    get_node_or_null<P extends '/root' | \`/root/\${string}\`>(path: P): _GDGetRootNode<ScriptTree, P> | null;`);
     lines.push(`    get_node_or_null(path: string): Node | null;`);
+    lines.push(`    get_node_or_null(path: NodePath): Node | null;`);
     lines.push(`    has_node<P extends string & ScriptPaths>(path: P): boolean;`);
     lines.push(`    has_node(path: string): boolean;`);
     lines.push(`    get_child<Idx extends number & _GDChildIndices<ScriptTree>>(idx: Idx): _GDGetChild<ScriptTree, Idx>;`);

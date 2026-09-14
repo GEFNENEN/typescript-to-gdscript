@@ -12,9 +12,11 @@ declare module "../../nested/Anonym" {
     get_node<P extends string & ScriptPaths>(path: P): _GDGetNode<ScriptTree, P>;
     get_node<P extends '/root' | `/root/${string}`>(path: P): _GDGetRootNode<ScriptTree, P>;
     get_node(path: string): Node | null;
+    get_node(path: NodePath): Node | null;
     get_node_or_null<P extends string & ScriptPaths>(path: P): _GDGetNodeOrNull<ScriptTree, P>;
     get_node_or_null<P extends '/root' | `/root/${string}`>(path: P): _GDGetRootNode<ScriptTree, P> | null;
     get_node_or_null(path: string): Node | null;
+    get_node_or_null(path: NodePath): Node | null;
     has_node<P extends string & ScriptPaths>(path: P): boolean;
     has_node(path: string): boolean;
     get_child<Idx extends number & _GDChildIndices<ScriptTree>>(idx: Idx): _GDGetChild<ScriptTree, Idx>;

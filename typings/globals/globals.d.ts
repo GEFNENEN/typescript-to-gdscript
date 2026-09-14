@@ -263,6 +263,8 @@ type _GDTreeHandlers<Tree> = {
   get_node<P extends '/root' | `/root/${string}`>(path: P): _GDGetRootNode<Tree, P>;
   /** Get a child node by path. Unknown paths return Node | null. */
   get_node(path: string): Node | null;
+  /** Get a child node by a runtime {@link NodePath} value. */
+  get_node(path: NodePath): Node | null;
   /** Get a child node or null by path. Known paths return exact type | null. */
   get_node_or_null<P extends string & _GDGetTreePaths<Tree>>(
     path: P,
@@ -271,6 +273,8 @@ type _GDTreeHandlers<Tree> = {
   get_node_or_null<P extends string>(path: `/root/${P}`): _GDGetRootNode<Tree, P> | null;
   /** Get a child node or null by path. Unknown paths return Node | null. */
   get_node_or_null(path: string): Node | null;
+  /** Get a child node or null by a runtime {@link NodePath} value. */
+  get_node_or_null(path: NodePath): Node | null;
   /** Get the parent node. Returns typed parent from scene tree if known. */
   get_parent(): _GDParentType<Tree>;
   get_parent<N extends Node = Node>(): N;

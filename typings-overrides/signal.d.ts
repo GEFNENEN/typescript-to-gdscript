@@ -4,7 +4,7 @@
  */
 declare class Signal<T extends any[] = any[]> {
   emit(...args: T): void;
-    connect(callable: ((...args: T) => void) | Callable, flags?: int): int;
+  connect(callable: ((...args: T) => void) | Callable, flags?: int): int;
   disconnect(callable: ((...args: T) => void) | Callable): void;
   is_connected(callable: (...args: T) => void): boolean;
 }

@@ -195,10 +195,10 @@ interface DictionaryTypedMethods<K = unknown, V = unknown> {
   merged(dictionary: Dictionary<K, V>, overwrite?: boolean): Dictionary<K, V>;
   duplicate(deep?: boolean): Dictionary<K, V>;
 }
-interface DictionaryKeyMethods<K = unknown, V = unknown>
+interface DictionaryKeyMethods<K = unknown, V = any>
   extends Omit<Object, keyof DictionaryTypedMethods>,
     DictionaryTypedMethods<K, V> {}
-type Dictionary<K = unknown, V = unknown> =
+type Dictionary<K = unknown, V = any> =
   [K] extends [string | number]
     ? { [P in K & (string | number)]: V }
     : DictionaryKeyMethods<K, V>;

@@ -216,7 +216,13 @@ export function generateTypings(options: GenerateTypingsOptions): string[] {
       godotType = ASSET_EXTENSION_MAP[ext] ?? 'Resource';
     }
 
-    resourceEntries.push({ resPath, godotType, uid: resolveResourceUid(assetFile) });
+    // A bare `Resource` entry (typical for `.tres` files whose header only records
+    // `type="Resource"` plus a `script_class`) tells the checker nothing useful: the
+    // concrete script class isn't visible from this global scope, and `Resource` is
+    // missing every script-declared member. Emit `any` so `preload(path)` defers to
+    // the caller's annotation instead of asserting a wrong `Resource`.
+    const entryType = godotType === 'Resource' ? 'any' : godotType;
+    resourceEntries.push({ resPath, godotType: entryType, uid: resolveResourceUid(assetFile) });
   }
 
   if (resourceEntries.length > 0) {
@@ -378,7 +384,8 @@ export function generateFileTypings(
       } else {
         godotType = ASSET_EXTENSION_MAP[ext] ?? 'Resource';
       }
-      resourceEntries.push({ resPath, godotType, uid: resolveResourceUid(assetFile) });
+      const entryType = godotType === 'Resource' ? 'any' : godotType;
+      resourceEntries.push({ resPath, godotType: entryType, uid: resolveResourceUid(assetFile) });
     }
     if (resourceEntries.length > 0) {
       const resLines: string[] = [];

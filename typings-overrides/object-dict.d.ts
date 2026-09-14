@@ -25,7 +25,7 @@
  */
 interface Object {
   get<T, K extends keyof T>(this: T, key: K, default_?: T[K]): T[K];
-  get(key: unknown, default_?: unknown): unknown;
+  get(key: unknown, default_?: unknown): any;
   get_or_add<T, K extends keyof T>(this: T, key: K, default_?: T[K]): T[K];
   get_or_add(key: unknown, default_?: unknown): unknown;
   has<T, K extends keyof T>(this: T, key: K): boolean;
