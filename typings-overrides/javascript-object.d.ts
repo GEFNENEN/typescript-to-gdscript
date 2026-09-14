@@ -1,8 +1,17 @@
-// AUTO-GENERATED from Godot class documentation.
-// Manual overrides applied from typings-overrides/*.d.ts
-
-/** A wrapper class for web native JavaScript objects. */
-declare class JavaScriptObject extends RefCounted {
+/**
+ * Override: JavaScriptObject — declaration merging for third-party JS bridges.
+ *
+ * `JavaScriptBridge.get_interface()` returns a `JavaScriptObject` wrapping an
+ * arbitrary host object, so the engine docs cannot describe its members. The
+ * project's WeChat bridges read a handful of `wx.*` entries off it; declaring
+ * them here keeps those access sites type-checked without loosening
+ * `JavaScriptObject` itself to an index signature (which would silently accept
+ * any typo anywhere else).
+ *
+ * Every member is `any`: the underlying values are host JavaScript objects or
+ * functions whose shapes the engine cannot represent.
+ */
+declare class JavaScriptObject {
   /** WeChat mini-game: filesystem bridge readiness flag. */
   p7FsReady: any;
   /** WeChat mini-game: synchronous file existence check. */

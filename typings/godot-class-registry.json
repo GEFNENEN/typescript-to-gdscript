@@ -56297,6 +56297,16 @@
       "signals": [],
       "constants": [],
       "enums": []
+    },
+    "VideoStreamTheora": {
+      "name": "VideoStreamTheora",
+      "inherits": "VideoStream",
+      "description": "[VideoStream] resource for Ogg Theora videos.",
+      "methods": [],
+      "properties": [],
+      "signals": [],
+      "constants": [],
+      "enums": []
     }
   },
   "globalFunctions": [

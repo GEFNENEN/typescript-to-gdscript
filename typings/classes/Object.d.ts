@@ -214,8 +214,13 @@ declare class GodotObject {
    * **Note:** In GDScript, all class members are treated as properties. In C# and GDExtension, it may be necessary to explicitly mark class members as Godot properties using decorators or attributes.
    */
   get_property_list(): Array<Dictionary>;
-  /** Returns the object's {@link Script} instance, or `null` if no script is attached. */
-  get_script(): unknown;
+  /**
+  * Override: `get_script()` is documented as returning `Variant`, so the
+  * generator maps it to `unknown` and every `.resource_path` / `.source_code`
+  * read on the result fails. At runtime it returns the attached `Script`, or
+  * `null` when there is none.
+  */
+  get_script(): Script | null;
   /**
    * Returns an {@link Array} of connections for the given `signal` name. Each connection is represented as a {@link Dictionary} that contains three entries:
    * - [code skip-lint]signal[/code] is a reference to the {@link Signal};
@@ -434,4 +439,11 @@ declare class GodotObject {
   /** @deprecated GodotObject is not a Dictionary */ recursive_equal: never;
   /** @deprecated GodotObject is not a Dictionary */ sort: never;
   /** @deprecated GodotObject is not a Dictionary */ values: never;
+  /**
+  * Override: `Object.xml` states the `script` property "is not exposed like
+  * most properties" and never lists it as a `<member>`, so the generated
+  * typings omit it — yet GDScript accepts `node.script` directly (verified at
+  * runtime), and the project reads it to assert a scene node is scripted.
+  */
+  script: Script | null;
 }

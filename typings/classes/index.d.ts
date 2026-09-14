@@ -770,6 +770,7 @@
 /// <reference path="VideoStream.d.ts" />
 /// <reference path="VideoStreamPlayback.d.ts" />
 /// <reference path="VideoStreamPlayer.d.ts" />
+/// <reference path="VideoStreamTheora.d.ts" />
 /// <reference path="Viewport.d.ts" />
 /// <reference path="ViewportTexture.d.ts" />
 /// <reference path="VirtualJoystick.d.ts" />
