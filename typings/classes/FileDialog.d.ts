@@ -21,11 +21,9 @@ declare class FileDialog extends ConfirmationDialog {
    * If `true`, the context menu will show the "Delete" option, which allows moving files and folders to trash.
    */
   deleting_enabled: boolean;
-  /**
-   * <member name="display_mode" type="int" setter="set_display_mode" getter="get_display_mode" enum="FileDialog.DisplayMode" default="0">
-   * Display mode of the dialog's file list.
-   */
   dialog_hide_on_ok: boolean;
+  /** Display mode of the dialog's file list. */
+  display_mode: int;
   /** If `true`, shows the toggle favorite button and favorite list on the left side of the dialog. */
   favorites_enabled: boolean;
   /** If `true`, shows the toggle file filter button. */
@@ -87,9 +85,9 @@ declare class FileDialog extends ConfirmationDialog {
    * **Note:** This property is ignored by native file dialogs on Android and Linux.
    */
   show_hidden_files: boolean;
+  size: Vector2i;
+  title: string;
   /**
-   * <member name="title" type="String" setter="set_title" getter="get_title" overrides="Window" default="&quot;Save a File&quot;" />
-   * <member name="use_native_dialog" type="bool" setter="set_use_native_dialog" getter="get_use_native_dialog" default="false">
    * If `true`, and if supported by the current {@link DisplayServer}, OS native dialog will be used instead of custom one.
    * **Note:** On Android, it is only supported when using {@link ACCESS_FILESYSTEM}. For access mode {@link ACCESS_RESOURCES} and {@link ACCESS_USERDATA}, the system will fall back to custom FileDialog.
    * **Note:** On Linux and macOS, sandboxed apps always use native dialogs to access the host file system.
@@ -97,7 +95,7 @@ declare class FileDialog extends ConfirmationDialog {
    * **Note:** Native dialogs are isolated from the base process, file dialog properties can't be modified once the dialog is shown.
    * **Note:** This property is ignored in {@link EditorFileDialog}.
    */
-  size: Vector2i;
+  use_native_dialog: boolean;
   set_access(value: int): void;
   get_access(): int;
   set_current_dir(value: string | NodePath): void;
@@ -106,6 +104,8 @@ declare class FileDialog extends ConfirmationDialog {
   get_current_file(): string;
   set_current_path(value: string | NodePath): void;
   get_current_path(): string;
+  set_display_mode(value: int): void;
+  get_display_mode(): int;
   set_file_mode(value: int): void;
   get_file_mode(): int;
   set_filename_filter(value: string | NodePath): void;
@@ -120,6 +120,8 @@ declare class FileDialog extends ConfirmationDialog {
   get_root_subfolder(): string;
   set_show_hidden_files(value: boolean): void;
   is_showing_hidden_files(): boolean;
+  set_use_native_dialog(value: boolean): void;
+  get_use_native_dialog(): boolean;
 
   /**
    * Adds a comma-separated file extension `filter` and comma-separated MIME type `mime_type` option to the {@link FileDialog} with an optional `description`, which restricts what files can be picked.

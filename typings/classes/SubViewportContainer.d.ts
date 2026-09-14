@@ -3,13 +3,13 @@
 
 /** A container used for displaying the contents of a {@link SubViewport}. */
 declare class SubViewportContainer extends Container {
+  focus_mode: int;
   /**
-   * <member name="mouse_target" type="bool" setter="set_mouse_target" getter="is_mouse_target_enabled" default="false">
    * Configure, if either the {@link SubViewportContainer} or alternatively the {@link Control} nodes of its {@link SubViewport} children should be available as targets of mouse-related functionalities, like identifying the drop target in drag-and-drop operations or cursor shape of hovered {@link Control} node.
    * If `false`, the {@link Control} nodes inside its {@link SubViewport} children are considered as targets.
    * If `true`, the {@link SubViewportContainer} itself will be considered as a target.
    */
-  focus_mode: int;
+  mouse_target: boolean;
   /**
    * If `true`, the sub-viewport will be automatically resized to the control's size.
    * **Note:** If `true`, this will prohibit changing {@link SubViewport.size} of its children manually.
@@ -21,6 +21,8 @@ declare class SubViewportContainer extends Container {
    * **Note:** {@link stretch} must be `true` for this property to work.
    */
   stretch_shrink: int;
+  set_mouse_target(value: boolean): void;
+  is_mouse_target_enabled(): boolean;
   set_stretch(value: boolean): void;
   is_stretch_enabled(): boolean;
   set_stretch_shrink(value: int): void;

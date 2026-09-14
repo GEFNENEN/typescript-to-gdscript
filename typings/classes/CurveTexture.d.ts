@@ -5,17 +5,19 @@
 declare class CurveTexture extends Texture2D {
   /** The {@link Curve} that is rendered onto the texture. Should be a unit {@link Curve}. */
   curve: Curve | null;
+  resource_local_to_scene: boolean;
   /**
-   * <member name="texture_mode" type="int" setter="set_texture_mode" getter="get_texture_mode" enum="CurveTexture.TextureMode" default="0">
    * The format the texture should be generated with. When passing a CurveTexture as an input to a {@link Shader}, this may need to be adjusted.
    */
-  resource_local_to_scene: boolean;
+  texture_mode: int;
   /**
    * The width of the texture (in pixels). Higher values make it possible to represent high-frequency data better (such as sudden direction changes), at the cost of increased generation time and memory usage.
    */
   width: int;
   set_curve(value: Curve | null): void;
   get_curve(): Curve | null;
+  set_texture_mode(value: int): void;
+  get_texture_mode(): int;
   set_width(value: int): void;
 
   // enum TextureMode

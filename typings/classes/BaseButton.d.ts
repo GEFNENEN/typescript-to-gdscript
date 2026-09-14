@@ -25,12 +25,12 @@ declare class BaseButton extends Control {
    * **Note:** If the button is disabled while held down, {@link button_up} will be emitted.
    */
   disabled: boolean;
+  focus_mode: int;
   /**
-   * <member name="keep_pressed_outside" type="bool" setter="set_keep_pressed_outside" getter="is_keep_pressed_outside" default="false">
    * If `true`, the button stays pressed when moving the cursor outside the button while pressing it.
    * **Note:** This property only affects the button's visual appearance. Signals will be emitted at the same moment regardless of this property's value.
    */
-  focus_mode: int;
+  keep_pressed_outside: boolean;
   /** {@link Shortcut} associated to the button. */
   shortcut: Shortcut | null;
   /**
@@ -56,6 +56,8 @@ declare class BaseButton extends Control {
   is_pressed(): boolean;
   set_disabled(value: boolean): void;
   is_disabled(): boolean;
+  set_keep_pressed_outside(value: boolean): void;
+  is_keep_pressed_outside(): boolean;
   set_shortcut(value: Shortcut | null): void;
   get_shortcut(): Shortcut | null;
   set_shortcut_feedback(value: boolean): void;

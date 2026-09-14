@@ -142,11 +142,9 @@ declare class CPUParticles2D extends Node2D {
   orbit_velocity_min: float;
   /** Align Y axis of particle with the direction of its velocity. */
   particle_flag_align_y: boolean;
-  /**
-   * <member name="preprocess" type="float" setter="set_pre_process_time" getter="get_pre_process_time" default="0.0">
-   * Particle system starts as if it had already run for this many seconds.
-   */
   physics_interpolation_mode: int;
+  /** Particle system starts as if it had already run for this many seconds. */
+  preprocess: float;
   /**
    * Each particle's radial acceleration will vary along this {@link Curve}. Should be a unit {@link Curve}.
    */
@@ -249,6 +247,8 @@ declare class CPUParticles2D extends Node2D {
   get_use_local_coordinates(): boolean;
   set_one_shot(value: boolean): void;
   get_one_shot(): boolean;
+  set_pre_process_time(value: float): void;
+  get_pre_process_time(): float;
   set_randomness_ratio(value: float): void;
   get_randomness_ratio(): float;
   set_scale_curve_x(value: Curve | null): void;

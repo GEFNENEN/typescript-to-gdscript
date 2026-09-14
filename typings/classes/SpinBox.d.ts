@@ -22,12 +22,10 @@ declare class SpinBox extends Range {
    * If `true`, the {@link SpinBox} will select the whole text when the {@link LineEdit} gains focus. Clicking the up and down arrows won't trigger this behavior.
    */
   select_all_on_focus: boolean;
-  /**
-   * <member name="step" type="float" setter="set_step" getter="get_step" overrides="Range" default="1.0" />
-   * <member name="suffix" type="String" setter="set_suffix" getter="get_suffix" default="&quot;&quot;">
-   * Adds the specified suffix string after the numerical value of the {@link SpinBox}.
-   */
   size_flags_vertical: int;
+  step: float;
+  /** Adds the specified suffix string after the numerical value of the {@link SpinBox}. */
+  suffix: string;
   /**
    * Sets the value of the {@link Range} for this {@link SpinBox} when the {@link LineEdit} text is *changed* instead of *submitted*. See {@link LineEdit.text_changed} and {@link LineEdit.text_submitted}.
    * **Note:** If set to `true`, this will interfere with entering mathematical expressions in the {@link SpinBox}. The {@link SpinBox} will try to evaluate the expression as you type, which means symbols like a trailing `+` are removed immediately by the expression being evaluated.
@@ -45,6 +43,8 @@ declare class SpinBox extends Range {
   get_prefix(): string;
   set_select_all_on_focus(value: boolean): void;
   is_select_all_on_focus(): boolean;
+  set_suffix(value: string | NodePath): void;
+  get_suffix(): string;
   set_update_on_text_changed(value: boolean): void;
   get_update_on_text_changed(): boolean;
 

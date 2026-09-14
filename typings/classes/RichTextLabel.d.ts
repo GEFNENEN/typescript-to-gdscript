@@ -17,11 +17,9 @@ declare class RichTextLabel extends Control {
    * **Note:** This only affects the contents of {@link text}, not the tag stack.
    */
   bbcode_enabled: boolean;
-  /**
-   * <member name="context_menu_enabled" type="bool" setter="set_context_menu_enabled" getter="is_context_menu_enabled" default="false">
-   * If `true`, a right-click displays the context menu.
-   */
   clip_contents: boolean;
+  /** If `true`, a right-click displays the context menu. */
+  context_menu_enabled: boolean;
   /**
    * The currently installed custom effects. This is an array of {@link RichTextEffect}s.
    * To add a custom effect, it's more convenient to use {@link install_effect}.
@@ -36,11 +34,11 @@ declare class RichTextLabel extends Control {
    * **Note:** RichTextLabels with autowrapping and {@link fit_content} enabled must have a custom maximum width configured to work correctly, either through the RichTextLabel's own {@link Control.custom_maximum_size} or as a result of a propagated maximum size from a parent Control with {@link Control.propagate_maximum_size} enabled.
    */
   fit_content: boolean;
+  focus_mode: int;
   /**
-   * <member name="hint_underlined" type="bool" setter="set_hint_underline" getter="is_hint_underlined" default="true">
    * If `true`, the label underlines hint tags such as [code skip-lint][hint=description]{text}[/hint][/code].
    */
-  focus_mode: int;
+  hint_underlined: boolean;
   /**
    * Controls the text's horizontal alignment. Supports left, center, right, and fill (also known as justify).
    */
@@ -114,6 +112,8 @@ declare class RichTextLabel extends Control {
   get_autowrap_trim_flags(): int;
   set_use_bbcode(value: boolean): void;
   is_using_bbcode(): boolean;
+  set_context_menu_enabled(value: boolean): void;
+  is_context_menu_enabled(): boolean;
   set_effects(value: Array<unknown> | PackedByteArray | PackedColorArray | PackedFloat32Array | PackedFloat64Array | PackedInt32Array | PackedInt64Array | PackedStringArray | PackedVector2Array | PackedVector3Array | PackedVector4Array): void;
   get_effects(): Array<unknown>;
   set_deselect_on_focus_loss_enabled(value: boolean): void;
@@ -122,6 +122,8 @@ declare class RichTextLabel extends Control {
   is_drag_and_drop_selection_enabled(): boolean;
   set_fit_content(value: boolean): void;
   is_fit_content_enabled(): boolean;
+  set_hint_underline(value: boolean): void;
+  is_hint_underlined(): boolean;
   set_horizontal_alignment(value: int): void;
   get_horizontal_alignment(): int;
   set_justification_flags(value: int): void;

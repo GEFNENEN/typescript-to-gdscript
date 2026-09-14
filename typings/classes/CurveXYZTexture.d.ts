@@ -11,15 +11,16 @@ declare class CurveXYZTexture extends Texture2D {
   curve_y: Curve | null;
   /** The {@link Curve} that is rendered onto the texture's blue channel. Should be a unit {@link Curve}. */
   curve_z: Curve | null;
+  resource_local_to_scene: boolean;
   /**
-   * <member name="width" type="int" setter="set_width" getter="get_width" default="256">
    * The width of the texture (in pixels). Higher values make it possible to represent high-frequency data better (such as sudden direction changes), at the cost of increased generation time and memory usage.
    */
-  resource_local_to_scene: boolean;
+  width: int;
   set_curve_x(value: Curve | null): void;
   get_curve_x(): Curve | null;
   set_curve_y(value: Curve | null): void;
   get_curve_y(): Curve | null;
   set_curve_z(value: Curve | null): void;
   get_curve_z(): Curve | null;
+  set_width(value: int): void;
 }

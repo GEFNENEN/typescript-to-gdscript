@@ -5,11 +5,11 @@
 declare class TextureProgressBar extends Range {
   /** The fill direction. See {@link FillMode} for possible values. */
   fill_mode: int;
+  mouse_filter: int;
   /**
-   * <member name="nine_patch_stretch" type="bool" setter="set_nine_patch_stretch" getter="get_nine_patch_stretch" default="false">
    * If `true`, Godot treats the bar's textures like in {@link NinePatchRect}. Use the `stretch_margin_*` properties like {@link stretch_margin_bottom} to set up the nine patch's 3×3 grid. When using a radial {@link fill_mode}, this setting will only enable stretching for {@link texture_progress}, while {@link texture_under} and {@link texture_over} will be treated like in {@link NinePatchRect}.
    */
-  mouse_filter: int;
+  nine_patch_stretch: boolean;
   /**
    * Offsets {@link texture_progress} if {@link fill_mode} is {@link FILL_CLOCKWISE}, {@link FILL_COUNTER_CLOCKWISE}, or {@link FILL_CLOCKWISE_AND_COUNTER_CLOCKWISE}.
    * **Note:** The effective radial center always stays within the {@link texture_progress} bounds. If you need to move it outside the texture's bounds, modify the {@link texture_progress} to contain additional empty space where needed.
@@ -25,12 +25,12 @@ declare class TextureProgressBar extends Range {
    * **Note:** {@link radial_initial_angle} is wrapped between `0` and `360` degrees (inclusive).
    */
   radial_initial_angle: float;
+  size_flags_vertical: int;
+  step: float;
   /**
-   * <member name="step" type="float" setter="set_step" getter="get_step" overrides="Range" default="1.0" />
-   * <member name="stretch_margin_bottom" type="int" setter="set_stretch_margin" getter="get_stretch_margin" default="0">
    * The height of the 9-patch's bottom row. A margin of 16 means the 9-slice's bottom corners and side will have a height of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders. Only effective if {@link nine_patch_stretch} is `true`.
    */
-  size_flags_vertical: int;
+  stretch_margin_bottom: int;
   /** The width of the 9-patch's left column. Only effective if {@link nine_patch_stretch} is `true`. */
   stretch_margin_left: int;
   /** The width of the 9-patch's right column. Only effective if {@link nine_patch_stretch} is `true`. */
@@ -62,6 +62,8 @@ declare class TextureProgressBar extends Range {
   tint_under: Color;
   set_fill_mode(value: int): void;
   get_fill_mode(): int;
+  set_nine_patch_stretch(value: boolean): void;
+  get_nine_patch_stretch(): boolean;
   set_radial_center_offset(value: Vector2 | Vector2i): void;
   get_radial_center_offset(): Vector2;
   set_fill_degrees(value: float): void;

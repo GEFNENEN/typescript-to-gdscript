@@ -311,6 +311,8 @@ declare class EditorPlugin extends Node {
    * Emitted when user changes the workspace (**2D**, **3D**, **Script**, **Game**, **Asset Store**). Also works with custom screens defined by plugins.
    */
   main_screen_changed: Signal<[string]>;
+  /** Emitted when any project setting has changed. */
+  project_settings_changed: Signal<[]>;
   /** Emitted when the given `resource` was saved on disc. See also {@link scene_saved}. */
   resource_saved: Signal<[Resource]>;
   /**

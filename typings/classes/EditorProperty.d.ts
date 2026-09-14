@@ -17,11 +17,9 @@ declare class EditorProperty extends Container {
    * Used by the inspector, set to `true` when the property is drawn with the editor theme's warning color. This is used for editable children's properties.
    */
   draw_warning: boolean;
-  /**
-   * <member name="keying" type="bool" setter="set_keying" getter="is_keying" default="false">
-   * Used by the inspector, set to `true` when the property can add keys for animation.
-   */
   focus_mode: int;
+  /** Used by the inspector, set to `true` when the property can add keys for animation. */
+  keying: boolean;
   /** Set this property to change the label (if you want to show one). */
   label: string;
   /** Space distribution ratio between the label and the editing field. */
@@ -44,6 +42,8 @@ declare class EditorProperty extends Container {
   is_draw_label(): boolean;
   set_draw_warning(value: boolean): void;
   is_draw_warning(): boolean;
+  set_keying(value: boolean): void;
+  is_keying(): boolean;
   set_label(value: string | NodePath): void;
   get_label(): string;
   set_name_split_ratio(value: float): void;

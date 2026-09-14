@@ -16,14 +16,14 @@ declare class AcceptDialog extends Window {
   dialog_hide_on_ok: boolean;
   /** The text displayed by the dialog. */
   dialog_text: string;
+  exclusive: boolean;
+  keep_title_visible: boolean;
+  maximize_disabled: boolean;
+  minimize_disabled: boolean;
   /**
-   * <member name="keep_title_visible" type="bool" setter="set_keep_title_visible" getter="get_keep_title_visible" overrides="Window" default="true" />
-   * <member name="maximize_disabled" type="bool" setter="set_flag" getter="get_flag" overrides="Window" default="true" />
-   * <member name="minimize_disabled" type="bool" setter="set_flag" getter="get_flag" overrides="Window" default="true" />
-   * <member name="ok_button_text" type="String" setter="set_ok_button_text" getter="get_ok_button_text" default="&quot;&quot;">
    * The text displayed by the OK button (see {@link get_ok_button}). If empty, a default text will be used.
    */
-  exclusive: boolean;
+  ok_button_text: string;
   title: string;
   transient: boolean;
   visible: boolean;
@@ -36,6 +36,8 @@ declare class AcceptDialog extends Window {
   get_hide_on_ok(): boolean;
   set_text(value: string | NodePath): void;
   get_text(): string;
+  set_ok_button_text(value: string | NodePath): void;
+  get_ok_button_text(): string;
 
   /**
    * Adds a button with label `text` and a custom `action` to the dialog and returns the created button.

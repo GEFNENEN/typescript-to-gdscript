@@ -55,11 +55,9 @@ declare class TextEdit extends Control {
    * If `true`, copying or cutting without a selection is performed on all lines with a caret. Otherwise, copy and cut require a selection.
    */
   empty_selection_clipboard_enabled: boolean;
-  /**
-   * <member name="highlight_all_occurrences" type="bool" setter="set_highlight_all_occurrences" getter="is_highlight_all_occurrences_enabled" default="false">
-   * If `true`, all occurrences of the selected text will be highlighted.
-   */
   focus_mode: int;
+  /** If `true`, all occurrences of the selected text will be highlighted. */
+  highlight_all_occurrences: boolean;
   /** If `true`, the line containing the cursor is highlighted. */
   highlight_current_line: boolean;
   /** If `true`, all wrapped lines are indented to the same amount as the unwrapped line. */
@@ -79,11 +77,11 @@ declare class TextEdit extends Control {
   minimap_draw: boolean;
   /** The width, in pixels, of the minimap. */
   minimap_width: int;
+  mouse_default_cursor_shape: int;
   /**
-   * <member name="placeholder_text" type="String" setter="set_placeholder" getter="get_placeholder" default="&quot;&quot;">
    * Text shown when the {@link TextEdit} is empty. It is **not** the {@link TextEdit}'s default value (see {@link text}).
    */
-  mouse_default_cursor_shape: int;
+  placeholder_text: string;
   /**
    * If `true`, {@link TextEdit} fits its minimum height to the number of visible lines instead of scrolling vertically. If a maximum height is set (for example via {@link Control.custom_maximum_size}) and content exceeds it, a vertical scrollbar is shown.
    */
@@ -180,6 +178,8 @@ declare class TextEdit extends Control {
   is_emoji_menu_enabled(): boolean;
   set_empty_selection_clipboard_enabled(value: boolean): void;
   is_empty_selection_clipboard_enabled(): boolean;
+  set_highlight_all_occurrences(value: boolean): void;
+  is_highlight_all_occurrences_enabled(): boolean;
   set_highlight_current_line(value: boolean): void;
   is_highlight_current_line_enabled(): boolean;
   set_indent_wrapped_lines(value: boolean): void;
@@ -192,6 +192,8 @@ declare class TextEdit extends Control {
   is_drawing_minimap(): boolean;
   set_minimap_width(value: int): void;
   get_minimap_width(): int;
+  set_placeholder(value: string | NodePath): void;
+  get_placeholder(): string;
   set_fit_content_height_enabled(value: boolean): void;
   is_fit_content_height_enabled(): boolean;
   set_fit_content_width_enabled(value: boolean): void;

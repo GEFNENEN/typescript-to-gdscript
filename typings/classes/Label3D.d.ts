@@ -23,11 +23,11 @@ declare class Label3D extends GeometryInstance3D {
   autowrap_trim_flags: int;
   /** The billboard mode to use for the label. */
   billboard: int;
+  cast_shadow: int;
   /**
-   * <member name="double_sided" type="bool" setter="set_draw_flag" getter="get_draw_flag" default="true">
    * If `true`, text can be seen from the back as well, if `false`, it is invisible when looking at it from behind.
    */
-  cast_shadow: int;
+  double_sided: boolean;
   /**
    * If `true`, the label is rendered at the same size regardless of distance. The label's size on screen is the same as if the camera was `1.0` units away from the label's origin, regardless of the actual distance from the camera. The {@link Camera3D}'s field of view (or {@link Camera3D.size} when in orthogonal/frustum mode) still affects the size the label is drawn at.
    */
@@ -39,11 +39,11 @@ declare class Label3D extends GeometryInstance3D {
    * Higher font sizes require more time to render new characters, which can cause stuttering during gameplay.
    */
   font_size: int;
+  gi_mode: int;
   /**
-   * <member name="horizontal_alignment" type="int" setter="set_horizontal_alignment" getter="get_horizontal_alignment" enum="HorizontalAlignment" default="1">
    * Controls the text's horizontal alignment. Supports left, center, right, and fill (also known as justify).
    */
-  gi_mode: int;
+  horizontal_alignment: int;
   /** Line fill alignment rules. */
   justification_flags: int;
   /**
@@ -118,6 +118,8 @@ declare class Label3D extends GeometryInstance3D {
   get_font(): Font | null;
   set_font_size(value: int): void;
   get_font_size(): int;
+  set_horizontal_alignment(value: int): void;
+  get_horizontal_alignment(): int;
   set_justification_flags(value: int): void;
   get_justification_flags(): int;
   set_language(value: string | NodePath): void;

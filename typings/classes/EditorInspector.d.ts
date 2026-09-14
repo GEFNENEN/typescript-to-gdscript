@@ -7,8 +7,6 @@ declare class EditorInspector extends ScrollContainer {
   focus_mode: int;
   follow_focus: boolean;
   horizontal_scroll_mode: int;
-  set_draw_focus_border(value: boolean): void;
-  get_draw_focus_border(): boolean;
 
   /** Collapses all foldable sections. */
   collapse_all_folding(): void;

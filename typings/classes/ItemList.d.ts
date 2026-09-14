@@ -13,22 +13,20 @@ declare class ItemList extends Control {
   auto_height: boolean;
   /** If `true`, the control will automatically resize the width to fit its content. */
   auto_width: boolean;
+  clip_contents: boolean;
   /**
-   * <member name="fixed_column_width" type="int" setter="set_fixed_column_width" getter="get_fixed_column_width" default="0">
    * The width all columns will be adjusted to.
    * A value of zero disables the adjustment, each item will have a width equal to the width of its content and the columns will have an uneven width.
    */
-  clip_contents: boolean;
+  fixed_column_width: int;
   /**
    * The size all icons will be adjusted to.
    * If either X or Y component is not greater than zero, icon size won't be affected.
    */
   fixed_icon_size: Vector2i;
-  /**
-   * <member name="icon_mode" type="int" setter="set_icon_mode" getter="get_icon_mode" enum="ItemList.IconMode" default="1">
-   * The icon position, whether above or to the left of the text. See the {@link IconMode} constants.
-   */
   focus_mode: int;
+  /** The icon position, whether above or to the left of the text. See the {@link IconMode} constants. */
+  icon_mode: int;
   /** The scale of icon applied after {@link fixed_icon_size} and transposing takes effect. */
   icon_scale: float;
   /** The number of items currently in the list. */
@@ -96,8 +94,12 @@ declare class ItemList extends Control {
   has_auto_height(): boolean;
   set_auto_width(value: boolean): void;
   has_auto_width(): boolean;
+  set_fixed_column_width(value: int): void;
+  get_fixed_column_width(): int;
   set_fixed_icon_size(value: Vector2i | Vector2): void;
   get_fixed_icon_size(): Vector2i;
+  set_icon_mode(value: int): void;
+  get_icon_mode(): int;
   set_icon_scale(value: float): void;
   get_icon_scale(): float;
   set_item_count(value: int): void;

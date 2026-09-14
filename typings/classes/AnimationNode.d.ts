@@ -100,6 +100,10 @@ declare class AnimationNode extends Resource {
    */
   animation_node_renamed: Signal<[int, string, string]>;
   /**
+   * Emitted by {@link AnimationNodeAnimation} when its {@link AnimationNodeAnimation.animation} resource is changed, or by {@link AnimationNodeBlendTree} when its connections change.
+   */
+  node_updated: Signal<[int]>;
+  /**
    * Emitted by nodes that inherit from this class and that have an internal tree when one of their animation nodes changes. The animation nodes that emit this signal are {@link AnimationNodeBlendSpace1D}, {@link AnimationNodeBlendSpace2D}, {@link AnimationNodeStateMachine}, {@link AnimationNodeBlendTree} and {@link AnimationNodeTransition}.
    */
   tree_changed: Signal<[]>;

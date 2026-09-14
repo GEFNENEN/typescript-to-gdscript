@@ -11,8 +11,6 @@ declare class ScrollBar extends Range {
   step: float;
   set_custom_step(value: float): void;
   get_custom_step(): float;
-  set_step(value: float): void;
-  get_step(): float;
 
   /** Emitted when the scrollbar is being scrolled. */
   scrolling: Signal<[]>;

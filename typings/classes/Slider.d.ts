@@ -5,24 +5,24 @@
 declare class Slider extends Range {
   /** If `true`, the slider can be interacted with. If `false`, the value can be changed only by code. */
   editable: boolean;
-  /**
-   * <member name="scrollable" type="bool" setter="set_scrollable" getter="is_scrollable" default="true">
-   * If `true`, the value can be changed using the mouse wheel.
-   */
   focus_mode: int;
+  /** If `true`, the value can be changed using the mouse wheel. */
+  scrollable: boolean;
+  step: float;
   /**
-   * <member name="tick_count" type="int" setter="set_ticks" getter="get_ticks" default="0">
    * Number of ticks displayed on the slider, including border ticks. Ticks are uniformly-distributed value markers.
    */
-  step: float;
+  tick_count: int;
   /** If `true`, the slider will display ticks for minimum and maximum values. */
   ticks_on_borders: boolean;
   /** Sets the position of the ticks. See {@link TickPosition} for details. */
   ticks_position: int;
   set_editable(value: boolean): void;
   is_editable(): boolean;
-  set_step(value: float): void;
-  get_step(): float;
+  set_scrollable(value: boolean): void;
+  is_scrollable(): boolean;
+  set_ticks(value: int): void;
+  get_ticks(): int;
   set_ticks_on_borders(value: boolean): void;
   get_ticks_on_borders(): boolean;
   set_ticks_position(value: int): void;

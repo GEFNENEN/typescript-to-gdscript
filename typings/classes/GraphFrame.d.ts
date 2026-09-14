@@ -15,11 +15,9 @@ declare class GraphFrame extends GraphElement {
   autoshrink_margin: int;
   /** The margin inside the frame that can be used to drag the frame. */
   drag_margin: int;
-  /**
-   * <member name="tint_color" type="Color" setter="set_tint_color" getter="get_tint_color" default="Color(0.3, 0.3, 0.3, 0.75)">
-   * The color of the frame when {@link tint_color_enabled} is `true`.
-   */
   mouse_filter: int;
+  /** The color of the frame when {@link tint_color_enabled} is `true`. */
+  tint_color: Color;
   /** If `true`, the tint color will be used to tint the frame. */
   tint_color_enabled: boolean;
   /** Title of the frame. */
@@ -30,6 +28,8 @@ declare class GraphFrame extends GraphElement {
   get_autoshrink_margin(): int;
   set_drag_margin(value: int): void;
   get_drag_margin(): int;
+  set_tint_color(value: Color): void;
+  get_tint_color(): Color;
   set_tint_color_enabled(value: boolean): void;
   is_tint_color_enabled(): boolean;
   set_title(value: string | NodePath): void;

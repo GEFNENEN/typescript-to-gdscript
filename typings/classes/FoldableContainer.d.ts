@@ -3,20 +3,18 @@
 
 /** A container that can be expanded/collapsed. */
 declare class FoldableContainer extends Container {
+  focus_mode: int;
   /**
-   * <member name="foldable_group" type="FoldableGroup" setter="set_foldable_group" getter="get_foldable_group">
    * The {@link FoldableGroup} associated with the container. When multiple {@link FoldableContainer} nodes share the same group, only one of them is allowed to be unfolded.
    */
-  focus_mode: int;
+  foldable_group: FoldableGroup | null;
   /** If `true`, the container will become folded and will hide all its children. */
   folded: boolean;
   /** Language code used for text shaping algorithms. If left empty, the current locale is used instead. */
   language: string;
-  /**
-   * <member name="title" type="String" setter="set_title" getter="get_title" default="&quot;&quot;">
-   * The container's title text.
-   */
   mouse_filter: int;
+  /** The container's title text. */
+  title: string;
   /** Title's horizontal text alignment. */
   title_alignment: int;
   /** Title's position. */
@@ -25,10 +23,14 @@ declare class FoldableContainer extends Container {
   title_text_direction: int;
   /** Defines the behavior of the title when the text is longer than the available space. */
   title_text_overrun_behavior: int;
+  set_foldable_group(value: FoldableGroup | null): void;
+  get_foldable_group(): FoldableGroup | null;
   set_folded(value: boolean): void;
   is_folded(): boolean;
   set_language(value: string | NodePath): void;
   get_language(): string;
+  set_title(value: string | NodePath): void;
+  get_title(): string;
   set_title_alignment(value: int): void;
   get_title_alignment(): int;
   set_title_position(value: int): void;

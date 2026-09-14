@@ -3,12 +3,10 @@
 
 /** A button that brings up a dropdown with selectable options when pressed. */
 declare class OptionButton extends Button {
-  /**
-   * <member name="alignment" type="int" setter="set_text_alignment" getter="get_text_alignment" overrides="Button" enum="HorizontalAlignment" default="0" />
-   * <member name="allow_reselect" type="bool" setter="set_allow_reselect" getter="get_allow_reselect" default="false">
-   * If `true`, the currently selected item can be selected again.
-   */
   action_mode: int;
+  alignment: int;
+  /** If `true`, the currently selected item can be selected again. */
+  allow_reselect: boolean;
   /**
    * If `true`, minimum size will be determined by the longest item's text, instead of the currently selected one's.
    * **Note:** For performance reasons, the minimum size doesn't update immediately when adding, removing or modifying items.
@@ -61,6 +59,8 @@ declare class OptionButton extends Button {
   /** The index of the currently selected item, or `-1` if no item is selected. */
   selected: int;
   toggle_mode: boolean;
+  set_allow_reselect(value: boolean): void;
+  get_allow_reselect(): boolean;
   set_fit_to_longest_item(value: boolean): void;
   is_fit_to_longest_item(): boolean;
   set_item_count(value: int): void;

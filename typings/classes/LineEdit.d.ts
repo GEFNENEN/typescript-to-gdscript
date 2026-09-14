@@ -46,11 +46,9 @@ declare class LineEdit extends Control {
   expand_to_text_length: boolean;
   /** If `true`, the {@link LineEdit} doesn't display decoration. */
   flat: boolean;
-  /**
-   * <member name="icon_expand_mode" type="int" setter="set_icon_expand_mode" getter="get_icon_expand_mode" enum="LineEdit.ExpandMode" default="0">
-   * Define the scaling behavior of the {@link right_icon}.
-   */
   focus_mode: int;
+  /** Define the scaling behavior of the {@link right_icon}. */
+  icon_expand_mode: int;
   /**
    * If `true`, the {@link LineEdit} will not exit edit mode when text is submitted by pressing `ui_text_submit` action (by default: `Enter` or `Kp Enter`).
    */
@@ -70,11 +68,11 @@ declare class LineEdit extends Control {
    * **Note:** This method is only implemented on Linux.
    */
   middle_mouse_paste_enabled: boolean;
+  mouse_default_cursor_shape: int;
   /**
-   * <member name="placeholder_text" type="String" setter="set_placeholder" getter="get_placeholder" default="&quot;&quot;">
    * Text shown when the {@link LineEdit} is empty. It is **not** the {@link LineEdit}'s default value (see {@link text}).
    */
-  mouse_default_cursor_shape: int;
+  placeholder_text: string;
   /**
    * Sets the icon that will appear in the right end of the {@link LineEdit} if there's no {@link text}, or always, if {@link clear_button_enabled} is set to `false`.
    */
@@ -144,6 +142,8 @@ declare class LineEdit extends Control {
   is_expand_to_text_length_enabled(): boolean;
   set_flat(value: boolean): void;
   is_flat(): boolean;
+  set_icon_expand_mode(value: int): void;
+  get_icon_expand_mode(): int;
   set_keep_editing_on_text_submit(value: boolean): void;
   is_editing_kept_on_text_submit(): boolean;
   set_language(value: string | NodePath): void;
@@ -152,6 +152,8 @@ declare class LineEdit extends Control {
   get_max_length(): int;
   set_middle_mouse_paste_enabled(value: boolean): void;
   is_middle_mouse_paste_enabled(): boolean;
+  set_placeholder(value: string | NodePath): void;
+  get_placeholder(): string;
   set_right_icon(value: Texture2D | null): void;
   get_right_icon(): Texture2D | null;
   set_right_icon_scale(value: float): void;

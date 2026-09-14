@@ -13,14 +13,16 @@ declare class VehicleBody3D extends RigidBody3D {
    * A negative value will result in the vehicle reversing.
    */
   engine_force: float;
+  mass: float;
   /**
-   * <member name="steering" type="float" setter="set_steering" getter="get_steering" default="0.0">
    * The steering angle for the vehicle. Setting this to a non-zero value will result in the vehicle turning when it's moving. Wheels that have {@link VehicleWheel3D.use_as_steering} set to `true` will automatically be rotated.
    * **Note:** This property is edited in the inspector in degrees. In code the property is set in radians.
    */
-  mass: float;
+  steering: float;
   set_brake(value: float): void;
   get_brake(): float;
   set_engine_force(value: float): void;
   get_engine_force(): float;
+  set_steering(value: float): void;
+  get_steering(): float;
 }

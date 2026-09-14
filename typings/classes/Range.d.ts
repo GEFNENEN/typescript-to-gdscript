@@ -23,11 +23,11 @@ declare class Range extends Control {
   ratio: float;
   /** If `true`, {@link value} will always be rounded to the nearest integer. */
   rounded: boolean;
+  size_flags_vertical: int;
   /**
-   * <member name="step" type="float" setter="set_step" getter="get_step" default="0.01">
    * If greater than `0.0`, {@link value} will always be rounded to a multiple of this property's value above {@link min_value}. For example, if {@link min_value} is `0.1` and step is `0.2`, then {@link value} is limited to `0.1`, `0.3`, `0.5`, and so on. If {@link rounded} is also `true`, {@link value} will first be rounded to a multiple of this property's value, then rounded to the nearest integer.
    */
-  size_flags_vertical: int;
+  step: float;
   /**
    * Range's current value. Changing this property (even via code) will trigger {@link value_changed} signal. Use {@link set_value_no_signal} if you want to avoid it.
    */
@@ -48,6 +48,8 @@ declare class Range extends Control {
   get_as_ratio(): float;
   set_use_rounded_values(value: boolean): void;
   is_using_rounded_values(): boolean;
+  set_step(value: float): void;
+  get_step(): float;
   set_value(value: float): void;
   get_value(): float;
 

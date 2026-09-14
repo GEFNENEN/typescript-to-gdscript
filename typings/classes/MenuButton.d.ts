@@ -3,13 +3,11 @@
 
 /** A button that brings up a {@link PopupMenu} when clicked. */
 declare class MenuButton extends Button {
-  /**
-   * <member name="flat" type="bool" setter="set_flat" getter="is_flat" overrides="Button" default="true" />
-   * <member name="focus_mode" type="int" setter="set_focus_mode" getter="get_focus_mode" overrides="Control" enum="Control.FocusMode" default="3" />
-   * <member name="item_count" type="int" setter="set_item_count" getter="get_item_count" default="0">
-   * The number of items currently in the list.
-   */
   action_mode: int;
+  flat: boolean;
+  focus_mode: int;
+  /** The number of items currently in the list. */
+  item_count: int;
   /**
    * The checkable item type of the item at `index`.
    * **Note:** `index` is a value in the `0 .. item_count - 1` range.
@@ -50,6 +48,8 @@ declare class MenuButton extends Button {
    */
   switch_on_hover: boolean;
   toggle_mode: boolean;
+  set_item_count(value: int): void;
+  get_item_count(): int;
   set_switch_on_hover(value: boolean): void;
   is_switch_on_hover(): boolean;
 

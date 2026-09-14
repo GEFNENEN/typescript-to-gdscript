@@ -65,6 +65,14 @@
         "get_text",
         "set_exclusive",
         "is_exclusive",
+        "set_keep_title_visible",
+        "get_keep_title_visible",
+        "set_flag",
+        "get_flag",
+        "set_flag",
+        "get_flag",
+        "set_ok_button_text",
+        "get_ok_button_text",
         "set_title",
         "get_title",
         "set_transient",
@@ -80,6 +88,10 @@
         "dialog_hide_on_ok",
         "dialog_text",
         "exclusive",
+        "keep_title_visible",
+        "maximize_disabled",
+        "minimize_disabled",
+        "ok_button_text",
         "title",
         "transient",
         "visible",
@@ -855,14 +867,17 @@
         "set_pause",
         "get_pause",
         "set_local_to_scene",
-        "is_local_to_scene"
+        "is_local_to_scene",
+        "set_speed_scale",
+        "get_speed_scale"
       ],
       "properties": [
         "current_frame",
         "frames",
         "one_shot",
         "pause",
-        "resource_local_to_scene"
+        "resource_local_to_scene",
+        "speed_scale"
       ],
       "signals": [],
       "constants": [
@@ -1377,6 +1392,15 @@
             {
               "name": "new_name",
               "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "node_updated",
+          "parameters": [
+            {
+              "name": "object_id",
+              "type": "int"
             }
           ]
         },
@@ -2250,12 +2274,18 @@
         "set_animation_player",
         "get_animation_player",
         "set_callback_mode_discrete",
-        "get_callback_mode_discrete"
+        "get_callback_mode_discrete",
+        "set_deterministic",
+        "is_deterministic",
+        "set_tree_root",
+        "get_tree_root"
       ],
       "properties": [
         "advance_expression_base_node",
         "anim_player",
-        "callback_mode_discrete"
+        "callback_mode_discrete",
+        "deterministic",
+        "tree_root"
       ],
       "signals": [
         {
@@ -4770,6 +4800,8 @@
         "is_disabled",
         "set_focus_mode",
         "get_focus_mode",
+        "set_keep_pressed_outside",
+        "is_keep_pressed_outside",
         "set_shortcut",
         "get_shortcut",
         "set_shortcut_feedback",
@@ -4786,6 +4818,7 @@
         "button_pressed",
         "disabled",
         "focus_mode",
+        "keep_pressed_outside",
         "shortcut",
         "shortcut_feedback",
         "shortcut_in_tooltip",
@@ -5933,14 +5966,17 @@
         "set_override_pose",
         "get_override_pose",
         "set_physics_interpolation_mode",
-        "get_physics_interpolation_mode"
+        "get_physics_interpolation_mode",
+        "set_use_external_skeleton",
+        "get_use_external_skeleton"
       ],
       "properties": [
         "bone_idx",
         "bone_name",
         "external_skeleton",
         "override_pose",
-        "physics_interpolation_mode"
+        "physics_interpolation_mode",
+        "use_external_skeleton"
       ],
       "signals": [],
       "constants": [],
@@ -6824,12 +6860,15 @@
         "set_camera_active",
         "get_camera_active",
         "set_local_to_scene",
-        "is_local_to_scene"
+        "is_local_to_scene",
+        "set_which_feed",
+        "get_which_feed"
       ],
       "properties": [
         "camera_feed_id",
         "camera_is_active",
-        "resource_local_to_scene"
+        "resource_local_to_scene",
+        "which_feed"
       ],
       "signals": [],
       "constants": [],
@@ -7255,6 +7294,8 @@
         "get_normal_texture",
         "set_local_to_scene",
         "is_local_to_scene",
+        "set_specular_color",
+        "get_specular_color",
         "set_specular_shininess",
         "get_specular_shininess",
         "set_specular_texture",
@@ -7268,6 +7309,7 @@
         "diffuse_texture",
         "normal_texture",
         "resource_local_to_scene",
+        "specular_color",
         "specular_shininess",
         "specular_texture",
         "texture_filter",
@@ -7894,6 +7936,8 @@
         "is_indent_using_spaces",
         "set_layout_direction",
         "get_layout_direction",
+        "set_line_folding_enabled",
+        "is_line_folding_enabled",
         "set_line_length_guidelines",
         "get_line_length_guidelines",
         "set_symbol_lookup_on_click_enabled",
@@ -7923,6 +7967,7 @@
         "indent_size",
         "indent_use_spaces",
         "layout_direction",
+        "line_folding",
         "line_length_guidelines",
         "symbol_lookup_on_click",
         "symbol_tooltip_on_hover",
@@ -9382,6 +9427,8 @@
         "is_offset_transform_visual_only",
         "set_physics_interpolation_mode",
         "get_physics_interpolation_mode",
+        "set_pivot_offset",
+        "get_pivot_offset",
         "set_pivot_offset_ratio",
         "get_pivot_offset_ratio",
         "_set_position",
@@ -9461,6 +9508,7 @@
         "offset_transform_scale",
         "offset_transform_visual_only",
         "physics_interpolation_mode",
+        "pivot_offset",
         "pivot_offset_ratio",
         "position",
         "propagate_maximum_size",
@@ -10123,6 +10171,8 @@
         "get_one_shot",
         "set_physics_interpolation_mode",
         "get_physics_interpolation_mode",
+        "set_pre_process_time",
+        "get_pre_process_time",
         "set_randomness_ratio",
         "get_randomness_ratio",
         "set_scale_curve_x",
@@ -10194,6 +10244,7 @@
         "orbit_velocity_min",
         "particle_flag_align_y",
         "physics_interpolation_mode",
+        "preprocess",
         "radial_accel_curve",
         "radial_accel_max",
         "radial_accel_min",
@@ -10911,12 +10962,15 @@
         "get_curve",
         "set_local_to_scene",
         "is_local_to_scene",
+        "set_texture_mode",
+        "get_texture_mode",
         "set_width",
         "get_width"
       ],
       "properties": [
         "curve",
         "resource_local_to_scene",
+        "texture_mode",
         "width"
       ],
       "signals": [],
@@ -10949,13 +11003,16 @@
         "set_curve_z",
         "get_curve_z",
         "set_local_to_scene",
-        "is_local_to_scene"
+        "is_local_to_scene",
+        "set_width",
+        "get_width"
       ],
       "properties": [
         "curve_x",
         "curve_y",
         "curve_z",
-        "resource_local_to_scene"
+        "resource_local_to_scene",
+        "width"
       ],
       "signals": [],
       "constants": [],
@@ -12691,14 +12748,17 @@
         "set_premult_alpha",
         "get_premult_alpha",
         "set_local_to_scene",
-        "is_local_to_scene"
+        "is_local_to_scene",
+        "set_saturation",
+        "get_saturation"
       ],
       "properties": [
         "base_scale",
         "color_map",
         "fix_alpha_border",
         "premult_alpha",
-        "resource_local_to_scene"
+        "resource_local_to_scene",
+        "saturation"
       ],
       "signals": [],
       "constants": [],
@@ -12901,6 +12961,8 @@
         "open",
         "set_accessibility_region",
         "is_accessibility_region",
+        "set_available_layouts",
+        "get_available_layouts",
         "set_closable",
         "is_closable",
         "set_default_slot",
@@ -12926,6 +12988,7 @@
       ],
       "properties": [
         "accessibility_region",
+        "available_layouts",
         "closable",
         "default_slot",
         "dock_icon",
@@ -13969,6 +14032,10 @@
           ]
         },
         {
+          "name": "project_settings_changed",
+          "parameters": []
+        },
+        {
           "name": "resource_saved",
           "parameters": [
             {
@@ -14160,6 +14227,8 @@
         "is_draw_warning",
         "set_focus_mode",
         "get_focus_mode",
+        "set_keying",
+        "is_keying",
         "set_label",
         "get_label",
         "set_name_split_ratio",
@@ -14179,6 +14248,7 @@
         "draw_label",
         "draw_warning",
         "focus_mode",
+        "keying",
         "label",
         "name_split_ratio",
         "read_only",
@@ -15176,12 +15246,18 @@
         "is_flat",
         "set_focus_mode",
         "get_focus_mode",
+        "set_hide_slider",
+        "is_hiding_slider",
         "set_label",
         "get_label",
         "set_read_only",
         "is_read_only",
         "set_v_size_flags",
-        "get_v_size_flags"
+        "get_v_size_flags",
+        "set_step",
+        "get_step",
+        "set_suffix",
+        "get_suffix"
       ],
       "properties": [
         "control_state",
@@ -15189,9 +15265,12 @@
         "editing_integer",
         "flat",
         "focus_mode",
+        "hide_slider",
         "label",
         "read_only",
-        "size_flags_vertical"
+        "size_flags_vertical",
+        "step",
+        "suffix"
       ],
       "signals": [
         {
@@ -16033,10 +16112,13 @@
         "get_external_texture_id",
         "set_external_buffer_id",
         "set_local_to_scene",
-        "is_local_to_scene"
+        "is_local_to_scene",
+        "set_size",
+        "get_size"
       ],
       "properties": [
-        "resource_local_to_scene"
+        "resource_local_to_scene",
+        "size"
       ],
       "signals": [],
       "constants": [],
@@ -16272,6 +16354,8 @@
         "get_current_path",
         "set_hide_on_ok",
         "get_hide_on_ok",
+        "set_display_mode",
+        "get_display_mode",
         "set_file_mode",
         "get_file_mode",
         "set_filename_filter",
@@ -16287,7 +16371,11 @@
         "set_show_hidden_files",
         "is_showing_hidden_files",
         "set_size",
-        "get_size"
+        "get_size",
+        "set_title",
+        "get_title",
+        "set_use_native_dialog",
+        "get_use_native_dialog"
       ],
       "properties": [
         "access",
@@ -16296,6 +16384,7 @@
         "current_path",
         "deleting_enabled",
         "dialog_hide_on_ok",
+        "display_mode",
         "favorites_enabled",
         "file_filter_toggle_enabled",
         "file_mode",
@@ -16314,7 +16403,9 @@
         "recent_list_enabled",
         "root_subfolder",
         "show_hidden_files",
-        "size"
+        "size",
+        "title",
+        "use_native_dialog"
       ],
       "signals": [
         {
@@ -16694,12 +16785,16 @@
         "remove_title_bar_control",
         "set_focus_mode",
         "get_focus_mode",
+        "set_foldable_group",
+        "get_foldable_group",
         "set_folded",
         "is_folded",
         "set_language",
         "get_language",
         "set_mouse_filter",
         "get_mouse_filter",
+        "set_title",
+        "get_title",
         "set_title_alignment",
         "get_title_alignment",
         "set_title_position",
@@ -16711,9 +16806,11 @@
       ],
       "properties": [
         "focus_mode",
+        "foldable_group",
         "folded",
         "language",
         "mouse_filter",
+        "title",
         "title_alignment",
         "title_position",
         "title_text_direction",
@@ -18321,12 +18418,15 @@
         "get_gradient",
         "set_local_to_scene",
         "is_local_to_scene",
+        "set_use_hdr",
+        "is_using_hdr",
         "set_width",
         "get_width"
       ],
       "properties": [
         "gradient",
         "resource_local_to_scene",
+        "use_hdr",
         "width"
       ],
       "signals": [],
@@ -18352,6 +18452,8 @@
         "get_repeat",
         "set_local_to_scene",
         "is_local_to_scene",
+        "set_use_hdr",
+        "is_using_hdr",
         "set_width",
         "get_width"
       ],
@@ -18363,6 +18465,7 @@
         "height",
         "repeat",
         "resource_local_to_scene",
+        "use_hdr",
         "width"
       ],
       "signals": [],
@@ -18444,6 +18547,8 @@
         "set_selected",
         "set_clip_contents",
         "is_clipping_contents",
+        "set_connection_lines_antialiased",
+        "is_connection_lines_antialiased",
         "set_connection_lines_curvature",
         "get_connection_lines_curvature",
         "set_connection_lines_thickness",
@@ -18452,6 +18557,8 @@
         "get_connection_list",
         "set_focus_mode",
         "get_focus_mode",
+        "set_grid_pattern",
+        "get_grid_pattern",
         "set_minimap_enabled",
         "is_minimap_enabled",
         "set_minimap_opacity",
@@ -18495,10 +18602,12 @@
       ],
       "properties": [
         "clip_contents",
+        "connection_lines_antialiased",
         "connection_lines_curvature",
         "connection_lines_thickness",
         "connections",
         "focus_mode",
+        "grid_pattern",
         "minimap_enabled",
         "minimap_opacity",
         "minimap_size",
@@ -18840,6 +18949,8 @@
         "get_drag_margin",
         "set_mouse_filter",
         "get_mouse_filter",
+        "set_tint_color",
+        "get_tint_color",
         "set_tint_color_enabled",
         "is_tint_color_enabled",
         "set_title",
@@ -18850,6 +18961,7 @@
         "autoshrink_margin",
         "drag_margin",
         "mouse_filter",
+        "tint_color",
         "tint_color_enabled",
         "title"
       ],
@@ -18906,14 +19018,20 @@
         "set_slot_type_right",
         "set_focus_mode",
         "get_focus_mode",
+        "set_ignore_invalid_connection_type",
+        "is_ignoring_valid_connection_type",
         "set_mouse_filter",
         "get_mouse_filter",
+        "set_slots_focus_mode",
+        "get_slots_focus_mode",
         "set_title",
         "get_title"
       ],
       "properties": [
         "focus_mode",
+        "ignore_invalid_connection_type",
         "mouse_filter",
+        "slots_focus_mode",
         "title"
       ],
       "signals": [
@@ -20600,10 +20718,13 @@
       "description": "Abstract base class for touch gestures.",
       "methods": [
         "set_device",
-        "get_device"
+        "get_device",
+        "set_position",
+        "get_position"
       ],
       "properties": [
-        "device"
+        "device",
+        "position"
       ],
       "signals": [],
       "constants": [],
@@ -20748,12 +20869,15 @@
         "get_button_mask",
         "set_device",
         "get_device",
+        "set_global_position",
+        "get_global_position",
         "set_position",
         "get_position"
       ],
       "properties": [
         "button_mask",
         "device",
+        "global_position",
         "position"
       ],
       "signals": [],
@@ -20931,6 +21055,8 @@
         "is_ctrl_pressed",
         "set_device",
         "get_device",
+        "set_meta_pressed",
+        "is_meta_pressed",
         "set_shift_pressed",
         "is_shift_pressed"
       ],
@@ -20939,6 +21065,7 @@
         "command_or_control_autoremap",
         "ctrl_pressed",
         "device",
+        "meta_pressed",
         "shift_pressed"
       ],
       "signals": [],
@@ -21148,10 +21275,14 @@
         "has_auto_width",
         "set_clip_contents",
         "is_clipping_contents",
+        "set_fixed_column_width",
+        "get_fixed_column_width",
         "set_fixed_icon_size",
         "get_fixed_icon_size",
         "set_focus_mode",
         "get_focus_mode",
+        "set_icon_mode",
+        "get_icon_mode",
         "set_icon_scale",
         "get_icon_scale",
         "set_item_count",
@@ -21180,8 +21311,10 @@
         "auto_height",
         "auto_width",
         "clip_contents",
+        "fixed_column_width",
         "fixed_icon_size",
         "focus_mode",
+        "icon_mode",
         "icon_scale",
         "item_count",
         "item_{index}/disabled",
@@ -21680,8 +21813,12 @@
         "get_max_lines_visible",
         "set_mouse_filter",
         "get_mouse_filter",
+        "set_paragraph_separator",
+        "get_paragraph_separator",
         "set_v_size_flags",
         "get_v_size_flags",
+        "set_structured_text_bidi_override",
+        "get_structured_text_bidi_override",
         "set_structured_text_bidi_override_options",
         "get_structured_text_bidi_override_options",
         "set_tab_stops",
@@ -21715,7 +21852,9 @@
         "lines_skipped",
         "max_lines_visible",
         "mouse_filter",
+        "paragraph_separator",
         "size_flags_vertical",
+        "structured_text_bidi_override",
         "structured_text_bidi_override_options",
         "tab_stops",
         "text",
@@ -21763,6 +21902,8 @@
         "get_font_size",
         "set_gi_mode",
         "get_gi_mode",
+        "set_horizontal_alignment",
+        "get_horizontal_alignment",
         "set_justification_flags",
         "get_justification_flags",
         "set_language",
@@ -21810,10 +21951,12 @@
         "autowrap_trim_flags",
         "billboard",
         "cast_shadow",
+        "double_sided",
         "fixed_size",
         "font",
         "font_size",
         "gi_mode",
+        "horizontal_alignment",
         "justification_flags",
         "language",
         "line_spacing",
@@ -22734,6 +22877,8 @@
         "is_flat",
         "set_focus_mode",
         "get_focus_mode",
+        "set_icon_expand_mode",
+        "get_icon_expand_mode",
         "set_keep_editing_on_text_submit",
         "is_editing_kept_on_text_submit",
         "set_language",
@@ -22744,6 +22889,8 @@
         "is_middle_mouse_paste_enabled",
         "set_default_cursor_shape",
         "get_default_cursor_shape",
+        "set_placeholder",
+        "get_placeholder",
         "set_right_icon",
         "get_right_icon",
         "set_right_icon_scale",
@@ -22791,11 +22938,13 @@
         "expand_to_text_length",
         "flat",
         "focus_mode",
+        "icon_expand_mode",
         "keep_editing_on_text_submit",
         "language",
         "max_length",
         "middle_mouse_paste_enabled",
         "mouse_default_cursor_shape",
+        "placeholder_text",
         "right_icon",
         "right_icon_scale",
         "secret",
@@ -23049,8 +23198,12 @@
         "get_ellipsis_char",
         "set_focus_mode",
         "get_focus_mode",
+        "set_language",
+        "get_language",
         "set_default_cursor_shape",
         "get_default_cursor_shape",
+        "set_structured_text_bidi_override",
+        "get_structured_text_bidi_override",
         "set_structured_text_bidi_override_options",
         "get_structured_text_bidi_override_options",
         "set_text",
@@ -23067,7 +23220,9 @@
       "properties": [
         "ellipsis_char",
         "focus_mode",
+        "language",
         "mouse_default_cursor_shape",
+        "structured_text_bidi_override",
         "structured_text_bidi_override_options",
         "text",
         "text_direction",
@@ -23402,6 +23557,8 @@
         "is_flat",
         "set_focus_mode",
         "get_focus_mode",
+        "set_language",
+        "get_language",
         "set_prefer_global_menu",
         "is_prefer_global_menu",
         "set_start_index",
@@ -23414,6 +23571,7 @@
       "properties": [
         "flat",
         "focus_mode",
+        "language",
         "prefer_global_menu",
         "start_index",
         "switch_on_hover",
@@ -23433,6 +23591,12 @@
         "show_popup",
         "set_action_mode",
         "get_action_mode",
+        "set_flat",
+        "is_flat",
+        "set_focus_mode",
+        "get_focus_mode",
+        "set_item_count",
+        "get_item_count",
         "set_switch_on_hover",
         "is_switch_on_hover",
         "set_toggle_mode",
@@ -23440,6 +23604,9 @@
       ],
       "properties": [
         "action_mode",
+        "flat",
+        "focus_mode",
+        "item_count",
         "popup/item_{index}/checkable",
         "popup/item_{index}/checked",
         "popup/item_{index}/disabled",
@@ -26312,6 +26479,7 @@
         "axis_stretch_vertical",
         "draw_center",
         "mouse_filter",
+        "patch_margin_bottom",
         "patch_margin_left",
         "patch_margin_right",
         "patch_margin_top",
@@ -27179,6 +27347,8 @@
         "get_param",
         "set_param",
         "get_param",
+        "set_param",
+        "get_param",
         "set_shadow_mode",
         "get_shadow_mode",
         "set_param",
@@ -27186,6 +27356,7 @@
       ],
       "properties": [
         "light_specular",
+        "omni_attenuation",
         "omni_range",
         "omni_shadow_mode",
         "shadow_normal_bias"
@@ -27256,6 +27427,10 @@
         "show_popup",
         "set_action_mode",
         "get_action_mode",
+        "set_text_alignment",
+        "get_text_alignment",
+        "set_allow_reselect",
+        "get_allow_reselect",
         "set_fit_to_longest_item",
         "is_fit_to_longest_item",
         "set_item_count",
@@ -27275,6 +27450,8 @@
       ],
       "properties": [
         "action_mode",
+        "alignment",
+        "allow_reselect",
         "fit_to_longest_item",
         "item_count",
         "popup/item_{index}/disabled",
@@ -28176,6 +28353,8 @@
         "get_limit_end",
         "set_physics_interpolation_mode",
         "get_physics_interpolation_mode",
+        "set_repeat_size",
+        "get_repeat_size",
         "set_repeat_times",
         "get_repeat_times",
         "set_screen_offset",
@@ -28192,6 +28371,7 @@
         "limit_begin",
         "limit_end",
         "physics_interpolation_mode",
+        "repeat_size",
         "repeat_times",
         "screen_offset",
         "scroll_offset",
@@ -28208,6 +28388,8 @@
       "methods": [
         "set_layer",
         "get_layer",
+        "set_scroll_base_offset",
+        "get_scroll_base_offset",
         "set_scroll_base_scale",
         "get_scroll_base_scale",
         "set_ignore_camera_zoom",
@@ -28221,6 +28403,7 @@
       ],
       "properties": [
         "layer",
+        "scroll_base_offset",
         "scroll_base_scale",
         "scroll_ignore_camera_zoom",
         "scroll_limit_begin",
@@ -31991,10 +32174,13 @@
       "description": "Placeholder class for a 2-dimensional texture.",
       "methods": [
         "set_local_to_scene",
-        "is_local_to_scene"
+        "is_local_to_scene",
+        "set_size",
+        "get_size"
       ],
       "properties": [
-        "resource_local_to_scene"
+        "resource_local_to_scene",
+        "size"
       ],
       "signals": [],
       "constants": [],
@@ -32382,6 +32568,10 @@
         "get_allow_search",
         "set_default_canvas_item_texture_filter",
         "get_default_canvas_item_texture_filter",
+        "set_default_canvas_item_texture_repeat",
+        "get_default_canvas_item_texture_repeat",
+        "set_hide_on_checkable_item_selection",
+        "is_hide_on_checkable_item_selection",
         "set_hide_on_item_selection",
         "is_hide_on_item_selection",
         "set_hide_on_state_item_selection",
@@ -32414,6 +32604,8 @@
       "properties": [
         "allow_search",
         "canvas_item_default_texture_filter",
+        "canvas_item_default_texture_repeat",
+        "hide_on_checkable_item_selection",
         "hide_on_item_selection",
         "hide_on_state_item_selection",
         "item_count",
@@ -32509,11 +32701,14 @@
         "set_keep_compressed_buffer",
         "is_keeping_compressed_buffer",
         "set_local_to_scene",
-        "is_local_to_scene"
+        "is_local_to_scene",
+        "set_size_override",
+        "get_size_override"
       ],
       "properties": [
         "keep_compressed_buffer",
-        "resource_local_to_scene"
+        "resource_local_to_scene",
+        "size_override"
       ],
       "signals": [],
       "constants": [],
@@ -33912,6 +34107,8 @@
         "is_using_rounded_values",
         "set_v_size_flags",
         "get_v_size_flags",
+        "set_step",
+        "get_step",
         "set_value",
         "get_value"
       ],
@@ -33925,6 +34122,7 @@
         "ratio",
         "rounded",
         "size_flags_vertical",
+        "step",
         "value"
       ],
       "signals": [
@@ -40832,6 +41030,10 @@
         {
           "name": "changed",
           "parameters": []
+        },
+        {
+          "name": "setup_local_to_scene_requested",
+          "parameters": []
         }
       ],
       "constants": [],
@@ -41592,6 +41794,8 @@
         "is_using_bbcode",
         "set_clip_contents",
         "is_clipping_contents",
+        "set_context_menu_enabled",
+        "is_context_menu_enabled",
         "set_effects",
         "get_effects",
         "set_deselect_on_focus_loss_enabled",
@@ -41602,6 +41806,8 @@
         "is_fit_content_enabled",
         "set_focus_mode",
         "get_focus_mode",
+        "set_hint_underline",
+        "is_hint_underlined",
         "set_horizontal_alignment",
         "get_horizontal_alignment",
         "set_justification_flags",
@@ -41650,11 +41856,13 @@
         "autowrap_trim_flags",
         "bbcode_enabled",
         "clip_contents",
+        "context_menu_enabled",
         "custom_effects",
         "deselect_on_focus_loss_enabled",
         "drag_and_drop_selection_enabled",
         "fit_content",
         "focus_mode",
+        "hint_underlined",
         "horizontal_alignment",
         "justification_flags",
         "language",
@@ -43057,12 +43265,16 @@
         "get_v_scroll_bar",
         "set_clip_contents",
         "is_clipping_contents",
+        "set_draw_focus_border",
+        "get_draw_focus_border",
         "set_follow_focus",
         "is_following_focus",
         "set_horizontal_scroll_mode",
         "get_horizontal_scroll_mode",
         "set_propagate_maximum_size",
         "is_propagating_maximum_size",
+        "set_deadzone",
+        "get_deadzone",
         "set_scroll_hint_mode",
         "get_scroll_hint_mode",
         "set_h_scroll",
@@ -43082,9 +43294,11 @@
       ],
       "properties": [
         "clip_contents",
+        "draw_focus_border",
         "follow_focus",
         "horizontal_scroll_mode",
         "propagate_maximum_size",
+        "scroll_deadzone",
         "scroll_hint_mode",
         "scroll_horizontal",
         "scroll_horizontal_by_default",
@@ -44372,8 +44586,12 @@
         "is_editable",
         "set_focus_mode",
         "get_focus_mode",
+        "set_scrollable",
+        "is_scrollable",
         "set_step",
         "get_step",
+        "set_ticks",
+        "get_ticks",
         "set_ticks_on_borders",
         "get_ticks_on_borders",
         "set_ticks_position",
@@ -44382,7 +44600,9 @@
       "properties": [
         "editable",
         "focus_mode",
+        "scrollable",
         "step",
+        "tick_count",
         "ticks_on_borders",
         "ticks_position"
       ],
@@ -44730,6 +44950,10 @@
         "is_select_all_on_focus",
         "set_v_size_flags",
         "get_v_size_flags",
+        "set_step",
+        "get_step",
+        "set_suffix",
+        "get_suffix",
         "set_update_on_text_changed",
         "get_update_on_text_changed"
       ],
@@ -44741,6 +44965,8 @@
         "prefix",
         "select_all_on_focus",
         "size_flags_vertical",
+        "step",
+        "suffix",
         "update_on_text_changed"
       ],
       "signals": [],
@@ -44869,10 +45095,19 @@
         "set_param",
         "get_param",
         "set_param",
+        "get_param",
+        "set_param",
+        "get_param",
+        "set_param",
+        "get_param",
+        "set_param",
         "get_param"
       ],
       "properties": [
         "light_specular",
+        "shadow_bias",
+        "shadow_normal_bias",
+        "spot_angle",
         "spot_angle_attenuation",
         "spot_attenuation",
         "spot_range"
@@ -46214,6 +46449,8 @@
         "_propagate_input_event",
         "set_focus_mode",
         "get_focus_mode",
+        "set_mouse_target",
+        "is_mouse_target_enabled",
         "set_stretch",
         "is_stretch_enabled",
         "set_stretch_shrink",
@@ -46221,6 +46458,7 @@
       ],
       "properties": [
         "focus_mode",
+        "mouse_target",
         "stretch",
         "stretch_shrink"
       ],
@@ -46457,6 +46695,8 @@
         "get_drag_to_rearrange_enabled",
         "set_focus_mode",
         "get_focus_mode",
+        "set_max_tab_width",
+        "get_max_tab_width",
         "set_scroll_to_selected",
         "get_scroll_to_selected",
         "set_scrolling_enabled",
@@ -46481,6 +46721,7 @@
         "deselect_enabled",
         "drag_to_rearrange_enabled",
         "focus_mode",
+        "max_tab_width",
         "scroll_to_selected",
         "scrolling_enabled",
         "select_with_rmb",
@@ -46990,6 +47231,8 @@
         "is_empty_selection_clipboard_enabled",
         "set_focus_mode",
         "get_focus_mode",
+        "set_highlight_all_occurrences",
+        "is_highlight_all_occurrences_enabled",
         "set_highlight_current_line",
         "is_highlight_current_line_enabled",
         "set_indent_wrapped_lines",
@@ -47004,6 +47247,8 @@
         "get_minimap_width",
         "set_default_cursor_shape",
         "get_default_cursor_shape",
+        "set_placeholder",
+        "get_placeholder",
         "set_fit_content_height_enabled",
         "is_fit_content_height_enabled",
         "set_fit_content_width_enabled",
@@ -47066,6 +47311,7 @@
         "emoji_menu_enabled",
         "empty_selection_clipboard_enabled",
         "focus_mode",
+        "highlight_all_occurrences",
         "highlight_current_line",
         "indent_wrapped_lines",
         "language",
@@ -47073,6 +47319,7 @@
         "minimap_draw",
         "minimap_width",
         "mouse_default_cursor_shape",
+        "placeholder_text",
         "scroll_fit_content_height",
         "scroll_fit_content_width",
         "scroll_horizontal",
@@ -48789,10 +49036,13 @@
       "description": "Texture for 2D that is bound to a texture created on the [RenderingDevice].",
       "methods": [
         "set_local_to_scene",
-        "is_local_to_scene"
+        "is_local_to_scene",
+        "set_texture_rd_rid",
+        "get_texture_rd_rid"
       ],
       "properties": [
-        "resource_local_to_scene"
+        "resource_local_to_scene",
+        "texture_rd_rid"
       ],
       "signals": [],
       "constants": [],
@@ -49002,6 +49252,8 @@
         "get_fill_mode",
         "set_mouse_filter",
         "get_mouse_filter",
+        "set_nine_patch_stretch",
+        "get_nine_patch_stretch",
         "set_radial_center_offset",
         "get_radial_center_offset",
         "set_fill_degrees",
@@ -49010,6 +49262,8 @@
         "get_radial_initial_angle",
         "set_v_size_flags",
         "get_v_size_flags",
+        "set_step",
+        "get_step",
         "set_over_texture",
         "get_over_texture",
         "set_progress_texture",
@@ -49028,10 +49282,13 @@
       "properties": [
         "fill_mode",
         "mouse_filter",
+        "nine_patch_stretch",
         "radial_center_offset",
         "radial_fill_degrees",
         "radial_initial_angle",
         "size_flags_vertical",
+        "step",
+        "stretch_margin_bottom",
         "stretch_margin_left",
         "stretch_margin_right",
         "stretch_margin_top",
@@ -49102,6 +49359,8 @@
         "is_flipped_v",
         "set_mouse_filter",
         "get_mouse_filter",
+        "set_stretch_mode",
+        "get_stretch_mode",
         "set_texture",
         "get_texture"
       ],
@@ -49110,6 +49369,7 @@
         "flip_h",
         "flip_v",
         "mouse_filter",
+        "stretch_mode",
         "texture"
       ],
       "signals": [],
@@ -50599,6 +50859,8 @@
         "is_auto_tooltip_enabled",
         "set_clip_contents",
         "is_clipping_contents",
+        "set_column_titles_visible",
+        "are_column_titles_visible",
         "set_columns",
         "get_columns",
         "set_drop_mode_flags",
@@ -50609,6 +50871,8 @@
         "is_recursive_folding_enabled",
         "set_focus_mode",
         "get_focus_mode",
+        "set_hide_folding",
+        "is_folding_hidden",
         "set_hide_root",
         "is_root_hidden",
         "set_scroll_hint_mode",
@@ -50628,11 +50892,13 @@
         "allow_search",
         "auto_tooltip",
         "clip_contents",
+        "column_titles_visible",
         "columns",
         "drop_mode_flags",
         "enable_drag_unfolding",
         "enable_recursive_folding",
         "focus_mode",
+        "hide_folding",
         "hide_root",
         "scroll_hint_mode",
         "scroll_horizontal_enabled",
@@ -51873,12 +52139,15 @@
         "set_engine_force",
         "get_engine_force",
         "set_mass",
-        "get_mass"
+        "get_mass",
+        "set_steering",
+        "get_steering"
       ],
       "properties": [
         "brake",
         "engine_force",
-        "mass"
+        "mass",
+        "steering"
       ],
       "signals": [],
       "constants": [],
@@ -51905,6 +52174,8 @@
         "get_engine_force",
         "set_physics_interpolation_mode",
         "get_physics_interpolation_mode",
+        "set_steering",
+        "get_steering",
         "set_suspension_max_force",
         "get_suspension_max_force",
         "set_suspension_stiffness",
@@ -51930,6 +52201,7 @@
         "damping_relaxation",
         "engine_force",
         "physics_interpolation_mode",
+        "steering",
         "suspension_max_force",
         "suspension_stiffness",
         "suspension_travel",
@@ -52143,6 +52415,8 @@
         "is_using_own_world_3d",
         "set_physics_interpolation_mode",
         "get_physics_interpolation_mode",
+        "set_physics_object_picking",
+        "get_physics_object_picking",
         "set_physics_object_picking_first_only",
         "get_physics_object_picking_first_only",
         "set_physics_object_picking_sort",
@@ -52214,6 +52488,7 @@
         "oversampling_override",
         "own_world_3d",
         "physics_interpolation_mode",
+        "physics_object_picking",
         "physics_object_picking_first_only",
         "physics_object_picking_sort",
         "positional_shadow_atlas_16_bits",
@@ -55088,6 +55363,8 @@
         "set_hand_joint_transform",
         "set_tracker_hand",
         "get_tracker_hand",
+        "set_hand_tracking_source",
+        "get_hand_tracking_source",
         "set_has_tracking_data",
         "get_has_tracking_data",
         "set_tracker_type",
@@ -55095,6 +55372,7 @@
       ],
       "properties": [
         "hand",
+        "hand_tracking_source",
         "has_tracking_data",
         "type"
       ],
@@ -55505,6 +55783,8 @@
         "trigger_haptic_pulse",
         "set_physics_interpolation_mode",
         "get_physics_interpolation_mode",
+        "set_pose_name",
+        "get_pose_name",
         "set_show_when_tracked",
         "get_show_when_tracked",
         "set_tracker",
@@ -55512,6 +55792,7 @@
       ],
       "properties": [
         "physics_interpolation_mode",
+        "pose",
         "show_when_tracked",
         "tracker"
       ],

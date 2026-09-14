@@ -17,11 +17,11 @@ declare class GradientTexture2D extends Texture2D {
   height: int;
   /** The gradient's repeat type. */
   repeat: int;
+  resource_local_to_scene: boolean;
   /**
-   * <member name="use_hdr" type="bool" setter="set_use_hdr" getter="is_using_hdr" default="false">
    * If `true`, the generated texture will support high dynamic range ({@link Image.FORMAT_RGBAF} format). This allows for glow effects to work if {@link Environment.glow_enabled} is `true`. If `false`, the generated texture will use low dynamic range; overbright colors will be clamped ({@link Image.FORMAT_RGBA8} format).
    */
-  resource_local_to_scene: boolean;
+  use_hdr: boolean;
   /**
    * The number of horizontal color samples that will be obtained from the {@link Gradient}, which also represents the texture's width.
    */
@@ -37,6 +37,8 @@ declare class GradientTexture2D extends Texture2D {
   set_height(value: int): void;
   set_repeat(value: int): void;
   get_repeat(): int;
+  set_use_hdr(value: boolean): void;
+  is_using_hdr(): boolean;
   set_width(value: int): void;
 
   // enum Fill

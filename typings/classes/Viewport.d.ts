@@ -81,12 +81,12 @@ declare class Viewport extends Node {
   oversampling_override: float;
   /** If `true`, the viewport will use a unique copy of the {@link World3D} defined in {@link world_3d}. */
   own_world_3d: boolean;
+  physics_interpolation_mode: int;
   /**
-   * <member name="physics_object_picking" type="bool" setter="set_physics_object_picking" getter="get_physics_object_picking" default="false">
    * If `true`, the objects rendered by viewport become subjects of mouse picking process.
    * **Note:** The number of simultaneously pickable objects is limited to 64 and they are selected in a non-deterministic order, which can be different in each picking process.
    */
-  physics_interpolation_mode: int;
+  physics_object_picking: boolean;
   /**
    * If `true`, the input_event signal will only be sent to one physics object in the mouse picking process. If you want to get the top object only, you must also enable {@link physics_object_picking_sort}.
    * If `false`, an input_event signal will be sent to all physics objects in the mouse picking process.
@@ -262,6 +262,8 @@ declare class Viewport extends Node {
   get_oversampling_override(): float;
   set_use_own_world_3d(value: boolean): void;
   is_using_own_world_3d(): boolean;
+  set_physics_object_picking(value: boolean): void;
+  get_physics_object_picking(): boolean;
   set_physics_object_picking_first_only(value: boolean): void;
   get_physics_object_picking_first_only(): boolean;
   set_physics_object_picking_sort(value: boolean): void;

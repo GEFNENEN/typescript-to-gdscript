@@ -3,22 +3,18 @@
 
 /** A container used to provide scrollbars to a child control when needed. */
 declare class ScrollContainer extends Container {
-  /**
-   * <member name="draw_focus_border" type="bool" setter="set_draw_focus_border" getter="get_draw_focus_border" default="false">
-   * If `true`,  is drawn when the ScrollContainer or one of its descendant nodes is focused.
-   */
   clip_contents: boolean;
+  /** If `true`,  is drawn when the ScrollContainer or one of its descendant nodes is focused. */
+  draw_focus_border: boolean;
   /**
    * If `true`, the ScrollContainer will automatically scroll to focused children (including indirect children) to make sure they are fully visible.
    */
   follow_focus: boolean;
   /** Controls whether horizontal scrollbar can be used and when it should be visible. */
   horizontal_scroll_mode: int;
-  /**
-   * <member name="scroll_deadzone" type="int" setter="set_deadzone" getter="get_deadzone" default="0">
-   * Deadzone for touch scrolling. Lower deadzone makes the scrolling more sensitive.
-   */
   propagate_maximum_size: boolean;
+  /** Deadzone for touch scrolling. Lower deadzone makes the scrolling more sensitive. */
+  scroll_deadzone: int;
   /**
    * The way which scroll hints (indicators that show that the content can still be scrolled in a certain direction) will be shown.
    * **Note:** Hints won't be shown if the content can be scrolled both vertically and horizontally.
@@ -53,10 +49,14 @@ declare class ScrollContainer extends Container {
   tile_scroll_hint: boolean;
   /** Controls whether vertical scrollbar can be used and when it should be visible. */
   vertical_scroll_mode: int;
+  set_draw_focus_border(value: boolean): void;
+  get_draw_focus_border(): boolean;
   set_follow_focus(value: boolean): void;
   is_following_focus(): boolean;
   set_horizontal_scroll_mode(value: int): void;
   get_horizontal_scroll_mode(): int;
+  set_deadzone(value: int): void;
+  get_deadzone(): int;
   set_scroll_hint_mode(value: int): void;
   get_scroll_hint_mode(): int;
   set_h_scroll(value: int): void;

@@ -9,11 +9,11 @@ declare class NinePatchRect extends Control {
   axis_stretch_vertical: int;
   /** If `true`, draw the panel's center. Else, only draw the 9-slice's borders. */
   draw_center: boolean;
+  mouse_filter: int;
   /**
-   * <member name="patch_margin_bottom" type="int" setter="set_patch_margin" getter="get_patch_margin" default="0">
    * The height of the 9-slice's bottom row. A margin of 16 means the 9-slice's bottom corners and side will have a height of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
    */
-  mouse_filter: int;
+  patch_margin_bottom: int;
   /**
    * The width of the 9-slice's left column. A margin of 16 means the 9-slice's left corners and side will have a width of 16 pixels. You can set all 4 margin values individually to create panels with non-uniform borders.
    */

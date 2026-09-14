@@ -3,21 +3,25 @@
 
 /** A container with connection ports, representing a node in a {@link GraphEdit}. */
 declare class GraphNode extends GraphElement {
-  /**
-   * <member name="ignore_invalid_connection_type" type="bool" setter="set_ignore_invalid_connection_type" getter="is_ignoring_valid_connection_type" default="false">
-   * If `true`, you can connect ports with different types, even if the connection was not explicitly allowed in the parent {@link GraphEdit}.
-   */
   focus_mode: int;
   /**
-   * <member name="slots_focus_mode" type="int" setter="set_slots_focus_mode" getter="get_slots_focus_mode" enum="Control.FocusMode" default="3">
+   * If `true`, you can connect ports with different types, even if the connection was not explicitly allowed in the parent {@link GraphEdit}.
+   */
+  ignore_invalid_connection_type: boolean;
+  mouse_filter: int;
+  /**
    * Determines how connection slots can be focused.
    * - If set to {@link Control.FOCUS_CLICK}, connections can only be made with the mouse.
    * - If set to {@link Control.FOCUS_ALL}, slots can also be focused using the {@link ProjectSettings.input/ui_up} and {@link ProjectSettings.input/ui_down} and connected using {@link ProjectSettings.input/ui_left} and {@link ProjectSettings.input/ui_right} input actions.
    * - If set to {@link Control.FOCUS_ACCESSIBILITY}, slot input actions are only enabled when the screen reader is active.
    */
-  mouse_filter: int;
+  slots_focus_mode: int;
   /** The text displayed in the GraphNode's title bar. */
   title: string;
+  set_ignore_invalid_connection_type(value: boolean): void;
+  is_ignoring_valid_connection_type(): boolean;
+  set_slots_focus_mode(value: int): void;
+  get_slots_focus_mode(): int;
   set_title(value: string | NodePath): void;
   get_title(): string;
 

@@ -10,11 +10,11 @@ declare class CanvasTexture extends Texture2D {
    * **Note:** Godot expects the normal map to use X+, Y+, and Z+ coordinates. See this page (http://wiki.polycount.com/wiki/Normal_Map_Technical_Details#Common_Swizzle_Coordinates) for a comparison of normal map coordinates expected by popular engines.
    */
   normal_texture: Texture2D | null;
+  resource_local_to_scene: boolean;
   /**
-   * <member name="specular_color" type="Color" setter="set_specular_color" getter="get_specular_color" default="Color(1, 1, 1, 1)">
    * The multiplier for specular reflection colors. The {@link Light2D}'s color is also taken into account when determining the reflection color. Only has a visible effect if {@link Light2D}s are affecting this {@link CanvasTexture}.
    */
-  resource_local_to_scene: boolean;
+  specular_color: Color;
   /**
    * The specular exponent for {@link Light2D} specular reflections. Higher values result in a more glossy/"wet" look, with reflections becoming more localized and less visible overall. The default value of `1.0` disables specular reflections entirely. Only has a visible effect if {@link Light2D}s are affecting this {@link CanvasTexture}.
    */
@@ -31,6 +31,8 @@ declare class CanvasTexture extends Texture2D {
   get_diffuse_texture(): Texture2D | null;
   set_normal_texture(value: Texture2D | null): void;
   get_normal_texture(): Texture2D | null;
+  set_specular_color(value: Color): void;
+  get_specular_color(): Color;
   set_specular_shininess(value: float): void;
   get_specular_shininess(): float;
   set_specular_texture(value: Texture2D | null): void;

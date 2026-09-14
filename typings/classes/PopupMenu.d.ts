@@ -5,12 +5,10 @@
 declare class PopupMenu extends Popup {
   /** If `true`, allows navigating {@link PopupMenu} with letter keys. */
   allow_search: boolean;
-  /**
-   * <member name="canvas_item_default_texture_repeat" type="int" setter="set_default_canvas_item_texture_repeat" getter="get_default_canvas_item_texture_repeat" overrides="Viewport" enum="Viewport.DefaultCanvasItemTextureRepeat" default="3" />
-   * <member name="hide_on_checkable_item_selection" type="bool" setter="set_hide_on_checkable_item_selection" getter="is_hide_on_checkable_item_selection" default="true">
-   * If `true`, hides the {@link PopupMenu} when a checkbox or radio button is selected.
-   */
   canvas_item_default_texture_filter: int;
+  canvas_item_default_texture_repeat: int;
+  /** If `true`, hides the {@link PopupMenu} when a checkbox or radio button is selected. */
+  hide_on_checkable_item_selection: boolean;
   /** If `true`, hides the {@link PopupMenu} when an item is selected. */
   hide_on_item_selection: boolean;
   /** If `true`, hides the {@link PopupMenu} when a state item is selected. */
@@ -92,6 +90,8 @@ declare class PopupMenu extends Popup {
   transparent_bg: boolean;
   set_allow_search(value: boolean): void;
   get_allow_search(): boolean;
+  set_hide_on_checkable_item_selection(value: boolean): void;
+  is_hide_on_checkable_item_selection(): boolean;
   set_hide_on_item_selection(value: boolean): void;
   is_hide_on_item_selection(): boolean;
   set_hide_on_state_item_selection(value: boolean): void;

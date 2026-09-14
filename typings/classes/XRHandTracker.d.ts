@@ -3,14 +3,14 @@
 
 /** A tracked hand in XR. */
 declare class XRHandTracker extends XRPositionalTracker {
-  /**
-   * <member name="hand_tracking_source" type="int" setter="set_hand_tracking_source" getter="get_hand_tracking_source" enum="XRHandTracker.HandTrackingSource" default="0">
-   * The source of the hand tracking data.
-   */
   hand: int;
+  /** The source of the hand tracking data. */
+  hand_tracking_source: int;
   /** If `true`, the hand tracking data is valid. */
   has_tracking_data: boolean;
   type: int;
+  set_hand_tracking_source(value: int): void;
+  get_hand_tracking_source(): int;
   set_has_tracking_data(value: boolean): void;
   get_has_tracking_data(): boolean;
 

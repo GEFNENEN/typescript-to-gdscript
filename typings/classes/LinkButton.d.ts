@@ -5,16 +5,14 @@
 declare class LinkButton extends BaseButton {
   /** Ellipsis character used for text clipping. */
   ellipsis_char: string;
-  /**
-   * <member name="language" type="String" setter="set_language" getter="get_language" default="&quot;&quot;">
-   * Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
-   */
   focus_mode: int;
   /**
-   * <member name="structured_text_bidi_override" type="int" setter="set_structured_text_bidi_override" getter="get_structured_text_bidi_override" enum="TextServer.StructuredTextParser" default="0">
-   * Set BiDi algorithm override for the structured text.
+   * Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
    */
+  language: string;
   mouse_default_cursor_shape: int;
+  /** Set BiDi algorithm override for the structured text. */
+  structured_text_bidi_override: int;
   /** Set additional options for BiDi override. */
   structured_text_bidi_override_options: Array<unknown>;
   /** The button's text that will be displayed inside the button's area. */
@@ -31,6 +29,10 @@ declare class LinkButton extends BaseButton {
   uri: string;
   set_ellipsis_char(value: string | NodePath): void;
   get_ellipsis_char(): string;
+  set_language(value: string | NodePath): void;
+  get_language(): string;
+  set_structured_text_bidi_override(value: int): void;
+  get_structured_text_bidi_override(): int;
   set_structured_text_bidi_override_options(value: Array<unknown> | PackedByteArray | PackedColorArray | PackedFloat32Array | PackedFloat64Array | PackedInt32Array | PackedInt64Array | PackedStringArray | PackedVector2Array | PackedVector3Array | PackedVector4Array): void;
   get_structured_text_bidi_override_options(): Array<unknown>;
   set_text(value: string | NodePath): void;

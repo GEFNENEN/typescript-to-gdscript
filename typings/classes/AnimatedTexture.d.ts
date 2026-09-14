@@ -19,11 +19,11 @@ declare class AnimatedTexture extends Texture2D {
    * If `true`, the animation will pause where it currently is (i.e. at {@link current_frame}). The animation will continue from where it was paused when changing this property to `false`.
    */
   pause: boolean;
+  resource_local_to_scene: boolean;
   /**
-   * <member name="speed_scale" type="float" setter="set_speed_scale" getter="get_speed_scale" default="1.0">
    * The animation speed is multiplied by this value. If set to a negative value, the animation is played in reverse.
    */
-  resource_local_to_scene: boolean;
+  speed_scale: float;
   set_current_frame(value: int): void;
   get_current_frame(): int;
   set_frames(value: int): void;
@@ -32,6 +32,8 @@ declare class AnimatedTexture extends Texture2D {
   get_one_shot(): boolean;
   set_pause(value: boolean): void;
   get_pause(): boolean;
+  set_speed_scale(value: float): void;
+  get_speed_scale(): float;
 
   /** Returns the given `frame`'s duration, in seconds. */
   get_frame_duration(frame: int): float;

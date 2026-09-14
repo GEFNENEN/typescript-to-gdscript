@@ -13,11 +13,9 @@ declare class Tree extends Control {
    * If `true`, tree items with no tooltip assigned display their text as their tooltip. See also {@link TreeItem.get_tooltip_text} and {@link TreeItem.get_button_tooltip_text}.
    */
   auto_tooltip: boolean;
-  /**
-   * <member name="column_titles_visible" type="bool" setter="set_column_titles_visible" getter="are_column_titles_visible" default="false">
-   * If `true`, column titles are visible.
-   */
   clip_contents: boolean;
+  /** If `true`, column titles are visible. */
+  column_titles_visible: boolean;
   /**
    * The number of columns.
    * Prints an error and does not allow setting the columns during mouse selection.
@@ -36,11 +34,9 @@ declare class Tree extends Control {
    * If `true`, recursive folding is enabled for this {@link Tree}. Holding down `Shift` while clicking the fold arrow or using `ui_right`/`ui_left` shortcuts collapses or uncollapses the {@link TreeItem} and all its descendants.
    */
   enable_recursive_folding: boolean;
-  /**
-   * <member name="hide_folding" type="bool" setter="set_hide_folding" getter="is_folding_hidden" default="false">
-   * If `true`, the folding arrow is hidden.
-   */
   focus_mode: int;
+  /** If `true`, the folding arrow is hidden. */
+  hide_folding: boolean;
   /** If `true`, the tree's root is hidden. */
   hide_root: boolean;
   /**
@@ -65,6 +61,8 @@ declare class Tree extends Control {
   get_allow_search(): boolean;
   set_auto_tooltip(value: boolean): void;
   is_auto_tooltip_enabled(): boolean;
+  set_column_titles_visible(value: boolean): void;
+  are_column_titles_visible(): boolean;
   set_columns(value: int): void;
   get_columns(): int;
   set_drop_mode_flags(value: int): void;
@@ -73,6 +71,8 @@ declare class Tree extends Control {
   is_drag_unfolding_enabled(): boolean;
   set_enable_recursive_folding(value: boolean): void;
   is_recursive_folding_enabled(): boolean;
+  set_hide_folding(value: boolean): void;
+  is_folding_hidden(): boolean;
   set_hide_root(value: boolean): void;
   is_root_hidden(): boolean;
   set_scroll_hint_mode(value: int): void;

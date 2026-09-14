@@ -19,11 +19,11 @@ declare class Parallax2D extends Node2D {
    * Bottom-right limits for scrolling to end. If the camera is outside of this limit, the {@link Parallax2D} will stop scrolling. Must be higher than {@link limit_begin} and the viewport size combined to work.
    */
   limit_end: Vector2;
+  physics_interpolation_mode: int;
   /**
-   * <member name="repeat_size" type="Vector2" setter="set_repeat_size" getter="get_repeat_size" default="Vector2(0, 0)">
    * Repeats the {@link Texture2D} of each of this node's children and offsets them by this value. When scrolling, the node's position loops, giving the illusion of an infinite scrolling background if the values are larger than the screen size. If an axis is set to `0`, the {@link Texture2D} will not be repeated.
    */
-  physics_interpolation_mode: int;
+  repeat_size: Vector2;
   /**
    * Overrides the amount of times the texture repeats. Each texture copy spreads evenly from the original by {@link repeat_size}. Useful for when zooming out with a camera.
    */
@@ -52,6 +52,8 @@ declare class Parallax2D extends Node2D {
   get_limit_begin(): Vector2;
   set_limit_end(value: Vector2 | Vector2i): void;
   get_limit_end(): Vector2;
+  set_repeat_size(value: Vector2 | Vector2i): void;
+  get_repeat_size(): Vector2;
   set_repeat_times(value: int): void;
   get_repeat_times(): int;
   set_screen_offset(value: Vector2 | Vector2i): void;

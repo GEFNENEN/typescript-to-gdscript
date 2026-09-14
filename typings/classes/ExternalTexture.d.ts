@@ -3,11 +3,10 @@
 
 /** Texture which displays the content of an external buffer. */
 declare class ExternalTexture extends Texture2D {
-  /**
-   * <member name="size" type="Vector2" setter="set_size" getter="get_size" default="Vector2(256, 256)">
-   * External texture size.
-   */
   resource_local_to_scene: boolean;
+  /** External texture size. */
+  size: Vector2;
+  set_size(value: Vector2 | Vector2i): void;
 
   /**
    * Returns the external texture ID.

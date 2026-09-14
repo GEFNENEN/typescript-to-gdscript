@@ -3,12 +3,12 @@
 
 /** A 3D node that has its position automatically updated by the {@link XRServer}. */
 declare class XRNode3D extends Node3D {
+  physics_interpolation_mode: int;
   /**
-   * <member name="pose" type="StringName" setter="set_pose_name" getter="get_pose_name" default="&&quot;default&quot;">
    * The name of the pose we're bound to. Which poses a tracker supports is not known during design time.
    * Godot defines number of standard pose names such as `aim` and `grip` but other may be configured within a given {@link XRInterface}.
    */
-  physics_interpolation_mode: int;
+  pose: string;
   /** Enables showing the node when tracking starts, and hiding the node when tracking is lost. */
   show_when_tracked: boolean;
   /**
@@ -16,6 +16,8 @@ declare class XRNode3D extends Node3D {
    * Godot defines a number of standard trackers such as `left_hand` and `right_hand` but others may be configured within a given {@link XRInterface}.
    */
   tracker: string;
+  set_pose_name(value: string): void;
+  get_pose_name(): string;
   set_show_when_tracked(value: boolean): void;
   get_show_when_tracked(): boolean;
   set_tracker(value: string): void;

@@ -196,7 +196,7 @@ export function parseClassXml(xmlContent: string): GodotClassXml | null {
 
   // Parse properties (members) -- may have inline text or child <description>
   const propRegex =
-    /<member name="([^"]+)" type="([^"]+)"(?:\s+setter="([^"]*)")?(?:\s+getter="([^"]*)")?[^>]*(?:\/>|>([\s\S]*?)<\/member>)/g;
+    /<member name="([^"]+)" type="([^"]+)"(?:\s+setter="([^"]*)")?(?:\s+getter="([^"]*)")?[^>]*?(?:\/>|>([\s\S]*?)<\/member>)/g;
   while ((match = propRegex.exec(xmlContent)) !== null) {
     const propDesc = match[5]?.trim() || undefined;
     properties.push({
@@ -209,7 +209,8 @@ export function parseClassXml(xmlContent: string): GodotClassXml | null {
   }
 
   // Parse signals
-  const signalRegex = /<signal name="([^"]+)"(?:\s*\/|>([\s\S]*?)<\/signal)>/g;
+  const signalRegex =
+    /<signal name="([^"]+)"[^>]*?(?:\/>|>([\s\S]*?)<\/signal>)/g;
   while ((match = signalRegex.exec(xmlContent)) !== null) {
     const sigName = match[1]!;
     const body = match[2] ?? '';

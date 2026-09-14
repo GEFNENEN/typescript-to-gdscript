@@ -17,11 +17,9 @@ declare class DPITexture extends Texture2D {
    * - In 3D, a {@link BaseMaterial3D} will need to be created and configured to use the {@link BaseMaterial3D.BLEND_MODE_PREMULT_ALPHA} blend mode on materials that use this texture. In custom `spatial` shaders, `render_mode blend_premul_alpha;` should be used.
    */
   premult_alpha: boolean;
-  /**
-   * <member name="saturation" type="float" setter="set_saturation" getter="get_saturation" default="1.0">
-   * Overrides texture saturation.
-   */
   resource_local_to_scene: boolean;
+  /** Overrides texture saturation. */
+  saturation: float;
   set_base_scale(value: float): void;
   get_base_scale(): float;
   set_color_map(value: Dictionary): void;
@@ -30,6 +28,8 @@ declare class DPITexture extends Texture2D {
   get_fix_alpha_border(): boolean;
   set_premult_alpha(value: boolean): void;
   get_premult_alpha(): boolean;
+  set_saturation(value: float): void;
+  get_saturation(): float;
 
   /**
    * Creates a new {@link DPITexture} and initializes it by allocating and setting the SVG data to `source`.

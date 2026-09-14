@@ -3,11 +3,11 @@
 
 /** Dockable container for the editor. */
 declare class EditorDock extends MarginContainer {
+  accessibility_region: boolean;
   /**
-   * <member name="available_layouts" type="int" setter="set_available_layouts" getter="get_available_layouts" enum="EditorDock.DockLayout" is_bitfield="true" default="5">
    * The available layouts for this dock, as a bitmask. By default, the dock allows vertical and floating layouts.
    */
-  accessibility_region: boolean;
+  available_layouts: int;
   /**
    * If `true`, the dock can be closed with the Close button in the context popup. Docks with {@link global} enabled are always closable.
    */
@@ -47,6 +47,8 @@ declare class EditorDock extends MarginContainer {
    * If `true`, the dock is not automatically opened or closed when loading an editor layout, only moved. It also can't be opened using a shortcut. This is meant for docks that are opened and closed in specific cases, such as when selecting a {@link TileMap} or {@link AnimationTree} node.
    */
   transient: boolean;
+  set_available_layouts(value: int): void;
+  get_available_layouts(): int;
   set_closable(value: boolean): void;
   is_closable(): boolean;
   set_default_slot(value: int): void;

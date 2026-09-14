@@ -36,16 +36,14 @@ declare class Label extends Control {
   lines_skipped: int;
   /** Limits the lines of text the node shows on screen. */
   max_lines_visible: int;
-  /**
-   * <member name="paragraph_separator" type="String" setter="set_paragraph_separator" getter="get_paragraph_separator" default="&quot;\\n&quot;">
-   * String used as a paragraph separator. Each paragraph is processed independently, in its own BiDi context.
-   */
   mouse_filter: int;
   /**
-   * <member name="structured_text_bidi_override" type="int" setter="set_structured_text_bidi_override" getter="get_structured_text_bidi_override" enum="TextServer.StructuredTextParser" default="0">
-   * Set BiDi algorithm override for the structured text.
+   * String used as a paragraph separator. Each paragraph is processed independently, in its own BiDi context.
    */
+  paragraph_separator: string;
   size_flags_vertical: int;
+  /** Set BiDi algorithm override for the structured text. */
+  structured_text_bidi_override: int;
   /** Set additional options for BiDi override. */
   structured_text_bidi_override_options: Array<unknown>;
   /** Aligns text to the given tab-stops. */
@@ -93,6 +91,10 @@ declare class Label extends Control {
   get_lines_skipped(): int;
   set_max_lines_visible(value: int): void;
   get_max_lines_visible(): int;
+  set_paragraph_separator(value: string | NodePath): void;
+  get_paragraph_separator(): string;
+  set_structured_text_bidi_override(value: int): void;
+  get_structured_text_bidi_override(): int;
   set_structured_text_bidi_override_options(value: Array<unknown> | PackedByteArray | PackedColorArray | PackedFloat32Array | PackedFloat64Array | PackedInt32Array | PackedInt64Array | PackedStringArray | PackedVector2Array | PackedVector3Array | PackedVector4Array): void;
   get_structured_text_bidi_override_options(): Array<unknown>;
   set_tab_stops(value: PackedFloat32Array | Array<unknown>): void;

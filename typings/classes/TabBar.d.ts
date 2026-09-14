@@ -19,11 +19,9 @@ declare class TabBar extends Control {
   deselect_enabled: boolean;
   /** If `true`, tabs can be rearranged with mouse drag. */
   drag_to_rearrange_enabled: boolean;
-  /**
-   * <member name="max_tab_width" type="int" setter="set_max_tab_width" getter="get_max_tab_width" default="0">
-   * Sets the maximum width which all tabs should be limited to. Unlimited if set to `0`.
-   */
   focus_mode: int;
+  /** Sets the maximum width which all tabs should be limited to. Unlimited if set to `0`. */
+  max_tab_width: int;
   /** If `true`, the tab offset will be changed to keep the currently selected tab visible. */
   scroll_to_selected: boolean;
   /** if `true`, the mouse's scroll wheel can be used to navigate the scroll view. */
@@ -75,6 +73,8 @@ declare class TabBar extends Control {
   get_deselect_enabled(): boolean;
   set_drag_to_rearrange_enabled(value: boolean): void;
   get_drag_to_rearrange_enabled(): boolean;
+  set_max_tab_width(value: int): void;
+  get_max_tab_width(): int;
   set_scroll_to_selected(value: boolean): void;
   get_scroll_to_selected(): boolean;
   set_scrolling_enabled(value: boolean): void;

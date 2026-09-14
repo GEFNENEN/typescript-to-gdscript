@@ -21,11 +21,11 @@ declare class VehicleWheel3D extends Node3D {
    * A negative value will result in the wheel reversing.
    */
   engine_force: float;
+  physics_interpolation_mode: int;
   /**
-   * <member name="steering" type="float" setter="set_steering" getter="get_steering" default="0.0">
    * The steering angle for the wheel, in radians. Setting this to a non-zero value will result in the vehicle turning when it's moving.
    */
-  physics_interpolation_mode: int;
+  steering: float;
   /**
    * The maximum force the spring can resist. This value should be higher than a quarter of the {@link RigidBody3D.mass} of the {@link VehicleBody3D} or the spring will not carry the weight of the vehicle. Good results are often obtained by a value that is about 3× to 4× this number.
    */
@@ -69,6 +69,8 @@ declare class VehicleWheel3D extends Node3D {
   get_damping_relaxation(): float;
   set_engine_force(value: float): void;
   get_engine_force(): float;
+  set_steering(value: float): void;
+  get_steering(): float;
   set_suspension_max_force(value: float): void;
   get_suspension_max_force(): float;
   set_suspension_stiffness(value: float): void;

@@ -3,14 +3,14 @@
 
 /** A spotlight, such as a reflector spotlight or a lantern. */
 declare class SpotLight3D extends Light3D {
+  light_specular: float;
+  shadow_bias: float;
+  shadow_normal_bias: float;
   /**
-   * <member name="shadow_bias" type="float" setter="set_param" getter="get_param" overrides="Light3D" default="0.03" />
-   * <member name="shadow_normal_bias" type="float" setter="set_param" getter="get_param" overrides="Light3D" default="1.0" />
-   * <member name="spot_angle" type="float" setter="set_param" getter="get_param" default="45.0">
    * The spotlight's angle in degrees. This is the angular radius, meaning the angle from the -Z axis, the cone's center, to the edge of the cone. The default angular radius of 45 degrees corresponds to a cone with an angular diameter of 90 degrees.
    * **Note:** {@link spot_angle} is not affected by {@link Node3D.scale} (the light's scale or its parent's scale).
    */
-  light_specular: float;
+  spot_angle: float;
   /** The spotlight's *angular* attenuation curve. See also {@link spot_attenuation}. */
   spot_angle_attenuation: float;
   /**

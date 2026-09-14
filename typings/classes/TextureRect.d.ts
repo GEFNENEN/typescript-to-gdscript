@@ -9,11 +9,9 @@ declare class TextureRect extends Control {
   flip_h: boolean;
   /** If `true`, texture is flipped vertically. */
   flip_v: boolean;
-  /**
-   * <member name="stretch_mode" type="int" setter="set_stretch_mode" getter="get_stretch_mode" enum="TextureRect.StretchMode" default="0">
-   * Controls the texture's behavior when resizing the node's bounding rectangle.
-   */
   mouse_filter: int;
+  /** Controls the texture's behavior when resizing the node's bounding rectangle. */
+  stretch_mode: int;
   /** The node's {@link Texture2D} resource. */
   texture: Texture2D | null;
   set_expand_mode(value: int): void;
@@ -22,6 +20,8 @@ declare class TextureRect extends Control {
   is_flipped_h(): boolean;
   set_flip_v(value: boolean): void;
   is_flipped_v(): boolean;
+  set_stretch_mode(value: int): void;
+  get_stretch_mode(): int;
   set_texture(value: Texture2D | null): void;
   get_texture(): Texture2D | null;
 

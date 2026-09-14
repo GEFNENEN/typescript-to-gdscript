@@ -5,11 +5,11 @@
 declare class MenuBar extends Control {
   /** Flat {@link MenuBar} don't display item decoration. */
   flat: boolean;
+  focus_mode: int;
   /**
-   * <member name="language" type="String" setter="set_language" getter="get_language" default="&quot;&quot;">
    * Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
    */
-  focus_mode: int;
+  language: string;
   /**
    * If `true`, {@link MenuBar} will use system global menu when supported.
    * **Note:** If `true` and global menu is supported, this node is not displayed, has zero size, and all its child nodes except {@link PopupMenu}s are inaccessible.
@@ -28,6 +28,8 @@ declare class MenuBar extends Control {
   text_direction: int;
   set_flat(value: boolean): void;
   is_flat(): boolean;
+  set_language(value: string | NodePath): void;
+  get_language(): string;
   set_prefer_global_menu(value: boolean): void;
   is_prefer_global_menu(): boolean;
   set_start_index(value: int): void;

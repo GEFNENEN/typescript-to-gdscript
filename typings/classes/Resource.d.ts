@@ -117,6 +117,8 @@ declare class Resource extends RefCounted {
    * **Note:** This signal is not emitted automatically for properties of custom resources. If necessary, a setter needs to be created to emit the signal.
    */
   changed: Signal<[]>;
+  /** Emitted by a newly duplicated resource with {@link resource_local_to_scene} set to `true`. */
+  setup_local_to_scene_requested: Signal<[]>;
 
   // enum DeepDuplicateMode
   /**

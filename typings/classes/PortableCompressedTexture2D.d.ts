@@ -8,13 +8,13 @@ declare class PortableCompressedTexture2D extends Texture2D {
    * **Note:** This property must be set before {@link create_from_image} for this to work.
    */
   keep_compressed_buffer: boolean;
-  /**
-   * <member name="size_override" type="Vector2" setter="set_size_override" getter="get_size_override" default="Vector2(0, 0)">
-   * Allows overriding the texture's size (for 2D only).
-   */
   resource_local_to_scene: boolean;
+  /** Allows overriding the texture's size (for 2D only). */
+  size_override: Vector2;
   set_keep_compressed_buffer(value: boolean): void;
   is_keeping_compressed_buffer(): boolean;
+  set_size_override(value: Vector2 | Vector2i): void;
+  get_size_override(): Vector2;
 
   /**
    * Initializes the compressed texture from a base image. The compression mode must be provided.

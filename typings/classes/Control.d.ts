@@ -191,12 +191,12 @@ declare class Control extends CanvasItem {
    * Has no effect unless {@link offset_transform_enabled} is `true`.
    */
   offset_transform_visual_only: boolean;
+  physics_interpolation_mode: int;
   /**
-   * <member name="pivot_offset" type="Vector2" setter="set_pivot_offset" getter="get_pivot_offset" default="Vector2(0, 0)">
    * By default, the node's pivot is its top-left corner. When you change its {@link rotation} or {@link scale}, it will rotate or scale around this pivot.
    * The actual offset is the combined value of this property and {@link pivot_offset_ratio}.
    */
-  physics_interpolation_mode: int;
+  pivot_offset: Vector2;
   /**
    * Same as {@link pivot_offset}, but expressed as uniform vector, where `Vector2(0, 0)` is the top-left corner of this control, and `Vector2(1, 1)` is its bottom-right corner. Set this property to `Vector2(0.5, 0.5)` to pivot around this control's center.
    * The actual offset is the combined value of this property and {@link pivot_offset}.
@@ -339,6 +339,8 @@ declare class Control extends CanvasItem {
   get_offset_transform_scale(): Vector2;
   set_offset_transform_visual_only(value: boolean): void;
   is_offset_transform_visual_only(): boolean;
+  set_pivot_offset(value: Vector2 | Vector2i): void;
+  get_pivot_offset(): Vector2;
   set_pivot_offset_ratio(value: Vector2 | Vector2i): void;
   get_pivot_offset_ratio(): Vector2;
   _set_position(value: Vector2 | Vector2i): void;

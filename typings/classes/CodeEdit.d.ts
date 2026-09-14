@@ -63,11 +63,11 @@ declare class CodeEdit extends TextEdit {
   indent_size: int;
   /** Use spaces instead of tabs for indentation. */
   indent_use_spaces: boolean;
+  layout_direction: int;
   /**
-   * <member name="line_folding" type="bool" setter="set_line_folding_enabled" getter="is_line_folding_enabled" default="false">
    * If `true`, lines can be folded. Otherwise, line folding methods like {@link fold_line} will not work and {@link can_fold_line} will always return `false`. See {@link gutters_draw_fold_gutter}.
    */
-  layout_direction: int;
+  line_folding: boolean;
   /**
    * Draws vertical lines at the provided columns. The first entry is considered a main hard guideline and is drawn more prominently.
    */
@@ -115,6 +115,8 @@ declare class CodeEdit extends TextEdit {
   get_indent_size(): int;
   set_indent_using_spaces(value: boolean): void;
   is_indent_using_spaces(): boolean;
+  set_line_folding_enabled(value: boolean): void;
+  is_line_folding_enabled(): boolean;
   set_line_length_guidelines(value: Array<int>): void;
   get_line_length_guidelines(): Array<int>;
   set_symbol_lookup_on_click_enabled(value: boolean): void;

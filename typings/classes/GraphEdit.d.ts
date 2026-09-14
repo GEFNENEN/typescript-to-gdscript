@@ -3,11 +3,9 @@
 
 /** An editor for graph-like structures, using {@link GraphNode}s. */
 declare class GraphEdit extends Control {
-  /**
-   * <member name="connection_lines_antialiased" type="bool" setter="set_connection_lines_antialiased" getter="is_connection_lines_antialiased" default="true">
-   * If `true`, the lines between nodes will use antialiasing.
-   */
   clip_contents: boolean;
+  /** If `true`, the lines between nodes will use antialiasing. */
+  connection_lines_antialiased: boolean;
   /** The curvature of the lines between the nodes. 0 results in straight lines. */
   connection_lines_curvature: float;
   /** The thickness of the lines between the nodes. */
@@ -18,11 +16,9 @@ declare class GraphEdit extends Control {
    * Connections with `keep_alive` set to `false` may be deleted automatically if invalid during a redraw.
    */
   connections: Array<Dictionary>;
-  /**
-   * <member name="grid_pattern" type="int" setter="set_grid_pattern" getter="get_grid_pattern" enum="GraphEdit.GridPattern" default="0">
-   * The pattern used for drawing the grid.
-   */
   focus_mode: int;
+  /** The pattern used for drawing the grid. */
+  grid_pattern: int;
   /** If `true`, the minimap is visible. */
   minimap_enabled: boolean;
   /** The opacity of the minimap rectangle. */
@@ -69,12 +65,16 @@ declare class GraphEdit extends Control {
   zoom_min: float;
   /** The step of each zoom level. */
   zoom_step: float;
+  set_connection_lines_antialiased(value: boolean): void;
+  is_connection_lines_antialiased(): boolean;
   set_connection_lines_curvature(value: float): void;
   get_connection_lines_curvature(): float;
   set_connection_lines_thickness(value: float): void;
   get_connection_lines_thickness(): float;
   set_connections(value: Array<Dictionary>): void;
   get_connection_list(): Array<Dictionary>;
+  set_grid_pattern(value: int): void;
+  get_grid_pattern(): int;
   set_minimap_enabled(value: boolean): void;
   is_minimap_enabled(): boolean;
   set_minimap_opacity(value: float): void;

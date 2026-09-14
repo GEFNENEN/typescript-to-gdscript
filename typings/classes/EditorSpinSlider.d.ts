@@ -15,21 +15,19 @@ declare class EditorSpinSlider extends Range {
   editing_integer: boolean;
   /** If `true`, the slider will not draw background. */
   flat: boolean;
-  /**
-   * <member name="hide_slider" type="bool" setter="set_hide_slider" getter="is_hiding_slider" default="false" deprecated="Use {@link control_state} instead.">
-   * If `true`, the slider and up/down arrows are hidden.
-   */
   focus_mode: int;
+  /** If `true`, the slider and up/down arrows are hidden. */
+  hide_slider: boolean;
   /** The text that displays to the left of the value. */
   label: string;
   /** If `true`, the slider can't be interacted with. */
   read_only: boolean;
+  size_flags_vertical: int;
+  step: float;
   /**
-   * <member name="step" type="float" setter="set_step" getter="get_step" overrides="Range" default="1.0" />
-   * <member name="suffix" type="String" setter="set_suffix" getter="get_suffix" default="&quot;&quot;">
    * The suffix to display after the value (in a faded color). This should generally be a plural word. You may have to use an abbreviation if the suffix is too long to be displayed.
    */
-  size_flags_vertical: int;
+  suffix: string;
   set_control_state(value: int): void;
   get_control_state(): int;
   set_deferred_drag_mode_enabled(value: boolean): void;
@@ -38,9 +36,13 @@ declare class EditorSpinSlider extends Range {
   is_editing_integer(): boolean;
   set_flat(value: boolean): void;
   is_flat(): boolean;
+  set_hide_slider(value: boolean): void;
+  is_hiding_slider(): boolean;
   set_label(value: string | NodePath): void;
   get_label(): string;
   set_read_only(value: boolean): void;
+  set_suffix(value: string | NodePath): void;
+  get_suffix(): string;
 
   /** Emitted when the spinner/slider is grabbed. */
   grabbed: Signal<[]>;
