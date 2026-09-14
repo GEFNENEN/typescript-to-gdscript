@@ -454,13 +454,30 @@ type _GDGetChild<Tree, Idx extends number> =
 
 /** Resolve get_parent return type from declaration-merged _XParents interface.
  *  Empty interface (no parents) → Node; otherwise union of all parent types. */
-type _GDParentType<Tree> =
-  Tree extends any // distributive over union trees
-    ? IsAny<Tree> extends true
-      ? Node
-      : [_GDTreeGetParent<Tree>] extends [null]
-        ? Node
-        : _GDTreeNode<NonNullable<_GDTreeGetParent<Tree>>>
+/**
+ * Resolve `get_parent()`'s return type.
+ *
+ * Returns only the parent's *engine* type (`_GDTreeGetType`), NOT a full
+ * `_GDTreeNode`. Wrapping the parent in `_GDTreeNode` re-expands the whole
+ * `_GDTreeHandlers` machine for the parent tree, and because a scene's
+ * `__Parents` interface is a union over every scene that instances it, that
+ * expansion compounds per level and trips TS2589 "Type instantiation is
+ * excessively deep" on scripts that extend a scene-preloaded class chain
+ * (`class X extends preload("...popup_frame.gd")`). Dropping the handlers keeps
+ * `parent`, `parent.name`, `gd.as(parent, T)` and `parent === node` comparisons
+ * working while making the type finite. `get_parent()` overloads on the base
+ * `Node` still supply the handler form when an explicit type argument is given.
+ *
+ * `P extends object` filters both `null` (no parent) and `never` (unknown
+ * parent) in a single check; `IsAny` must stay first so `any` trees do not
+ * distribute to `never`.
+ */
+type _GDParentType<Tree> = IsAny<Tree> extends true
+  ? Node
+  : _GDTreeGetParent<Tree> extends infer P
+    ? P extends object
+      ? _GDTreeGetType<P>
+      : Node
     : never;
 
 /** Resolve get_node return type: known paths → exact type, unknown → Node | null.
