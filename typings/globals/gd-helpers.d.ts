@@ -20,7 +20,7 @@ declare function float(from?: int | float | String | boolean): float;
 /** Alias for boolean representing a bool in GDScript */
 type bool = boolean;
 /** GDScript `bool()` cast function — converts to boolean */
-declare function bool(from?: int | float | String | boolean): boolean;
+declare function bool(from?: unknown): boolean;
 
 /** GDScript `String()` cast function — converts to string */
 declare function String(from?: unknown): string;
