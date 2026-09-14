@@ -61,7 +61,7 @@ declare interface Object {
    * **Note:** If the `default` argument is computationally expensive or has unwanted side effects, consider using the {@link has} method instead:
    */
   get<T, K extends keyof T>(this: T, key: K, default_?: T[K]): T[K];
-  get(key: unknown, default_?: unknown): unknown;
+  get(key: unknown, default_?: unknown): any;
   /**
    * Gets a value and ensures the key is set. If the `key` exists in the dictionary, this behaves like {@link get}. Otherwise, the `default` value is inserted into the dictionary and returned.
    */

@@ -56,7 +56,7 @@ declare function lerp<
 declare function load<P extends keyof GodotResources>(
   path: P,
 ): GodotResources[P];
-declare function load<T extends Resource = Resource>(path: string): T;
+declare function load<T extends Resource = any>(path: string): T;
 
 declare function max<T extends int | float>(...args: T[]): T;
 
@@ -65,7 +65,7 @@ declare function min<T extends int | float>(...args: T[]): T;
 declare function preload<P extends keyof GodotResources>(
   path: P,
 ): GodotResources[P];
-declare function preload<T extends Resource = Resource>(path: string): T;
+declare function preload<T extends Resource = any>(path: string): T;
 
 declare function range(end: int): Array<int>;
 declare function range(begin: int, end: int): Array<int>;

@@ -310,6 +310,21 @@ declare const gd: {
   };
 };
 
+// ─── Promise constructor (GDScript coroutine) ───────────────
+// GDScript has no Promise constructor, but TS needs one for `async`/`await`
+// under ES5/ESNext target (the converter maps these to GDScript coroutines).
+interface PromiseConstructor {
+  new <T>(...args: any[]): Promise<T>;
+  readonly prototype: Promise<any>;
+  all<T>(values: readonly (T | PromiseLike<T>)[]): Promise<T[]>;
+  all<T extends readonly unknown[]>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]> }>;
+  resolve<T>(value?: T | PromiseLike<T>): Promise<T>;
+  reject<T = never>(reason?: any): Promise<T>;
+  race<T>(values: readonly (T | PromiseLike<T>)[]): Promise<T>;
+  withResolvers<T>(): { promise: Promise<T>; resolve: (value: T | PromiseLike<T>) => void; reject: (reason?: any) => void; };
+}
+declare var Promise: PromiseConstructor;
+
 // ─── Promise — GDScript coroutine rules ─────────────────────────
 //
 // GDScript has no `Promise` type. `async`/`await` map directly to
