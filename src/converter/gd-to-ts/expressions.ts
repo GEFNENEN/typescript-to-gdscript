@@ -130,7 +130,10 @@ export function emitExpr(node: SyntaxNode, ctx: GdToTsContext): string {
   }
 
   if (node.type === SyntaxType.Array) {
-    const elements = node.namedChildren.map((e) => emitExpr(e, ctx)).join(', ');
+    const elements = node.namedChildren
+      .map((e) => emitExpr(e, ctx))
+      .filter((e) => e !== '')
+      .join(', ');
     return `[${elements}]`;
   }
 
@@ -225,12 +228,21 @@ export function emitExpr(node: SyntaxNode, ctx: GdToTsContext): string {
     return emitLambda(node, ctx);
   }
 
-  // Inline comment in expression context — emit as trailing comment
+  // Inline comment in expression context. A GDScript `#` comment can appear
+  // between arguments of a call that spans several lines:
+  //
+  //     var pos = Physics.calc(
+  //         data[6],  # top_distance
+  //         data[7],  # bottom_distance
+  //     )
+  //
+  // The comment is a sibling node in the argument list, so it reaches this
+  // emitter even though it carries no value. Emitting `/* ... */` here puts a
+  // comment where TypeScript expects an argument (`f(a, /* x */, b)` is not
+  // valid), so drop it — the caller (`emitCall`) skips argument nodes that
+  // produce no expression.
   if (node.type === SyntaxType.Comment) {
-    const content = node.text.startsWith('##')
-      ? node.text.slice(2).trim()
-      : node.text.slice(1).trim();
-    return `/* ${content} */`;
+    return '';
   }
 
   // Fallback: return raw text with warning
@@ -251,7 +263,10 @@ export function emitCall(node: SyntaxNode, ctx: GdToTsContext): string {
   const callee = node.namedChildren[0];
   const argsNode = node.childForFieldName('arguments');
   const args = argsNode
-    ? argsNode.namedChildren.map((a) => emitExpr(a, ctx)).join(', ')
+    ? argsNode.namedChildren
+        .map((a) => emitExpr(a, ctx))
+        .filter((a) => a !== '')
+        .join(', ')
     : '';
 
   if (!callee) return `(${args})`;
@@ -349,7 +364,10 @@ export function emitAttribute(node: SyntaxNode, ctx: GdToTsContext): string {
           ?.text ?? '';
       const argsNode = child.childForFieldName('arguments');
       const args = argsNode
-        ? argsNode.namedChildren.map((a) => emitExpr(a, ctx)).join(', ')
+        ? argsNode.namedChildren
+            .map((a) => emitExpr(a, ctx))
+            .filter((a) => a !== '')
+            .join(', ')
         : '';
       // .new() -> new ClassName(). Resolve the receiver to the name that's
       // actually in scope in the emitted TS:
