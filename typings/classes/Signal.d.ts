@@ -11,11 +11,11 @@ declare class Signal<T extends any[] = any[]> {
    * A signal can only be connected once to the same {@link Callable}. If the signal is already connected, this method returns {@link ERR_INVALID_PARAMETER} and generates an error, unless the signal is connected with {@link Object.CONNECT_REFERENCE_COUNTED}. To prevent this, use {@link is_connected} first to check for existing connections.
    * **Note:** If the `callable`'s object is freed, the connection will be lost.
    */
-  connect(callable: (...args: T) => void): void;
+    connect(callable: ((...args: T) => void) | Callable, flags?: int): int;
   /**
    * Disconnects this signal from the specified {@link Callable}. If the connection does not exist, generates an error. Use {@link is_connected} to make sure that the connection exists.
    */
-  disconnect(callable: (...args: T) => void): void;
+  disconnect(callable: ((...args: T) => void) | Callable): void;
   /**
    * Emits this signal. All {@link Callable}s connected to this signal will be triggered. This method supports a variable number of arguments, so parameters can be passed as a comma separated list.
    */
