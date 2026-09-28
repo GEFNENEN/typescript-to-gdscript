@@ -24,6 +24,7 @@ import {
   findSceneFiles,
   findAssetFiles,
   parseGdResourceType,
+  parseGdResourceScriptClass,
   resolveResourceUid,
   ASSET_EXTENSION_MAP,
   resolveSignalHandlers,
@@ -211,7 +212,11 @@ export function generateTypings(options: GenerateTypingsOptions): string[] {
 
     let godotType: string;
     if (ext === '.tres' || ext === '.res') {
-      godotType = parseGdResourceType(assetFile) ?? ASSET_EXTENSION_MAP[ext] ?? 'Resource';
+      godotType =
+        parseGdResourceScriptClass(assetFile, rootDir) ??
+        parseGdResourceType(assetFile) ??
+        ASSET_EXTENSION_MAP[ext] ??
+        'Resource';
     } else {
       godotType = ASSET_EXTENSION_MAP[ext] ?? 'Resource';
     }
@@ -380,7 +385,11 @@ export function generateFileTypings(
       if (ext === '.tscn' || ext === '.gd') continue;
       let godotType: string;
       if (ext === '.tres' || ext === '.res') {
-        godotType = parseGdResourceType(assetFile) ?? ASSET_EXTENSION_MAP[ext] ?? 'Resource';
+        godotType =
+          parseGdResourceScriptClass(assetFile, rootDir) ??
+          parseGdResourceType(assetFile) ??
+          ASSET_EXTENSION_MAP[ext] ??
+          'Resource';
       } else {
         godotType = ASSET_EXTENSION_MAP[ext] ?? 'Resource';
       }

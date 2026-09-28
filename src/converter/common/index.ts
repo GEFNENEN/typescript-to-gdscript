@@ -309,6 +309,24 @@ export function tsTypeNodeToGdType(
       if (arg.kind === ts.SyntaxKind.VoidKeyword) return null;
       return tsTypeNodeToGdType(arg, checker, sourceFile, className, registry);
     }
+    // `Array<T>` generic-reference form: treat exactly like the `T[]` array-type
+    // form below, so both spellings emit `Array[T]`. Without this, the generic
+    // form falls through to classifyTypeReferenceName('Array') which drops the
+    // type argument and emits a bare (untyped) `Array`.
+    if (
+      name === 'Array' &&
+      typeNode.typeArguments &&
+      typeNode.typeArguments.length === 1
+    ) {
+      const elementType = tsTypeNodeToGdType(
+        typeNode.typeArguments[0],
+        checker,
+        sourceFile,
+        className,
+        registry,
+      );
+      return elementType ? `Array[${elementType}]` : 'Array';
+    }
     return classifyTypeReferenceName(typeNode, name, checker, registry);
   }
 

@@ -616,6 +616,38 @@ export function parseGdResourceType(filePath: string): string | undefined {
 }
 
 /**
+ * Resolves the class_name of the script attached to a `.tres` root
+ * `[resource]` section (`script = ExtResource("id")` → ext_resource path →
+ * `class_name X`). Lets generated resource typings use the concrete script
+ * class instead of the generic `[gd_resource type="…"]` header type, so that
+ * `preload()`/`load()` of config/catalog `.tres` files are properly typed.
+ */
+export function parseGdResourceScriptClass(
+  filePath: string,
+  rootDir: string,
+): string | undefined {
+  try {
+    const content = readFileSync(filePath, 'utf-8');
+    const resourceMatch = content.match(/^\[resource\]\s*$[\s\S]*?^script\s*=\s*ExtResource\("([^"]+)"\)/m);
+    if (!resourceMatch) return undefined;
+    const id = resourceMatch[1];
+    const escapedId = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const extMatch = content.match(
+      new RegExp(`\\[ext_resource\\s+type="Script"[^\\]]*id="${escapedId}"[^\\]]*\\]`),
+    );
+    if (!extMatch) return undefined;
+    const pathMatch = extMatch[0].match(/path="([^"]+)"/);
+    if (!pathMatch) return undefined;
+    const gdPath = join(rootDir, pathMatch[1].replace(/^res:\//, ''));
+    const gd = readFileSync(gdPath, 'utf-8');
+    const classMatch = gd.match(/^class_name\s+(\w+)/m);
+    return classMatch ? classMatch[1] : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
  * Reads the `uid="uid://…"` attribute from a `.tscn`/`.tres` header
  * (`[gd_scene …]` / `[gd_resource …]`). Returns undefined if absent.
  */
