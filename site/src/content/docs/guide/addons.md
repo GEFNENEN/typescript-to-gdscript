@@ -47,9 +47,10 @@ The addon's own `.gd` files are never touched. tstogd only reads them.
 
 ## When an addon's typings are wrong
 
-Addon typings come from an automatic GDScript-to-TypeScript conversion, and a third-party addon can trip it up: a missing type, a wrong parameter, a class TypeScript can't see. You can take the typings over and fix them by hand:
+Addon typings come from an automatic GDScript-to-TypeScript conversion, and a third-party addon can trip it up: a missing type, a wrong parameter, a class TypeScript can't see. `convert` reports the problems it notices as `ADDON` warnings, which never fail the run. You can take the typings over and fix them by hand:
 
-1. Add the addon to `exclude` in `tstogd.json`, so tstogd stops generating its typings:
+1. Move the addon's folder out of `<typingsDir>/addons/` into a folder of your own, for example `typings-fixes/dialog_box/`. Do this first: once the addon is excluded, tstogd deletes its generated typings as stale.
+2. Add the addon to `exclude` in `tstogd.json`, so tstogd stops generating its typings:
 
    ```json
    {
@@ -57,8 +58,7 @@ Addon typings come from an automatic GDScript-to-TypeScript conversion, and a th
    }
    ```
 
-2. Move the addon's folder out of `<typingsDir>/addons/` into a folder of your own, for example `typings-fixes/dialog_box/`. Keep it outside `tsDir`: tstogd converts every `.ts` file there into a `.gd`.
-3. Add that folder to `include` in `tsconfig.json`:
+3. Add your folder to `include` in `tsconfig.json`:
 
    ```json
    {
@@ -71,7 +71,7 @@ Addon typings come from an automatic GDScript-to-TypeScript conversion, and a th
    }
    ```
 
-4. Fix the `.ts` and `.gd.d.ts` files in it by hand. They are yours now, and no run overwrites them.
+4. Fix the `.d.ts` and `.gd.d.ts` files in it by hand. They are yours now, and no run overwrites them.
 
 When the addon gets an update, compare its changes with your fixed copy yourself, since tstogd no longer regenerates it.
 

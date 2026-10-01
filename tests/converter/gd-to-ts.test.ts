@@ -15,6 +15,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { tmpdir } from 'os';
 import { randomBytes } from 'crypto';
+import { normalize } from './fixture-harness.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -27,22 +28,6 @@ const REGISTRY_PATH = join(
   'godot-class-registry.json',
 );
 const registry = GodotClassRegistry.fromJsonFile(REGISTRY_PATH);
-
-/**
- * Normalize code for comparison:
- * - Trim trailing whitespace per line
- * - Remove trailing empty lines
- * - Normalize line endings
- */
-function normalize(code: string): string {
-  return code
-    .replace(/\r\n/g, '\n')
-    .split('\n')
-    .map((line) => line.trimEnd())
-    .join('\n')
-    .replace(/\n+$/, '')
-    .trim();
-}
 
 // Discover all fixture pairs: *.gd files that have a matching *.ts file
 const allGdFiles = readdirSync(FIXTURES_DIR).filter((f) => f.endsWith('.gd'));

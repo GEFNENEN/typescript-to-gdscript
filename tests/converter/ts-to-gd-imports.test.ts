@@ -27,6 +27,7 @@ import { randomBytes } from 'crypto';
 import { convertTsToGd } from '../../src/converter/ts-to-gd/index.ts';
 import type { ConvertOptions } from '../../src/converter/ts-to-gd/index.ts';
 import { createTsProgram } from '../../src/parser/typescript/index.ts';
+import { normalize } from './fixture-harness.ts';
 
 interface Project {
   dir: string;
@@ -85,16 +86,6 @@ afterEach(() => {
     /* ignore */
   }
 });
-
-function normalize(code: string): string {
-  return code
-    .replace(/\r\n/g, '\n')
-    .split('\n')
-    .map((line) => line.trimEnd())
-    .join('\n')
-    .replace(/\n+$/, '')
-    .trim();
-}
 
 describe('TS→GD imports — happy path', () => {
   it('skips non-anonymous + non-renamed imports (already global in GD)', () => {

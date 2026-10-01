@@ -11,7 +11,7 @@ Write that part as raw GDScript with `gd.eval`, or keep the whole script as a ha
 
 ## An addon's generated typings are wrong. How do I fix them?
 
-Take the typings over: exclude the addon in `tstogd.json`, move its generated typings to a folder of your own, and fix them by hand. [Addons](/typescript-to-gdscript/guide/addons/#when-an-addons-typings-are-wrong) has the steps. Please also [open a GitHub issue](https://github.com/nnn3d/typescript-to-gdscript/issues), so the conversion can improve.
+Take the typings over: move its generated typings to a folder of your own, exclude the addon in `tstogd.json`, and fix them by hand. [Addons](/typescript-to-gdscript/guide/addons/#when-an-addons-typings-are-wrong) has the steps. Please also [open a GitHub issue](https://github.com/nnn3d/typescript-to-gdscript/issues), so the conversion can improve.
 
 ## My Godot version has different built-in classes. What now?
 
