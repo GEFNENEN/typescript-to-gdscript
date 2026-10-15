@@ -93,12 +93,14 @@ export function registerConvertCommand(program: Command): void {
 
       // Build the ts.Program once and share it across the write loop and the
       // post-convert checker — avoids re-parsing every .ts file twice.
+      const buildSharedProgram = () =>
+        createTsProgram({
+          rootDir: cfg.tsDir,
+          files: resolvedFiles.filter((f) => !f.endsWith('.d.ts')),
+          tsConfigPath: cfg.tsconfig ? resolve(cfg.tsconfig) : undefined,
+        });
       debugLog(`Building shared ts.Program (${resolvedFiles.length} file(s))`);
-      const sharedProgram = createTsProgram({
-        rootDir: cfg.tsDir,
-        files: resolvedFiles.filter((f) => !f.endsWith('.d.ts')),
-        tsConfigPath: cfg.tsconfig ? resolve(cfg.tsconfig) : undefined,
-      });
+      let sharedProgram = buildSharedProgram();
 
       let hasErrors = false;
       let skipped = 0;
@@ -187,6 +189,15 @@ export function registerConvertCommand(program: Command): void {
         }
 
         generateAllTypings({ ...cfg, tsFiles: resolvedFiles });
+
+        // The typings pass above creates or rewrites the files under
+        // `src/_typings` (class/resource/global typings, addon typings), but the
+        // program built above predates them. The post-convert checker reuses it,
+        // so on a fresh checkout — where `src/_typings` does not exist yet — it
+        // reported spurious "property does not exist" errors for every
+        // `this.<static member>` access. Rebuild the program the checker will
+        // reuse so it sees the typings that were just generated.
+        sharedProgram = buildSharedProgram();
       }
 
       // ── Diagnostic check ────────────────────────────────────
