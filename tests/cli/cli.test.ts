@@ -222,6 +222,73 @@ describe('CLI: convert (TS → GD)', () => {
       'preload("res://tstogd_modules/@scope/shared/scripts/foo.gd")',
     );
   });
+
+  // A fresh checkout has no generated typings yet. Conversion reads types
+  // from them (an autoload is declared there), so they must exist before the
+  // program is built — not only before the check.
+  it('converts a fresh checkout as if its typings already existed', async () => {
+    tmpDir = makeTmpDir();
+    const typings = resolve(__dirname, '../../typings').replace(/\\/g, '/');
+    mkdirSync(join(tmpDir, 'src'), { recursive: true });
+    writeFileSync(
+      join(tmpDir, 'project.godot'),
+      'config_version=5\n\n[autoload]\n\nGame="*res://scripts/game_state.gd"\n',
+    );
+    // tstogd.json is looked up from the cwd, so the defaults apply here:
+    // src → scripts, typings in `_gdtots`.
+    writeFileSync(
+      join(tmpDir, 'tsconfig.json'),
+      JSON.stringify({
+        compilerOptions: {
+          target: 'esnext',
+          module: 'esnext',
+          moduleResolution: 'bundler',
+          noLib: true,
+          strict: true,
+          noEmit: true,
+          types: [],
+        },
+        include: [typings, 'src/**/*.ts', '_gdtots/**/*.d.ts'],
+      }),
+    );
+    writeFileSync(
+      join(tmpDir, 'src/game_state.ts'),
+      [
+        'export class _GameState extends Node {',
+        '  config: { speed: float } = { speed: 1.0 };',
+        '  on_done: () => void = () => {};',
+        '}',
+        '',
+      ].join('\n'),
+    );
+    writeFileSync(
+      join(tmpDir, 'src/hud.ts'),
+      [
+        'export class Hud extends Node {',
+        '  static SCALE: float = 2.0;',
+        '  _ready(): void {',
+        '    print(Game.config.speed * this.SCALE);',
+        '    Game.on_done();',
+        '  }',
+        '}',
+        '',
+      ].join('\n'),
+    );
+
+    const result = await runCliRaw([
+      'convert',
+      '--root-dir',
+      tmpDir,
+      '--tsconfig',
+      join(tmpDir, 'tsconfig.json'),
+      '--no-cache',
+    ]);
+
+    expect(result.exitCode, result.stdout + result.stderr).toBe(0);
+    const hud = readFileSync(join(tmpDir, 'scripts/hud.gd'), 'utf-8');
+    expect(hud).toContain('print(Game.config.get("speed") * self.SCALE)');
+    expect(hud).toContain('Game.on_done.call()');
+  }, 60000);
 });
 
 describe('CLI: convert cache modes', () => {

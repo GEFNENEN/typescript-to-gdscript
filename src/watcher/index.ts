@@ -215,15 +215,20 @@ export class Watcher {
     this.pendingTsFiles.clear();
     this.pendingNonTsFiles.length = 0;
 
-    // Convert TS files (batch — one Program for all)
-    if (tsToConvert.length > 0) {
-      this.convertBatch(tsToConvert);
-    }
-
-    // Regenerate typings for all changed files (TS + non-TS) in one batch
+    // Regenerate typings for all changed files (TS + non-TS) in one batch,
+    // BEFORE converting: conversion reads types from them (see `convert`).
+    // A program built earlier holds the old declarations, so it goes too —
+    // the check reuses it, and a scene or project.godot change converts
+    // nothing that would replace it.
     const allChanged = [...tsToConvert, ...nonTsChanged];
     if (allChanged.length > 0) {
       this.regenerateTypingsFor(allChanged);
+      this.cachedProgram = null;
+    }
+
+    // Convert TS files (batch — one Program for all)
+    if (tsToConvert.length > 0) {
+      this.convertBatch(tsToConvert);
     }
 
     // Always schedule the diagnostic check — even when no files needed

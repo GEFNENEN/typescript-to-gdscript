@@ -107,6 +107,27 @@ export function registerConvertCommand(program: Command): void {
         `${noEmit ? 'Checking' : 'Converting'} ${resolvedFiles.length} file(s)...`,
       );
 
+      let hasErrors = false;
+      let skipped = 0;
+      let addonDiagnostics: TransformDiagnostic[] = [];
+
+      // Typings come first: conversion reads types from them (an autoload, a
+      // scene's nodes, a script's statics on its instances), so a program
+      // built before them converts a fresh checkout — or anything whose
+      // typings just changed — against missing or stale declarations, and
+      // writes a different `.gd` than the next run. They are made from the
+      // `.ts` sources, scenes and project.godot, never from the `.gd` output.
+      // `--no-cache` means no reads and no writes for typings too — the
+      // addon cache in particular, since cached addon declarations don't
+      // see changes outside `addons/` and `--no-cache` is the way around it.
+      if (!noEmit) {
+        addonDiagnostics = generateAllTypings({
+          ...cfg,
+          tsFiles: resolvedFiles,
+          cache: cache ?? undefined,
+        });
+      }
+
       // Build the ts.Program once and share it across the write loop and the
       // post-convert checker — avoids re-parsing every .ts file twice.
       debugLog(`Building shared ts.Program (${resolvedFiles.length} file(s))`);
@@ -115,10 +136,6 @@ export function registerConvertCommand(program: Command): void {
         files: resolvedFiles.filter((f) => !f.endsWith('.d.ts')),
         tsConfigPath: cfg.tsconfig ? resolve(cfg.tsconfig) : undefined,
       });
-
-      let hasErrors = false;
-      let skipped = 0;
-      let addonDiagnostics: TransformDiagnostic[] = [];
 
       if (!noEmit) {
         // ── Write mode ───────────────────────────────────��─────
@@ -204,15 +221,6 @@ export function registerConvertCommand(program: Command): void {
           cache.cleanStale(currentFiles);
           cache.save();
         }
-
-        // `--no-cache` means no reads and no writes for typings too — the
-        // addon cache in particular, since cached addon declarations don't
-        // see changes outside `addons/` and `--no-cache` is the way around it.
-        addonDiagnostics = generateAllTypings({
-          ...cfg,
-          tsFiles: resolvedFiles,
-          cacheDir: cache ? cfg.cacheDir : undefined,
-        });
       }
 
       // ── Diagnostic check ────────────────────────────────────

@@ -46,7 +46,7 @@ Each step is skipped if its target file already exists (the existing file is pre
 
 ## `tstogd convert`
 
-Convert TypeScript files to GDScript. A full `tstogd convert` run is self-contained: it converts, **regenerates all scene/script/resource/addon typings** (the same output as `generate-typings` + `generate-addon-typings`), and then runs the diagnostic check described below. You do not need to call the typings commands separately.
+Convert TypeScript files to GDScript. A full `tstogd convert` run is self-contained: it **regenerates all scene/script/resource/addon typings** (the same output as `generate-typings` + `generate-addon-typings`), converts, and then runs the diagnostic check described below. You do not need to call the typings commands separately. The typings come first because conversion reads types from them (an autoload, a scene's nodes), so a fresh checkout converts the same as every later run.
 
 Before conversion, the command synchronizes shared-package links in `tstogd_modules`. See [Shared packages](/typescript-to-gdscript/reference/configuration/#shared-packages).
 
@@ -102,7 +102,7 @@ tstogd convert --no-check
 
 ## `tstogd watch`
 
-The long-running version of `convert`, and the only command most projects keep running. It watches not just `.ts` files but also `.tscn` scenes, `.tres`/`.res` resources, common asset files, and `project.godot` — so editing your scene tree in Godot **regenerates the affected scene typings live**. Each changed `.ts` is reconverted (with source maps and typings updated incrementally); after the batch settles (~1s debounce) it runs a full diagnostic check and clears the console before printing results.
+The long-running version of `convert`, and the only command most projects keep running. It watches not just `.ts` files but also `.tscn` scenes, `.tres`/`.res` resources, common asset files, and `project.godot` — so editing your scene tree in Godot **regenerates the affected scene typings live**. Each batch updates the affected typings first, then reconverts the changed `.ts` (with source maps); after the batch settles (~1s debounce) it runs a full diagnostic check and clears the console before printing results.
 
 The command synchronizes shared-package links before it starts the watcher. The watcher always ignores `tstogd_modules` as input.
 

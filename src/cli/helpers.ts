@@ -7,7 +7,7 @@ import { join, resolve } from 'path';
 import { shouldIgnore } from '../config/index.ts';
 import { generateTypings } from '../typings/scenes.ts';
 import { generateAddonTypings } from '../typings/addons.ts';
-import { ProjectCache } from '../cache/index.ts';
+import type { ProjectCache } from '../cache/index.ts';
 import { TSTOGD_MODULES_DIR } from '../external-packages/index.ts';
 import type { TransformDiagnostic } from '../converter/common/index.ts';
 
@@ -175,7 +175,9 @@ export function generateAllTypings(cfg: {
   projectFile: string;
   tsconfig?: string;
   tsFiles?: string[];
-  cacheDir?: string;
+  /** The caller's own instance when it has one: `save()` writes the whole
+   *  manifest, so a second instance over the same dir drops its entries. */
+  cache?: ProjectCache;
   godotTypingsDir?: string;
   /** See `ConverterOptions.generateGlobalClassTypes`. */
   converterOptions?: { generateGlobalClassTypes?: boolean };
@@ -184,7 +186,7 @@ export function generateAllTypings(cfg: {
     cfg.tsFiles ?? findTsFiles(cfg.tsDir, cfg.rootDir, cfg.ignore);
   if (tsFiles.length === 0) return [];
 
-  const cache = cfg.cacheDir ? new ProjectCache(cfg.cacheDir) : undefined;
+  const cache = cfg.cache;
 
   const writtenFiles = generateTypings({
     rootDir: cfg.rootDir,

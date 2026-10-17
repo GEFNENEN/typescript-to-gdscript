@@ -6,6 +6,7 @@ import { injectMissingImportsForProject } from '../converter/gd-to-ts/inject-imp
 import { runTsHelpers } from '../converter/gd-to-ts/ts-helpers.ts';
 import { collectAllSignalHandlers, findSceneFiles } from '../typings/scenes.ts';
 import { resolveConfig, resolveRegistry } from '../config/index.ts';
+import { ProjectCache } from '../cache/index.ts';
 import { debugLog, resolveFiles, generateAllTypings } from './helpers.ts';
 import { printDiagnostics } from '../checker/index.ts';
 
@@ -158,6 +159,7 @@ export function registerInitialConvertGdToTsCommand(program: Command): void {
       const addonDiagnostics = generateAllTypings({
         ...cfg,
         tsFiles: tsOutputFiles,
+        cache: new ProjectCache(cfg.cacheDir),
       });
       printDiagnostics(addonDiagnostics, 'ADDON');
 
