@@ -1,3 +1,15 @@
+## [0.1.12](https://github.com/nnn3d/typescript-to-gdscript/compare/v0.1.11...v0.1.12) (2026-10-17)
+
+### Features
+
+* **typings:** ship addon typings as emitted declarations instead of converted sources ([3b434d0](https://github.com/nnn3d/typescript-to-gdscript/commit/3b434d0f9f408b47324d75b53410762a41af8dac))
+
+### Bug Fixes
+
+* **converter:** emit Array[T] for Array<T> annotations ([5a077ce](https://github.com/nnn3d/typescript-to-gdscript/commit/5a077ce65fafae8ceb3a0dc203a3489cc91c323e))
+* **gd-to-ts:** qualify a class-member script receiver of new() ([2d53638](https://github.com/nnn3d/typescript-to-gdscript/commit/2d53638f8be68ca56facf353b52c6421c63221cf))
+* generate typings before converting in convert and watch ([8b5ce44](https://github.com/nnn3d/typescript-to-gdscript/commit/8b5ce441447ffcc81f460230e882a9a7c309f7d2))
+* **typings:** type a .tres with a script as that script's class ([537ea47](https://github.com/nnn3d/typescript-to-gdscript/commit/537ea47115175261b2299cd68da01a42585ae16d))
 ## [0.1.11](https://github.com/nnn3d/typescript-to-gdscript/compare/v0.1.10...v0.1.11) (2026-10-01)
 
 ### Features
