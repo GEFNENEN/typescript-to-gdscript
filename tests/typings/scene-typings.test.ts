@@ -281,6 +281,10 @@ describe('Scene typings generation', () => {
 
     // .tres resources use gd_resource type header
     expect(all).toContain('"res://player_material.tres": ShaderMaterial;');
+    // ...unless a script is attached: then its GodotScripts entry, by path
+    expect(all).toContain(
+      '"res://sword.tres": _GDGetInterfaceResource<GodotScripts, "res://Weapon.gd", Resource>;',
+    );
 
     // uid:// keys mirror res:// keys in GodotResources (Godot 4.4+ UIDs).
     // Resolved from the .tres/.tscn header and the Player.gd.uid sidecar.

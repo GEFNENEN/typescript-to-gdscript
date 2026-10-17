@@ -100,6 +100,8 @@ The editor completes `res://` paths and shows the type each one loads:
 
 ![Path completion in preload](../../../assets/showcase_preload.png)
 
+A `.tres` made from your own `Resource` script gives that script's class, so `preload('res://items/sword.tres').damage` is typed. Other `.tres` files give the class Godot saved them as, such as `ShaderMaterial`.
+
 A path that doesn't exist still compiles and gives a plain `Resource`. Paths can also be `uid://…`, and resolve to the same type.
 
 ## Groups

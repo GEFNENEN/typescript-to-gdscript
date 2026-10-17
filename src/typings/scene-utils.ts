@@ -608,29 +608,7 @@ export function scanTsFilesForClasses(
   }
 }
 
-// ─── Resource Type Parsing ──────────────────────────────────
-
-/**
- * Parses the `[gd_resource type="..."]` header from a .tres/.res file
- * to determine the actual Godot resource class (e.g. "ShaderMaterial", "AudioStreamOggVorbis").
- * Returns undefined if the header cannot be parsed (binary .res files, corrupt files, etc.).
- */
-export function parseGdResourceType(filePath: string): string | undefined {
-  try {
-    const content = readFileSync(filePath, 'utf-8');
-    const root = resourceParser.parse(content);
-
-    for (const section of root.namedChildren) {
-      if (section.type !== SyntaxType.Section) continue;
-      const sectionIdent = section.namedChildren.find(c => c.type === SyntaxType.Identifier);
-      if (!sectionIdent || sectionIdent.text !== 'gd_resource') continue;
-      return getSectionAttr(section, 'type');
-    }
-    return undefined;
-  } catch {
-    return undefined;
-  }
-}
+// ─── Resource UIDs ──────────────────────────────────────────
 
 /**
  * Reads the `uid="uid://…"` attribute from a `.tscn`/`.tres` header

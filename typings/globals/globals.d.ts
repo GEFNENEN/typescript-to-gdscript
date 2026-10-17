@@ -542,6 +542,20 @@ type _GDGetInterfaceNode<
   Key extends string,
 > = __GDGetInterfaceNodeInternal<Interface, Key> extends never ? Node : __GDGetInterfaceNodeInternal<Interface, Key>
 
+/** A resource file's type: the script attached to its root, looked up by path,
+ *  when that script is known and extends the header class; else the header class.
+ *  Generic on purpose — a conditional on concrete types doesn't narrow `Key`,
+ *  and `Interface[Key]` then fails to index (TS2538). */
+type _GDGetInterfaceResource<
+  Interface,
+  Key extends string,
+  Header,
+> = Key extends keyof Interface
+  ? Interface[Key] extends Header
+    ? Interface[Key]
+    : Header
+  : Header;
+
 type __GDGetInterfaceParentInternal<
   Interface,
   Key extends keyof Interface,

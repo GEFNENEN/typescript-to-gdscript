@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://test_sword"]
+
+[ext_resource type="Script" path="res://Weapon.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+damage = 5

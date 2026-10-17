@@ -1,5 +1,5 @@
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
-import { join, extname, dirname, resolve } from 'path';
+import { join, dirname, resolve } from 'path';
 import { createTsProgram } from '../parser/typescript/index.ts';
 import { resolveRegistry } from '../config/index.ts';
 import { ProjectCache } from '../cache/index.ts';
@@ -20,10 +20,7 @@ import {
   tsScriptResPath,
   parseAutoloads,
   findSceneFiles,
-  findAssetFiles,
-  parseGdResourceType,
   resolveResourceUid,
-  ASSET_EXTENSION_MAP,
   resolveSignalHandlers,
   collectAllSignalHandlers,
   type ScriptInfo,
@@ -31,6 +28,7 @@ import {
   type ScriptClassInfo,
   type AutoloadEntry,
 } from './scene-utils.ts';
+import { writeResourcesTyping } from './resource-types.ts';
 
 // ─── Re-exports (public API — other files import from scenes.ts) ───
 
@@ -204,41 +202,8 @@ export function generateTypings(options: GenerateTypingsOptions): string[] {
   }
 
   // 4. Generate bundled _resources.d.ts for all asset files
-  const assetFiles = findAssetFiles(rootDir, rootDir, ignore);
-  const resourceEntries: Array<{ resPath: string; godotType: string; uid?: string }> = [];
-  for (const assetFile of assetFiles) {
-    const resPath = absPathToResPath(assetFile, rootDir);
-    const ext = extname(assetFile).toLowerCase();
-
-    // Skip .tscn files (handled by scene generator) and .gd files (handled by script generator)
-    if (ext === '.tscn' || ext === '.gd') continue;
-
-    let godotType: string;
-    if (ext === '.tres' || ext === '.res') {
-      godotType = parseGdResourceType(assetFile) ?? ASSET_EXTENSION_MAP[ext] ?? 'Resource';
-    } else {
-      godotType = ASSET_EXTENSION_MAP[ext] ?? 'Resource';
-    }
-
-    resourceEntries.push({ resPath, godotType, uid: resolveResourceUid(assetFile) });
-  }
-
-  if (resourceEntries.length > 0) {
-    const resLines: string[] = [];
-    resLines.push('// AUTO-GENERATED — do not edit manually.\n');
-    resLines.push('declare global {');
-    resLines.push('  interface GodotResources {');
-    for (const { resPath, godotType, uid } of resourceEntries) {
-      resLines.push(`    "${resPath}": ${godotType};`);
-      if (uid) resLines.push(`    "${uid}": ${godotType};`);
-    }
-    resLines.push('  }');
-    resLines.push('}\n');
-    resLines.push('export {}');
-    const resourcesPath = resolve(outputDir, '_resources.d.ts');
-    writeFileSync(resourcesPath, resLines.join('\n'));
-    writtenFiles.push(resourcesPath);
-  }
+  const resourcesPath = writeResourcesTyping(rootDir, ignore, outputDir);
+  if (resourcesPath) writtenFiles.push(resourcesPath);
 
   // 5. Generate _index.d.ts
   const projectFile = options.projectFile ?? join(rootDir, 'project.godot');
@@ -378,36 +343,8 @@ export function generateFileTypings(
 
   // Regenerate _resources.d.ts if any resource/asset changed
   if (changedResources.length > 0) {
-    const assetFiles = findAssetFiles(rootDir, rootDir, ignore);
-    const resourceEntries: Array<{ resPath: string; godotType: string; uid?: string }> = [];
-    for (const assetFile of assetFiles) {
-      const resPath = absPathToResPath(assetFile, rootDir);
-      const ext = extname(assetFile).toLowerCase();
-      if (ext === '.tscn' || ext === '.gd') continue;
-      let godotType: string;
-      if (ext === '.tres' || ext === '.res') {
-        godotType = parseGdResourceType(assetFile) ?? ASSET_EXTENSION_MAP[ext] ?? 'Resource';
-      } else {
-        godotType = ASSET_EXTENSION_MAP[ext] ?? 'Resource';
-      }
-      resourceEntries.push({ resPath, godotType, uid: resolveResourceUid(assetFile) });
-    }
-    if (resourceEntries.length > 0) {
-      const resLines: string[] = [];
-      resLines.push('// AUTO-GENERATED — do not edit manually.\n');
-      resLines.push('declare global {');
-      resLines.push('  interface GodotResources {');
-      for (const { resPath, godotType, uid } of resourceEntries) {
-        resLines.push(`    "${resPath}": ${godotType};`);
-        if (uid) resLines.push(`    "${uid}": ${godotType};`);
-      }
-      resLines.push('  }');
-      resLines.push('}\n');
-      resLines.push('export {}');
-      const resourcesPath = resolve(outputDir, '_resources.d.ts');
-      writeFileSync(resourcesPath, resLines.join('\n'));
-      writtenFiles.push(resourcesPath);
-    }
+    const resourcesPath = writeResourcesTyping(rootDir, ignore, outputDir);
+    if (resourcesPath) writtenFiles.push(resourcesPath);
   }
 
   // Regenerate _index.d.ts if project.godot changed
