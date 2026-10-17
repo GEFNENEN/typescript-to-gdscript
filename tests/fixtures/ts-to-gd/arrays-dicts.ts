@@ -1,4 +1,8 @@
 export class MyClass extends Node {
+  scores: int[] = [];
+  names: Array<string> = [];
+  nodes: Array<Node2D> = [];
+
   test_arrays() {
     let numbers = [1, 2, 3, 4, 5];
     let first = numbers[0];
@@ -10,6 +14,12 @@ export class MyClass extends Node {
     for (let n of numbers) {
       print(n);
     }
+  }
+
+  total(values: Array<float>): float {
+    let sum = 0.0;
+    for (const v of values) sum += v;
+    return sum;
   }
 
   test_dictionaries() {

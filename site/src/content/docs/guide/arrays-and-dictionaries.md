@@ -48,7 +48,7 @@ func _ready():
 	self.items.erase("sword")
 ```
 
-Write a typed array as `T[]`: `string[]` becomes `Array[String]`, `Node2D[]` becomes `Array[Node2D]`. An array with no annotation, like `let list = [1, 2]`, stays an untyped `Array` in GDScript. Godot's methods that take a function (`filter`, `map`, `any`, `all`, `reduce`, `sort_custom`) take an arrow function, which becomes a lambda.
+Write a typed array as `T[]` or `Array<T>`: `string[]` becomes `Array[String]`, `Array<Node2D>` becomes `Array[Node2D]`. An array with no annotation, like `let list = [1, 2]`, stays an untyped `Array` in GDScript. Godot's methods that take a function (`filter`, `map`, `any`, `all`, `reduce`, `sort_custom`) take an arrow function, which becomes a lambda.
 
 ## Loops and `range`
 

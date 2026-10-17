@@ -315,10 +315,22 @@ export function tsTypeNodeToGdType(
       if (arg.kind === ts.SyntaxKind.VoidKeyword) return null;
       return tsTypeNodeToGdType(arg, checker, sourceFile, className, registry);
     }
-    return (
+    const gdType =
       classifyTypeReferenceName(typeNode, name, checker, registry) ??
-      literalBaseGdType(checker.getTypeFromTypeNode(typeNode))
-    );
+      literalBaseGdType(checker.getTypeFromTypeNode(typeNode));
+    // `Array<T>` is the type `T[]` spells, so both take the typed-array
+    // path. Checked on the classified name, so a user's own `Array` keeps
+    // whatever the classifier said.
+    if (gdType === 'Array' && typeNode.typeArguments?.length === 1) {
+      return typedArrayGdType(
+        typeNode.typeArguments[0]!,
+        checker,
+        sourceFile,
+        className,
+        registry,
+      );
+    }
+    return gdType;
   }
 
   // Keyword types
@@ -334,14 +346,13 @@ export function tsTypeNodeToGdType(
 
   // Array type: T[] -> Array[T]
   if (ts.isArrayTypeNode(typeNode)) {
-    const elementType = tsTypeNodeToGdType(
+    return typedArrayGdType(
       typeNode.elementType,
       checker,
       sourceFile,
       className,
       registry,
     );
-    return elementType ? `Array[${elementType}]` : 'Array';
   }
 
   // Function type: () => void -> Callable
@@ -391,6 +402,24 @@ export function tsTypeNodeToGdType(
 
   // Literal types, template literals, `keyof`, `typeof`: typed as their base.
   return literalBaseGdType(checker.getTypeFromTypeNode(typeNode));
+}
+
+/** `Array[T]` for an element type GDScript can name, else a plain `Array`. */
+function typedArrayGdType(
+  element: ts.TypeNode,
+  checker: ts.TypeChecker,
+  sourceFile: ts.SourceFile,
+  className?: string,
+  registry?: GodotClassRegistry,
+): string {
+  const elementType = tsTypeNodeToGdType(
+    element,
+    checker,
+    sourceFile,
+    className,
+    registry,
+  );
+  return elementType ? `Array[${elementType}]` : 'Array';
 }
 
 /**
