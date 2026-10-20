@@ -101,21 +101,20 @@ class_name Player
 extends CharacterBody2D
 
 signal health_changed(health: int)
-@export
-var speed: float = 200.0
+@export var speed: float = 200.0
 var health: int = 100
 
 func _physics_process(delta: float):
-	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	self.velocity = (direction * self.speed)
-	self.move_and_slide()
+    var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+    self.velocity = (direction * self.speed)
+    self.move_and_slide()
 
 func take_damage(amount: int):
-	self.health -= amount
-	self.health_changed.emit(self.health)
-	self.modulate = Color.RED
-	await self.get_tree().create_timer(0.2).timeout
-	self.modulate = Color.WHITE
+    self.health -= amount
+    self.health_changed.emit(self.health)
+    self.modulate = Color.RED
+    await self.get_tree().create_timer(0.2).timeout
+    self.modulate = Color.WHITE
 ```
 
 Try more in the [playground](https://nnn3d.github.io/typescript-to-gdscript/playground/).

@@ -7,4 +7,4 @@ var default_speed = 50
 static var HEALTH = 100
 
 func get_health():
-	return ConstClass.HEALTH
+    return ConstClass.HEALTH

@@ -12,10 +12,9 @@ var mode = null
 var target: Node2D = null
 
 func pick(amount, node: Node):
-	if node == null:
-		return amount
-	return 0
+    if node == null:
+        return amount
+    return 0
 
 func find_target() -> Node2D:
-	return self.target
-
+    return self.target

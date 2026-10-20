@@ -33,14 +33,14 @@ extends Node
 var gold: int = 100
 
 func buy(item: String, price: int, count: int = 1) -> bool:
-	if price * count > self.gold:
-		return false
-	self.gold -= price * count
-	print("bought ", count, " x ", item)
-	return true
+    if price * count > self.gold:
+        return false
+    self.gold -= price * count
+    print("bought ", count, " x ", item)
+    return true
 
 func restock():
-	print("restocking")
+    print("restocking")
 ```
 
 Parameter types and default values carry over. A return type goes into the `.gd` only when you write it: `restock()` has none, although TypeScript infers `void` for it. Write `: void` if you want `-> void`. Static methods are covered in [Scripts and classes](/typescript-to-gdscript/guide/scripts-and-classes/#this-and-static-members).
@@ -72,15 +72,15 @@ class_name Door
 extends Node
 
 var on_open: Callable = func(by: String):
-	print("opened by ", by)
+    print("opened by ", by)
 
 func open(opener: String):
-	var shout = func(text: String) -> String: return text.to_upper()
-	self.on_open.call(shout.call(opener))
+    var shout = func(text: String) -> String: return text.to_upper()
+    self.on_open.call(shout.call(opener))
 
 func run_twice(action: Callable):
-	action.call()
-	action.call()
+    action.call()
+    action.call()
 ```
 
 TypeScript checks the arguments of each call against the function type. Inside an arrow function, `this` is the object the method runs on, and goes out as `self`.
@@ -110,12 +110,12 @@ class_name Menu
 extends Control
 
 func _ready():
-	var save = Button.new()
-	self.add_child(save)
-	save.pressed.connect(self._on_slot_chosen.bind(2))
+    var save = Button.new()
+    self.add_child(save)
+    save.pressed.connect(self._on_slot_chosen.bind(2))
 
 func _on_slot_chosen(slot: int):
-	print("saving to slot ", slot)
+    print("saving to slot ", slot)
 ```
 
 The bound result is typed too: `_on_slot_chosen.bind(2)` takes no arguments, which is what `pressed` expects, and `bind('two')` would be an error. More on connecting in [Signals](/typescript-to-gdscript/guide/signals/).

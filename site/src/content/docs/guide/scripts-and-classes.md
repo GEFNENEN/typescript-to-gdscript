@@ -34,20 +34,19 @@ class_name Enemy
 extends CharacterBody2D
 
 ## Pixels per second.
-@export
-var speed: float = 80.0
+@export var speed: float = 80.0
 var target: Node2D = null
 
 func _physics_process(delta: float):
-	# Stand still until there is something to chase.
-	if self.target == null:
-		return
-	var direction = self.global_position.direction_to(self.target.global_position)
-	self.velocity = (direction * self.speed)
-	self.move_and_slide()
+    # Stand still until there is something to chase.
+    if self.target == null:
+        return
+    var direction = self.global_position.direction_to(self.target.global_position)
+    self.velocity = (direction * self.speed)
+    self.move_and_slide()
 
 func chase(node: Node2D):
-	self.target = node
+    self.target = node
 ```
 
 The class name becomes `class_name`, and `extends` works as in GDScript. Lifecycle methods (`_ready`, `_process`, `_physics_process`, `_input`, …) are ordinary methods: write them, and Godot calls them as usual. Fields become `var`s; see [Variables and types](/typescript-to-gdscript/guide/variables-and-types/) for the types.
@@ -92,10 +91,10 @@ extends Node2D
 var damage: int = 10
 
 func strike(kind: String):
-	return {
-		"damage": self.damage,
-		"kind": kind,
-	}
+    return {
+        "damage": self.damage,
+        "kind": kind,
+    }
 ```
 
 Other scripts import them like any TypeScript type, `import type { Hit } from './weapon'`, and the import adds nothing to their `.gd` either. An object type such as `Hit` is a dictionary in GDScript; see [Arrays and dictionaries](/typescript-to-gdscript/guide/arrays-and-dictionaries/).
@@ -122,7 +121,7 @@ export class _HitFlash extends RefCounted {
 extends RefCounted
 
 func play(target: CanvasItem):
-	target.modulate = Color.RED
+    target.modulate = Color.RED
 ```
 
 ## Using your other scripts

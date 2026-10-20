@@ -28,11 +28,11 @@ class_name Hud
 extends Control
 
 func _ready():
-	var label = $Panel/Score
-	label.text = "0"
-	var started := Time.get_ticks_msec()
-	for i in 3:
-		print(i)
+    var label = $Panel/Score
+    label.text = "0"
+    var started := Time.get_ticks_msec()
+    for i in 3:
+        print(i)
 ```
 
 In a multi-line string, indent with spaces or with tabs; the spaces become tabs. Mixing both is an error.
@@ -64,9 +64,9 @@ extends Control
 var _secret: int = 0
 
 func split(total: int):
-	@warning_ignore("integer_division")
-	var half = total / 2
-	print(half)
+    @warning_ignore("integer_division")
+    var half = total / 2
+    print(half)
 ```
 
 This is the usual way to silence a Godot warning for one line.

@@ -245,17 +245,22 @@ export function processGdEval(
 
   const out: string[] = [];
   if (hasTabs) {
-    // Tab indentation: strip common tab prefix, emit as-is
+    // Tab indentation: strip the common tab prefix, then re-indent with spaces
     const minTabs = nonEmpty.reduce((min, l) => {
       const leading = l.match(/^(\t*)/)?.[1]?.length ?? 0;
       return Math.min(min, leading);
     }, Infinity);
     for (const line of rawLines) {
       if (line.trim() === '') continue;
-      out.push(line.slice(minTabs));
+      // Only the leading run is indentation: a tab inside a string literal
+      // is part of the value.
+      const rest = line.slice(minTabs);
+      out.push(
+        rest.replace(/^\t+/, (m) => t.emitter.indentUnit.repeat(m.length)),
+      );
     }
   } else {
-    // Space indentation: convert indent levels to tabs
+    // Space indentation: convert indent levels to four-space levels
     const spaceToDepth = new Map<number, number>();
     let prevSpaces = nonEmpty[0]!.match(/^( *)/)?.[1]?.length ?? 0;
     let depth = 0;
@@ -279,7 +284,7 @@ export function processGdEval(
 
       spaceToDepth.set(spaces, depth);
       prevSpaces = spaces;
-      out.push('\t'.repeat(depth) + lineContent);
+      out.push(t.emitter.indentUnit.repeat(depth) + lineContent);
     }
   }
   return out;

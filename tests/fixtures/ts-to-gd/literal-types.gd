@@ -13,8 +13,8 @@ var level = 1
 var mixed = 0
 
 func set_rarity(value: String) -> String:
-	self.rarity = value
-	return value
+    self.rarity = value
+    return value
 
 func first(values: Array):
-	return values[0]
+    return values[0]

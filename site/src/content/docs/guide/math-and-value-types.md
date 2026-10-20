@@ -28,10 +28,10 @@ var speed: float = 120.0
 var target: Vector2 = Vector2(400, 300)
 
 func _process(delta: float):
-	var to_target = (self.target - self.position)
-	if to_target.length() > 1.0:
-		var step = (to_target.normalized() * (self.speed * delta))
-		self.position = (self.position + step)
+    var to_target = (self.target - self.position)
+    if to_target.length() > 1.0:
+        var step = (to_target.normalized() * (self.speed * delta))
+        self.position = (self.position + step)
 ```
 
 The parentheses keep the order of operations exactly as you wrote it. Plain numbers (`this.speed * delta`) need no helper.
@@ -59,9 +59,9 @@ extends Node2D
 var tint: Color = Color(1.0, 0.5, 0.0)
 
 func _ready():
-	self.position = Vector2.ZERO
-	self.position.x += 20
-	self.modulate = self.tint.lerp(Color.RED, 0.5)
+    self.position = Vector2.ZERO
+    self.position.x += 20
+    self.modulate = self.tint.lerp(Color.RED, 0.5)
 ```
 
 > **Note:** Value types are copied when you assign them, as in GDScript, even though TypeScript sees them as objects. `let p = this.position; p.x = 100;` changes only `p`; write `this.position = p;` afterwards, or change `this.position.x` directly.
@@ -105,10 +105,10 @@ class_name Loot
 extends Node
 
 func _ready():
-	var coins: int = 7
-	var per_player = coins / 2
-	var exact = coins / 2.0
-	var also_exact = float(coins) / 2
+    var coins: int = 7
+    var per_player = coins / 2
+    var exact = coins / 2.0
+    var also_exact = float(coins) / 2
 ```
 
 `per_player` is `3`, not `3.5`: both sides are integers. Make one side a float to get `3.5`. For the remainder of floats use `fmod`, as GDScript's `%` fails on a float.
@@ -137,10 +137,10 @@ extends CharacterBody2D
 var health: float = 100.0
 
 func _physics_process(delta: float):
-	var speed = Input.get_axis("ui_left", "ui_right") * 300.0
-	self.velocity.x = move_toward(self.velocity.x, speed, 1200.0 * delta)
-	self.health = clampf(self.health + 5.0 * delta, 0.0, 100.0)
-	self.move_and_slide()
+    var speed = Input.get_axis("ui_left", "ui_right") * 300.0
+    self.velocity.x = move_toward(self.velocity.x, speed, 1200.0 * delta)
+    self.health = clampf(self.health + 5.0 * delta, 0.0, 100.0)
+    self.move_and_slide()
 ```
 
 Vectors and colors have their methods as well: `length()`, `normalized()`, `distance_to()`, `move_toward()`, `lerp()`, and so on.

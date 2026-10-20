@@ -51,7 +51,7 @@ describe('TS to GD: type-annotation emission', () => {
 
   /** Expected output when the parameter type is dropped. */
   const UNTYPED =
-    'class_name Probe\nextends Node\n\nfunc use(x) -> void:\n\tpass\n';
+    'class_name Probe\nextends Node\n\nfunc use(x) -> void:\n    pass\n';
 
   beforeAll(() => {
     dir = mkdtempSync(join(tmpdir(), 'tstogd-typeanno-'));
@@ -130,7 +130,7 @@ export class Probe extends Node {
 `,
     );
     expect(code).toBe(
-      'class_name Probe\nextends Node\n\nfunc use(x: Enemy) -> void:\n\tpass\n',
+      'class_name Probe\nextends Node\n\nfunc use(x: Enemy) -> void:\n    pass\n',
     );
   });
 
@@ -146,7 +146,7 @@ export class Probe extends Node {
     expect(code).toBe(
       'class_name Probe\nextends Node\n\n' +
         'var a: Node\nvar b: Vector2\n\n' +
-        'func use(n: Node2D) -> void:\n\tpass\n',
+        'func use(n: Node2D) -> void:\n    pass\n',
     );
   });
 
@@ -163,7 +163,7 @@ export class Probe extends Node {
 `,
     );
     expect(code).toBe(
-      'class_name Probe\nextends Node\n\nvar a\n\nfunc use() -> void:\n\tpass\n',
+      'class_name Probe\nextends Node\n\nvar a\n\nfunc use() -> void:\n    pass\n',
     );
   });
 

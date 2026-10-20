@@ -183,10 +183,17 @@ export class TsToGdTransformer implements TransformerDelegate {
       if (range.kind === ts.SyntaxKind.SingleLineCommentTrivia) {
         const content = commentText.replace(/^\/\/\s?/, '');
         // @gd.eval: magic comment -> emit raw GDScript
-        // Spaces after @gd.eval: are ignored, but tabs are preserved as indentation
+        // Spaces after @gd.eval: are ignored, but tabs are preserved as
+        // indentation — one tab per extra level. They are re-indented with
+        // the emitter's own unit: a tab written next to its spaces would mix
+        // the two, which GDScript rejects.
         const gdEvalMatch = content.match(/^\s*@gd\.eval: *(.*)/);
         if (gdEvalMatch) {
-          this.emitter.writeLine(gdEvalMatch[1]!, origLine, origCol);
+          const unit = this.emitter.indentUnit;
+          const body = gdEvalMatch[1]!.replace(/^\t+/, (m) =>
+            unit.repeat(m.length),
+          );
+          this.emitter.writeLine(body, origLine, origCol);
         } else {
           // // comment -> # comment
           this.emitter.writeLine(`# ${content}`, origLine, origCol);

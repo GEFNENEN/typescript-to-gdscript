@@ -51,21 +51,18 @@ class_name Health
 extends Node
 
 signal health_changed(new_health: int, element: String)
-@export
-var weakness: String = "fire"
-@export
-var health: int = 100
-@onready
-var label: Label = self.get_node("%Label")
+@export var weakness: String = "fire"
+@export var health: int = 100
+@onready var label: Label = self.get_node("%Label")
 
 func take_hit(hit):
-	var damage = hit.get("damage")
-	# A weak spot takes double damage.
-	if hit.get("element") == self.weakness:
-		damage *= 2
-	self.health = maxi(self.health - damage, 0)
-	self.label.text = "HP: " + str(self.health)
-	self.health_changed.emit(self.health, hit.get("element"))
+    var damage = hit.get("damage")
+    # A weak spot takes double damage.
+    if hit.get("element") == self.weakness:
+        damage *= 2
+    self.health = maxi(self.health - damage, 0)
+    self.label.text = "HP: " + str(self.health)
+    self.health_changed.emit(self.health, hit.get("element"))
 ```
 
 <CardGrid>

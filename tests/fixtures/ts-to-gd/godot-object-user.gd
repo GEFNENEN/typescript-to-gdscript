@@ -6,4 +6,4 @@ extends Node
 var twin: GodotObject = null
 
 func make() -> GodotObject:
-	return GodotObject.new()
+    return GodotObject.new()

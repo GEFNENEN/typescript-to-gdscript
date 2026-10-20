@@ -32,11 +32,11 @@ var title: String = "Hero"
 var weapon: Node2D = null
 
 func heal(amount: int) -> int:
-	var before = self.health
-	var after = mini(self.health + amount, self.max_health)
-	self.health = after
-	print("" + str(self.title) + " healed by " + str(after - before))
-	return after - before
+    var before = self.health
+    var after = mini(self.health + amount, self.max_health)
+    self.health = after
+    print("" + str(self.title) + " healed by " + str(after - before))
+    return after - before
 ```
 
 `let` and `const` both become `var`. Use `let` for a value that changes and `const` for one that doesn't; TypeScript enforces the `const`, and GDScript sees a plain `var`. Avoid TypeScript's `var`: it is scoped to the whole function, while GDScript's `var` is scoped to its block like `let`. The converter warns about it. Class-level constants are covered in [Enums, constants and inner classes](/typescript-to-gdscript/guide/enums-constants-inner-classes/).
@@ -80,8 +80,7 @@ export class Turret extends Node2D {
 class_name Turret
 extends Node2D
 
-@export
-var target: Node2D
+@export var target: Node2D
 var hp: int = 0
 var last_hit: Node = null
 ```
@@ -108,10 +107,10 @@ class_name Player
 extends CharacterBody2D
 
 var hp: int:
-	get:
-		return hp
-	set(v):
-		hp = clampi(v, 0, 100)
+    get:
+        return hp
+    set(v):
+        hp = clampi(v, 0, 100)
 ```
 
 Inside the accessors `this.hp` is the stored value, like the bare `hp` in GDScript. For a default value, use [`gd.getset`](/typescript-to-gdscript/reference/gd-helpers/#getters-and-setters).
@@ -138,10 +137,10 @@ class_name Inspector
 extends Node
 
 func inspect(node: Node, value: Variant):
-	if node is Sprite2D:
-		print("a sprite with ", node.texture)
-	if value is int:
-		print("an int")
+    if node is Sprite2D:
+        print("a sprite with ", node.texture)
+    if value is int:
+        print("an int")
 ```
 
 ## Strings, `StringName` and `NodePath`

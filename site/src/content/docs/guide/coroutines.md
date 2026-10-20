@@ -28,17 +28,16 @@ export class Intro extends Control {
 class_name Intro
 extends Control
 
-@export
-var title_label: Label
+@export var title_label: Label
 
 func _ready():
-	self.title_label.text = "Get ready..."
-	await self.get_tree().create_timer(1.0).timeout
-	self.title_label.text = "Go!"
-	var tween = self.create_tween()
-	tween.tween_property(self.title_label, "modulate:a", 0.0, 0.5)
-	await tween.finished
-	self.title_label.hide()
+    self.title_label.text = "Get ready..."
+    await self.get_tree().create_timer(1.0).timeout
+    self.title_label.text = "Go!"
+    var tween = self.create_tween()
+    tween.tween_property(self.title_label, "modulate:a", 0.0, 0.5)
+    await tween.finished
+    self.title_label.hide()
 ```
 
 `await` works on any signal: engine signals like `timeout` and `finished`, and your own `gd.signal` fields. It gives you the values the signal was emitted with, typed; see [Signals](/typescript-to-gdscript/guide/signals/#waiting-for-a-signal).
@@ -83,22 +82,22 @@ extends Node
 var score: int = 0
 
 func _ready():
-	self.play_round()
-	print("play_round is waiting; _ready goes on")
+    self.play_round()
+    print("play_round is waiting; _ready goes on")
 
 func play_round():
-	await self.countdown(3)
-	var points = await self.run_round()
-	self.score += points
+    await self.countdown(3)
+    var points = await self.run_round()
+    self.score += points
 
 func countdown(seconds: int):
-	for i in range(seconds, 0, -1):
-		print(i)
-		await self.get_tree().create_timer(1.0).timeout
+    for i in range(seconds, 0, -1):
+        print(i)
+        await self.get_tree().create_timer(1.0).timeout
 
 func run_round() -> int:
-	await self.get_tree().create_timer(30.0).timeout
-	return 100
+    await self.get_tree().create_timer(30.0).timeout
+    return 100
 ```
 
 ## Return types

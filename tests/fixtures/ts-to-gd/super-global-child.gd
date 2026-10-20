@@ -5,4 +5,4 @@ class_name SuperGlobalChild
 extends SuperScriptParent
 
 func _init():
-	super(7)
+    super(7)

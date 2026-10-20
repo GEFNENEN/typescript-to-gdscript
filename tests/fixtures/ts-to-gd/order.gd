@@ -15,7 +15,7 @@ var field1 = 1
 signal signal1
 
 func func1():
-	return 1
+    return 1
 
 signal signal2
 var field2 = 2
@@ -23,4 +23,4 @@ static var CONST_STATIC2 = 2
 static var STATIC2 = 2
 
 func func2():
-	return 2
+    return 2

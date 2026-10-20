@@ -4,7 +4,7 @@ class_name SuperScriptChild
 extends SuperScriptParent
 
 func _init(hp: int):
-	super(hp)
+    super(hp)
 
 func hook(x: int) -> int:
-	return super.hook(x) + 1
+    return super.hook(x) + 1

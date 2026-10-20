@@ -3,56 +3,56 @@ extends Node
 
 # Method with no return
 func say_hello():
-	print("Hello!")
+    print("Hello!")
 
 # Method with parameters and return type
 func add(a: int, b: int) -> int:
-	return a + b
+    return a + b
 
 # Method with default parameters
 func greet(name: String = "World"):
-	print("Hello " + name)
+    print("Hello " + name)
 
 # Static method
 static func create_instance() -> MyClass:
-	return MyClass.new()
+    return MyClass.new()
 
 # Void return
 func do_nothing() -> void:
-	pass
+    pass
 
 # Var as function
 var var_func = func(value: String) -> MyClass:
-	# Anonymous function
-	var inner_func = func(another_value: String):
-		var result = another_value + "."
-		return result
-	# Anonymous empty function
-	var inner_func_empty = func(another_value: String):
-		pass
-	return self
+    # Anonymous function
+    var inner_func = func(another_value: String):
+        var result = another_value + "."
+        return result
+    # Anonymous empty function
+    var inner_func_empty = func(another_value: String):
+        pass
+    return self
 
 # Variadic functions
 func varargs(...args):
-	pass
+    pass
 
 func varargs_typed(a: int, ...rest: Array):
-	pass
+    pass
 
 # Not named `call`: that collides with Object.call(), which Godot
 # refuses to override. `callv` takes the argument array.
 func invoke_callables(fn: Callable):
-	fn.call()
-	fn.call_deferred()
-	fn.callv([])
-	self.var_func.call("")
-	self.var_func.call("")
-	self.say_hello()
-	var var_say_hello = self.say_hello
-	var_say_hello.call()
+    fn.call()
+    fn.call_deferred()
+    fn.callv([])
+    self.var_func.call("")
+    self.var_func.call("")
+    self.say_hello()
+    var var_say_hello = self.say_hello
+    var_say_hello.call()
 
 func optional_args(a: int, b: int = 0, c = null, d: Node = null, e = null, f: Node = null, g = Vector2.DOWN, h = null):
-	pass
+    pass
 
 func optional_args2(a: Node, b = null, c: Node = null, d = null, e: Node2D = null):
-	pass
+    pass

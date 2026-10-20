@@ -32,21 +32,14 @@ class_name Turret
 extends Node2D
 
 @export_group("Combat")
-@export
-var damage: int = 10
-@export_range(0.1, 5.0, 0.1)
-var fire_rate: float = 1.0
-@export_enum("Bullet", "Laser", "Rocket")
-var ammo: int = 0
+@export var damage: int = 10
+@export_range(0.1, 5.0, 0.1) var fire_rate: float = 1.0
+@export_enum("Bullet", "Laser", "Rocket") var ammo: int = 0
 @export_group("Scene")
-@export
-var bullet_scene: PackedScene
-@export
-var target: Node2D = null
-@export_multiline
-var notes: String = ""
-@onready
-var muzzle = self.get_node("Muzzle") as Marker2D
+@export var bullet_scene: PackedScene
+@export var target: Node2D = null
+@export_multiline var notes: String = ""
+@onready var muzzle = self.get_node("Muzzle") as Marker2D
 ```
 
 Every annotation Godot knows is available, with its arguments checked by TypeScript. Each one goes on its own line in the `.gd`, right above what it annotates.
@@ -93,11 +86,11 @@ extends Node
 
 @rpc("any_peer", "call_local")
 func ping(from: int):
-	print("ping from ", from)
+    print("ping from ", from)
 
 @warning_ignore("unused_parameter")
 func _process(delta: float):
-	print("tick")
+    print("tick")
 ```
 
 A decorator can't go on a statement inside a function; there you write the annotation in a `// @gd.eval:` comment, as [Escape hatches](/typescript-to-gdscript/guide/escape-hatches/#the--gdeval-comment) shows.

@@ -8,28 +8,28 @@ var health: int = 100
 
 # Method with comments
 func update_speed(new_speed: float):
-	# Update the speed value
-	self.speed = new_speed
+    # Update the speed value
+    self.speed = new_speed
 
 ## Calculate the total damage
 func calculate_damage(base: float, multiplier: float) -> float:
-	return base * multiplier
+    return base * multiplier
 
 ## Doc comment over several lines.
 ##
 ## Each source line gets its own `##`; a blank one stays blank.
 func documented(value: int):
-	## And the same inside a body.
-	## Second line.
-	print(value)
+    ## And the same inside a body.
+    ## Second line.
+    print(value)
 
 func test_block_comments():
-	"""Block comment"""
-	var x: int = 1
-	"""
-	Multiline block
-	comment inside function
-	"""
+    """Block comment"""
+    var x: int = 1
+    """
+    Multiline block
+    comment inside function
+    """
 
 """
 Block comment

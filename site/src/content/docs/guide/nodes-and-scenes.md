@@ -72,12 +72,11 @@ export class Hud extends CanvasLayer {
 class_name Hud
 extends CanvasLayer
 
-@onready
-var score_label = self.get_node("Score") as Label
+@onready var score_label = self.get_node("Score") as Label
 
 func set_score(score: int):
-	if self.score_label != null:
-		self.score_label.text = str(score)
+    if self.score_label != null:
+        self.score_label.text = str(score)
 ```
 
 ## Loading scenes and resources

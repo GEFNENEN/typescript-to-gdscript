@@ -6,9 +6,9 @@ extends Node2D
 # no parent `_init` to call at all, and a `super()` here would be
 # Godot's parse error to report.
 func _init():
-	print("built")
+    print("built")
 
 # A regular engine method DOES have an implementation behind it, so
 # `super` reaches it.
 func engine_method() -> Node:
-	return super.get_child(0)
+    return super.get_child(0)

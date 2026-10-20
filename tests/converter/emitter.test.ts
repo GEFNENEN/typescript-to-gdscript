@@ -77,7 +77,7 @@ describe('GDScriptEmitter: reserved blocks', () => {
       const block = e.reserveBlock(() => e.writeLine('print("x")', 1, 1));
       e.writeLine(`var cb = func():${block}`, 1, 1);
     });
-    expect(out).toBe('var cb = func():\n\tprint("x")\n');
+    expect(out).toBe('var cb = func():\n    print("x")\n');
   });
 
   // The text after the lambda cannot stay on the header's line, and it
@@ -88,7 +88,7 @@ describe('GDScriptEmitter: reserved blocks', () => {
       const block = e.reserveBlock(() => e.writeLine('print("x")', 1, 1));
       e.writeLine(`f(func():${block}, 1)`, 1, 1);
     });
-    expect(out).toBe('f(func():\n\tprint("x")\n\t, 1)\n');
+    expect(out).toBe('f(func():\n    print("x")\n    , 1)\n');
   });
 
   it('expands two blocks on one line at the same indent', () => {
@@ -98,7 +98,7 @@ describe('GDScriptEmitter: reserved blocks', () => {
       e.writeLine(`f(func():${a}, func():${b}, 2)`, 1, 1);
     });
     expect(out).toBe(
-      'f(func():\n\tprint("a")\n\t, func():\n\tprint("b")\n\t, 2)\n',
+      'f(func():\n    print("a")\n    , func():\n    print("b")\n    , 2)\n',
     );
   });
 
@@ -113,7 +113,7 @@ describe('GDScriptEmitter: reserved blocks', () => {
       e.writeLine(`f(func():${outer}, 2)`, 1, 1);
     });
     expect(out).toBe(
-      'f(func():\n\tg(func():\n\t\tprint("in")\n\t\t, 1)\n\t, 2)\n',
+      'f(func():\n    g(func():\n        print("in")\n        , 1)\n    , 2)\n',
     );
   });
 
@@ -123,7 +123,7 @@ describe('GDScriptEmitter: reserved blocks', () => {
       const block = e.reserveBlock(() => e.writeLine('print("x")', 1, 1));
       e.writeLine(`var cb = func():${block}`, 1, 1);
     });
-    expect(out).toBe('\tvar cb = func():\n\t\tprint("x")\n');
+    expect(out).toBe('    var cb = func():\n        print("x")\n');
   });
 
   // Emitting the header without its body would be a `func():` GDScript

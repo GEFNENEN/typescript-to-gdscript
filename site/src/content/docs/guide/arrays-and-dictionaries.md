@@ -36,16 +36,16 @@ extends Node
 var items: Array[String] = []
 
 func add(item: String):
-	if not self.items.has(item):
-		self.items.append(item)
+    if not self.items.has(item):
+        self.items.append(item)
 
 func _ready():
-	self.add("sword")
-	print(self.items.size(), " items, first: ", self.items[0])
-	for item in self.items:
-		print(item)
-	var long_names = self.items.filter(func(name): return name.length() > 5)
-	self.items.erase("sword")
+    self.add("sword")
+    print(self.items.size(), " items, first: ", self.items[0])
+    for item in self.items:
+        print(item)
+    var long_names = self.items.filter(func(name): return name.length() > 5)
+    self.items.erase("sword")
 ```
 
 Write a typed array as `T[]` or `Array<T>`: `string[]` becomes `Array[String]`, `Array<Node2D>` becomes `Array[Node2D]`. An array with no annotation, like `let list = [1, 2]`, stays an untyped `Array` in GDScript. Godot's methods that take a function (`filter`, `map`, `any`, `all`, `reduce`, `sort_custom`) take an arrow function, which becomes a lambda.
@@ -74,13 +74,13 @@ class_name Hero
 extends Node
 
 var stats = {
-	"name": "Hero",
-	"hp": 100,
+    "name": "Hero",
+    "hp": 100,
 }
 
 func take_hit(damage: int):
-	self.stats.hp -= damage
-	print(self.stats.get("name"), " has ", self.stats.get("hp"), " hp")
+    self.stats.hp -= damage
+    print(self.stats.get("name"), " has ", self.stats.get("hp"), " hp")
 ```
 
 The same goes for anything typed with an `interface` or an object type: in GDScript it is a dictionary, so its reads become `.get()` too. Instances of classes keep plain dot access.
@@ -107,8 +107,8 @@ extends Node
 var scores: Dictionary = {}
 
 func add(player: String, points: int):
-	self.scores[player] = self.scores.get(player, 0) + points
-	print(player, ": ", self.scores.get(player))
+    self.scores[player] = self.scores.get(player, 0) + points
+    print(player, ": ", self.scores.get(player))
 ```
 
 ## Keys that aren't strings
@@ -137,12 +137,12 @@ extends Node2D
 var pieces = Dictionary()
 
 func _ready():
-	var names = {
-		Vector2i.LEFT: "west",
-		Vector2i.RIGHT: "east",
-	}
-	print(names.get(Vector2i.LEFT))
-	self.pieces.set(Vector2i(0, 0), self)
+    var names = {
+        Vector2i.LEFT: "west",
+        Vector2i.RIGHT: "east",
+    }
+    print(names.get(Vector2i.LEFT))
+    self.pieces.set(Vector2i(0, 0), self)
 ```
 
 The type arguments, like those of `pieces` and `names`, set the key and value types, and TypeScript checks every pair against them. Without them, `gd.dict` takes the types from the field or variable it goes into. Each key in `gd.dict` must be a variable, a literal or a member like `Vector2i.LEFT`. Compute anything else into a variable first.

@@ -6,14 +6,14 @@ enum Direction { UP, DOWN, LEFT, RIGHT }
 enum State { IDLE, WALKING, RUNNING = 5 }
 
 class Weapon extends Node:
-	var damage: int = 10
+    var damage: int = 10
 
 var current_direction: int = 0
 var current_state: int = 0
 
 func set_direction(dir: int):
-	self.current_direction = dir
-	return bool(MyClass.Direction.LEFT or MyClass.State.IDLE)
+    self.current_direction = dir
+    return bool(MyClass.Direction.LEFT or MyClass.State.IDLE)
 
 func test_typed(s: State, w: Weapon):
-	var state: State = MyClass.State.IDLE
+    var state: State = MyClass.State.IDLE

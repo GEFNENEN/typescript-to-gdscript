@@ -37,7 +37,9 @@ export class GDScriptEmitter {
   private currentLine = 1;
   private currentColumn = 0;
   private indentLevel = 0;
-  private indentStr = '\t';
+  // Four spaces, matching `docs/GODOT_CODING.md` and the `.gd` files the
+  // project has checked in (GDScript accepts either).
+  private indentStr = '    ';
   private sourceMapper: SourceMapper | null = null;
   private sourceFile: string;
   private blocks = new Map<number, () => void>();
@@ -103,6 +105,16 @@ export class GDScriptEmitter {
     const id = this.nextBlockId++;
     this.blocks.set(id, emit);
     return `\0block:${id}\0`;
+  }
+
+  /**
+   * One indentation level. For callers that emit text the user wrote
+   * verbatim (`gd.eval`, a `// @gd.eval:` comment) and so have to re-indent
+   * it themselves — emitting the text's own tabs next to this emitter's
+   * spaces mixes the two, which GDScript rejects.
+   */
+  get indentUnit(): string {
+    return this.indentStr;
   }
 
   /** Write text followed by a newline, with mapping at column 0 (line start). */

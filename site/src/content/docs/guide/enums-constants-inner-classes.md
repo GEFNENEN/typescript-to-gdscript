@@ -49,21 +49,21 @@ const MAX_HP = 100
 enum State { IDLE, CHASING, DEAD = 10 }
 
 class Loot extends RefCounted:
-	var item: String = ""
-	var amount: int = 1
+    var item: String = ""
+    var amount: int = 1
 
 static var alive_count: int = 0
 var state: State = Enemy.State.IDLE
 var hp: int = Enemy.MAX_HP
 
 func _ready():
-	Enemy.alive_count += 1
+    Enemy.alive_count += 1
 
 func die() -> Loot:
-	self.state = Enemy.State.DEAD
-	var loot = Enemy.Loot.new()
-	loot.item = "coin"
-	return loot
+    self.state = Enemy.State.DEAD
+    var loot = Enemy.Loot.new()
+    loot.item = "coin"
+    return loot
 ```
 
 You refer to these members through the class name, `Enemy.MAX_HP` or `Enemy.State.IDLE`, inside the class and outside it alike. The namespace members come first in the `.gd`, then the class body in the order you wrote it.
@@ -121,12 +121,12 @@ enum State { IDLE, PATROL, STUNNED }
 var state: State = Guard.State.IDLE
 
 func _physics_process(delta: float):
-	match self.state:
-		Guard.State.IDLE, Guard.State.STUNNED:
-			self.velocity = Vector2.ZERO
-		Guard.State.PATROL:
-			self.velocity = Vector2(60, 0)
-	self.move_and_slide()
+    match self.state:
+        Guard.State.IDLE, Guard.State.STUNNED:
+            self.velocity = Vector2.ZERO
+        Guard.State.PATROL:
+            self.velocity = Vector2(60, 0)
+    self.move_and_slide()
 ```
 
 A `switch` becomes a `match`, the usual shape of a state machine in GDScript. A `match` branch never falls through, so write each `case` without `break`; a `break` that leaves the `switch` is an error. Empty cases stacked above another share its body, and `default` becomes `_`, always the last branch. Keep `noFallthroughCasesInSwitch` off in `tsconfig.json` (it is off by default), or TypeScript flags every case. Switching on numbers rather than an enum? A `match` never matches a float against a whole-number case: see [the caveat](/typescript-to-gdscript/guide/caveats/#switch-becomes-match). For array, dictionary and guard patterns, use [`gd.match`](/typescript-to-gdscript/reference/gd-helpers/#match-statement).

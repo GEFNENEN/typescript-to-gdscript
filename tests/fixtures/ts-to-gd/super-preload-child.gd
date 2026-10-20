@@ -3,4 +3,4 @@
 extends "res://super-script-parent.gd"
 
 func _init():
-	super(5)
+    super(5)

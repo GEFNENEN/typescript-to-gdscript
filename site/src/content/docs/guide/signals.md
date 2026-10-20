@@ -57,11 +57,11 @@ signal died
 var health: int = 100
 
 func take_damage(amount: int):
-	var old_value = self.health
-	self.health -= amount
-	self.health_changed.emit(old_value, self.health)
-	if self.health <= 0:
-		self.died.emit()
+    var old_value = self.health
+    self.health -= amount
+    self.health_changed.emit(old_value, self.health)
+    if self.health <= 0:
+        self.died.emit()
 ```
 
 ## Connecting
@@ -93,20 +93,19 @@ export class Spawner extends Node {
 class_name Spawner
 extends Node
 
-@export
-var enemy_scene: PackedScene
+@export var enemy_scene: PackedScene
 
 func _ready():
-	var timer = Timer.new()
-	self.add_child(timer)
-	timer.timeout.connect(self._on_timer_timeout)
-	timer.start(2.0)
-	self.get_tree().process_frame.connect(func():
-		print("first frame")
-		, Object.CONNECT_ONE_SHOT)
+    var timer = Timer.new()
+    self.add_child(timer)
+    timer.timeout.connect(self._on_timer_timeout)
+    timer.start(2.0)
+    self.get_tree().process_frame.connect(func():
+        print("first frame")
+        , Object.CONNECT_ONE_SHOT)
 
 func _on_timer_timeout():
-	self.add_child(self.enemy_scene.instantiate())
+    self.add_child(self.enemy_scene.instantiate())
 ```
 
 Engine signals (`timeout`, `pressed`, `body_entered`, …) are typed from the Godot API, so their handlers are checked too.
@@ -137,10 +136,10 @@ signal opened
 signal unlocked(by: Node)
 
 func open_when_unlocked():
-	var who = await self.unlocked
-	print(who.name, " unlocked the door")
-	await self.get_tree().create_timer(0.5).timeout
-	self.opened.emit()
+    var who = await self.unlocked
+    print(who.name, " unlocked the door")
+    await self.get_tree().create_timer(0.5).timeout
+    self.opened.emit()
 ```
 
 TypeScript knows the result type too: `who` above is a `Node`. More about pausing methods in [Coroutines](/typescript-to-gdscript/guide/coroutines/).

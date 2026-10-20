@@ -7,7 +7,7 @@ extends RefCounted
 var hp: int = 0
 
 func _init(hp: int):
-	self.hp = hp
+    self.hp = hp
 
 func hook(x: int) -> int:
-	return x
+    return x
