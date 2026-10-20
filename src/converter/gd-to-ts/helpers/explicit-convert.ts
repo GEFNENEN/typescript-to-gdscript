@@ -194,6 +194,11 @@ export function collectExplicitConvertFixes(
       const gdSource = TS_TO_GD_TYPE_NAMES.get(source) ?? source;
       const gdTarget = TS_TO_GD_TYPE_NAMES.get(target) ?? target;
       if (!registry.canVariantConvert(gdSource, gdTarget)) continue;
+      // Casting a String to a number is never meaningful, and the fix it
+      // produced (`gd.as("key", number)`) emitted the invalid GDScript
+      // `as number` on the way back.
+      if (gdSource === 'String' && (gdTarget === 'float' || gdTarget === 'int'))
+        continue;
 
       const found = findNodeAt(sourceFile, diag.start, diag.length);
       if (!found) continue;
@@ -204,7 +209,9 @@ export function collectExplicitConvertFixes(
       if (overlapsExisting(start, end)) continue;
 
       const valueText = node.getText(sourceFile);
-      const replacement = `gd.as(${valueText}, ${target})`;
+      // The cast has to name the Godot type, not the TypeScript alias:
+      // `number` is not a GDScript type name.
+      const replacement = `gd.as(${valueText}, ${gdTarget})`;
 
       let fixes = fixesByFile.get(fileName);
       if (!fixes) {

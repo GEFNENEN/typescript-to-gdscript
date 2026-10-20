@@ -300,6 +300,7 @@ describe('GD to TS: Explicit convert helper', () => {
         'function wants_v2i(v: Vector2i): void {}',
         'function wants_v2(v: Vector2): void {}',
         'function wants_packed(p: PackedColorArray): void {}',
+        'function wants_float(v: float): void {}',
         '',
         'export class TestExplicit extends Node2D {',
         '  test(): Vector2i {',
@@ -319,6 +320,11 @@ describe('GD to TS: Explicit convert helper', () => {
         '    return this.get_viewport_rect().size;',
         '    // Valid (no fix needed)',
         '    wants_v2(Vector2.UP);',
+        '    // String → float: no cast can succeed, so no fix is offered',
+        '    wants_float("3.5");',
+        '    // bool → float: the cast names the Godot type, not the TS alias',
+        '    const flag: bool = true;',
+        '    wants_float(flag);',
         '  }',
         '}',
       ].join('\n');
@@ -352,6 +358,12 @@ describe('GD to TS: Explicit convert helper', () => {
       expect(fixed).not.toContain('gd.as(return');
       // Valid call unchanged
       expect(fixed).toContain('wants_v2(Vector2.UP);');
+      // A String is never variant-convertible to a number, so no fix is
+      // offered (the cast would emit the invalid GDScript `as number`).
+      expect(fixed).toContain('wants_float("3.5");');
+      expect(fixed).not.toContain('gd.as("3.5"');
+      // The cast names the Godot type: `number` is not a GDScript type name.
+      expect(fixed).toContain('wants_float(gd.as(flag, float))');
     } finally {
       cleanup();
     }
