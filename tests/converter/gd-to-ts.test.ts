@@ -860,3 +860,53 @@ describe('GD to TS: assignment bodies in a lambda', () => {
     expect(result.code).toContain('this._x = 2');
   });
 });
+
+describe('GD to TS: line continuations and legacy RPC receivers', () => {
+  function convert(source: string) {
+    return convertGdToTs({
+      source,
+      filePath: join(FIXTURES_DIR, 'line-continuations.gd'),
+      registry,
+      projectSources,
+    });
+  }
+
+  // tree-sitter-gdscript surfaces a trailing `\` as a `line_continuation`
+  // node, which the emitters cannot represent, so the continuation is joined
+  // before parsing.
+  it('joins a continuation inside an expression', () => {
+    const result = convert(
+      [
+        'extends Node',
+        '',
+        'func f() -> int:',
+        '    var total = 1 + \\',
+        '        2',
+        '    return total',
+        '',
+      ].join('\n'),
+    );
+
+    expect(result.code).toContain('1 + 2');
+    expect(result.code).not.toContain('\\');
+  });
+
+  // `remote` / `master` / `puppet` / `sync` are Godot 3 RPC keywords that the
+  // grammar still treats as such, so a statement *starting* with one as a
+  // receiver parses as an ERROR node.
+  it('escapes a legacy RPC receiver', () => {
+    const result = convert(
+      [
+        'extends Node',
+        '',
+        'func f(payload: int) -> void:',
+        '    remote.set_payload(payload)',
+        '',
+      ].join('\n'),
+    );
+
+    const errors = result.diagnostics.filter((d) => d.severity === 'error');
+    expect(errors.map((d) => d.message).join('\n')).toBe('');
+    expect(result.code).toContain('(remote).set_payload(payload)');
+  });
+});
