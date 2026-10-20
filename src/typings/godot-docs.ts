@@ -281,7 +281,7 @@ export function generateGodotDocsTypings(
           fileLines.push(emitOverrideInterface(dtmOverride));
         }
         fileLines.push(
-          'interface DictionaryKeyMethods<K = unknown, V = unknown>',
+          'interface DictionaryKeyMethods<K = unknown, V = any>',
         );
         fileLines.push(
           '  extends Omit<Object, keyof DictionaryTypedMethods>,',
@@ -295,8 +295,12 @@ export function generateGodotDocsTypings(
         //    see typings-overrides/object-dict.d.ts);
         //  - any other key type → `DictionaryKeyMethods<K, V>` (typed
         //    get/set/keys/... by K/V; a bare `Dictionary` is
-        //    `DictionaryKeyMethods<unknown, unknown>`, which still accepts `{}`).
-        fileLines.push('type Dictionary<K = unknown, V = unknown> =');
+        //    `DictionaryKeyMethods<unknown, any>`, which still accepts `{}`).
+        //
+        // `V` defaults to `any` rather than `unknown`: an untyped Dictionary is
+        // where a Variant usually lands, and `unknown` made every read off one
+        // (`d.get(key)`, `d.keys()`) unusable without a cast.
+        fileLines.push('type Dictionary<K = unknown, V = any> =');
         fileLines.push('  [K] extends [string | number]');
         fileLines.push('    ? { [P in K & (string | number)]: V }');
         fileLines.push('    : DictionaryKeyMethods<K, V>;');
