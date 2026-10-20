@@ -16,6 +16,50 @@ export type { GdToTsContext } from './context.ts';
 export type { UserClassInfo } from './context.ts';
 
 /**
+ * Join GDScript line continuations (a trailing `\`).
+ *
+ * tree-sitter-gdscript surfaces the continuation as a `line_continuation`
+ * node that the emitters cannot handle, so the source is normalised before
+ * parsing: the backslash and the newline become a single space. A trailing
+ * backslash inside a string literal is left alone.
+ */
+function joinLineContinuations(source: string): string {
+  const lines = source.split('\n');
+  const out: string[] = [];
+  let buffer: string | null = null;
+  for (const rawLine of lines) {
+    const line: string =
+      buffer === null ? rawLine : `${buffer} ${rawLine.trimStart()}`;
+    const trimmedEnd = line.replace(/\s+$/, '');
+    const quoteCount = (trimmedEnd.match(/(^|[^\\])"/g) ?? []).length;
+    const insideString = quoteCount % 2 === 1;
+    if (trimmedEnd.endsWith('\\') && !insideString) {
+      buffer = trimmedEnd.slice(0, -1).replace(/\s+$/, '');
+      continue;
+    }
+    out.push(line);
+    buffer = null;
+  }
+  if (buffer !== null) out.push(buffer);
+  return out.join('\n');
+}
+
+/**
+ * Escape the Godot 3 RPC keywords when they are used as receivers.
+ *
+ * tree-sitter-gdscript still treats `remote` / `master` / `puppet` / `sync` as
+ * keywords, so a statement that *starts* with one of them as an identifier
+ * fails to parse (`remote.set_payload(x)` becomes an ERROR node). Wrapping the
+ * receiver in parentheses parses and means the same thing.
+ */
+function escapeLegacyRpcIdentifiers(source: string): string {
+  return source.replace(
+    /^(\s*)(remote|master|puppet|sync)(?=\s*\.)/gm,
+    '$1($2)',
+  );
+}
+
+/**
  * Fix comment indentation so tree-sitter doesn't break block structure.
  * In GDScript, comments don't affect block indentation. A comment at column 0
  * inside an indented block shouldn't break the block. This function aligns
@@ -131,7 +175,11 @@ export function parseGdClassInfo(
   filePath?: string,
 ): UserClassInfo | null {
   const parser = new GDScriptParser();
-  const root = parser.parse(fixCommentIndentation(source));
+  const root = parser.parse(
+    escapeLegacyRpcIdentifiers(
+      joinLineContinuations(fixCommentIndentation(source)),
+    ),
+  );
 
   let className = '';
   let extendsClass = '';
@@ -215,7 +263,9 @@ export function convertGdToTs(options: GdToTsOptions): TransformResult {
   if (selfInfo) userClasses.set(selfInfo.name, selfInfo);
 
   const parser = new GDScriptParser();
-  const fixedSource = fixCommentIndentation(options.source);
+  const fixedSource = escapeLegacyRpcIdentifiers(
+    joinLineContinuations(fixCommentIndentation(options.source)),
+  );
   const root = parser.parse(fixedSource);
   const ctx: GdToTsContext = {
     source: fixedSource,
