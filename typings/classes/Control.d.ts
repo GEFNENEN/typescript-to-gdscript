@@ -1183,4 +1183,8 @@ declare class Control extends CanvasItem {
    * Sent when the control layout direction is changed from LTR or RTL or vice versa. This notification is propagated to child Control nodes as result of a change to {@link layout_direction}.
    */
   static readonly NOTIFICATION_LAYOUT_DIRECTION_CHANGED: int;
+  /** Minimum size of the node's bounding rectangle. Editor/serialization property (absent from `Control.xml`). */
+  layout_mode: int;
+  /** Preset anchor configuration, serialized by the editor. Editor/serialization property (absent from `Control.xml`). */
+  anchors_preset: int;
 }

@@ -22,7 +22,7 @@
  *
  *   const d: Dictionary<string, int> = { x: 1 };
  *   d.get("x");          // int      (typed overload)
- *   d.get(someStr);      // unknown  (fallback)
+ *   d.get(someStr);      // any      (fallback)
  *   d.keys();            // Array<string>
  *   d["x"] = "no";       // ERROR    (index signature enforces value type)
  */
@@ -61,7 +61,7 @@ declare interface Object {
    * **Note:** If the `default` argument is computationally expensive or has unwanted side effects, consider using the {@link has} method instead:
    */
   get<T, K extends keyof T>(this: T, key: K, default_?: T[K]): T[K];
-  get(key: unknown, default_?: unknown): unknown;
+  get(key: unknown, default_?: unknown): any;
   /**
    * Gets a value and ensures the key is set. If the `key` exists in the dictionary, this behaves like {@link get}. Otherwise, the `default` value is inserted into the dictionary and returned.
    */
@@ -195,10 +195,10 @@ interface DictionaryTypedMethods<K = unknown, V = unknown> {
   merged(dictionary: Dictionary<K, V>, overwrite?: boolean): Dictionary<K, V>;
   duplicate(deep?: boolean): Dictionary<K, V>;
 }
-interface DictionaryKeyMethods<K = unknown, V = unknown>
+interface DictionaryKeyMethods<K = unknown, V = any>
   extends Omit<Object, keyof DictionaryTypedMethods>,
     DictionaryTypedMethods<K, V> {}
-type Dictionary<K = unknown, V = unknown> =
+type Dictionary<K = unknown, V = any> =
   [K] extends [string | number]
     ? { [P in K & (string | number)]: V }
     : DictionaryKeyMethods<K, V>;
