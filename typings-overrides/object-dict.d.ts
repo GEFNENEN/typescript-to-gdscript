@@ -19,13 +19,13 @@
  *
  *   const d: Dictionary<string, int> = { x: 1 };
  *   d.get("x");          // int      (typed overload)
- *   d.get(someStr);      // unknown  (fallback)
+ *   d.get(someStr);      // any      (fallback)
  *   d.keys();            // Array<string>
  *   d["x"] = "no";       // ERROR    (index signature enforces value type)
  */
 interface Object {
   get<T, K extends keyof T>(this: T, key: K, default_?: T[K]): T[K];
-  get(key: unknown, default_?: unknown): unknown;
+  get(key: unknown, default_?: unknown): any;
   get_or_add<T, K extends keyof T>(this: T, key: K, default_?: T[K]): T[K];
   get_or_add(key: unknown, default_?: unknown): unknown;
   has<T, K extends keyof T>(this: T, key: K): boolean;
