@@ -83,7 +83,18 @@ export function emitSignalParamTypes(
   ctx: GdToTsContext,
 ): string {
   const types: string[] = [];
+  let index = 0;
   for (const child of paramsNode.namedChildren) {
+    index++;
+    // Emit the parameter name as a tuple label so it survives the round trip
+    // (`signal x(state: State)` → `gd.signal<[state: State | null]>()`).
+    // Without it the signal comes back as `arg1`, `arg2`, ….
+    const nameChild = child.namedChildren.find(
+      (c) => c.type === SyntaxType.Identifier,
+    );
+    const label = nameChild?.text
+      ? escapeTsBindingName(nameChild.text)
+      : `arg${index}`;
     if (child.type === SyntaxType.TypedParameter) {
       const typeNode = child.childForFieldName('type');
       const rawType = typeNode ? typeSourceText(typeNode) : '';
@@ -94,9 +105,9 @@ export function emitSignalParamTypes(
           )
         : 'any';
       const widened = widenInType(rawType, baseType, ctx);
-      types.push(widened ?? 'any');
+      types.push(`${label}: ${widened ?? 'any'}`);
     } else if (child.type === SyntaxType.Identifier) {
-      types.push('any');
+      types.push(`${label}: any`);
     }
   }
   return types.join(', ');
