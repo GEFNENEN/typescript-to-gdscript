@@ -34,6 +34,18 @@ export class Level extends Node2D {
     let bgParent = bg.get_parent();
     let _levelRef: Level = bgParent;
 
+    // get_parent() returns only the parent's engine type — the parent's tree
+    // handlers are not re-expanded on top of it, so a chain of them stays
+    // finite instead of compounding per level (which trips TS2589 on a real
+    // project). A path lookup on the result is therefore the untyped
+    // `Node | null` from the base class, not the parent scene's typed node.
+    let upOne = player.get_parent();
+    let _upOneCheck: Level = upOne;
+    let upTwo = upOne.get_parent();
+    let _upTwoCheck: Node = upTwo;
+    // @ts-expect-error — the result carries no tree handlers
+    let _notTyped: Player = upOne.get_node('Player');
+
     // get_parent() on nested child resolves to intermediate node type
     let scoreLabelParent = scoreLabel.get_parent();
     let _canvasRef: LevelUI = scoreLabelParent;
