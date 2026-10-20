@@ -1,8 +1,7 @@
 class_name LiteralTypes
 extends Node
 
-@export
-var team: String = "player"
+@export var team: String = "player"
 var rarity: String = "common"
 var id: String = "item_1"
 var stat: String = "hp"

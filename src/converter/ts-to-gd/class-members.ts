@@ -130,10 +130,17 @@ export function visitPropertyDeclaration(
     return;
   }
 
+  // Annotations stay on the declaration line (`@export var x: T`), which is
+  // the style `docs/GODOT_CODING.md` prescribes and what the project's
+  // checked-in `.gd` files already look like. GDScript answers `Expected
+  // newline after a standalone annotation` for two annotations on one line,
+  // so a property with several keeps all but the last above the declaration.
   const decorators = getDecorators(node, t);
-  for (const dec of decorators) {
+  for (const dec of decorators.slice(0, -1)) {
     t.emitter.writeLine(dec, pos.line, pos.col);
   }
+  const lastDecorator = decorators[decorators.length - 1];
+  const decoratorPrefix = lastDecorator ? `${lastDecorator} ` : '';
 
   const isStatic = node.modifiers?.some(
     (m) => m.kind === ts.SyntaxKind.StaticKeyword,
@@ -165,7 +172,7 @@ export function visitPropertyDeclaration(
     decl += ` = ${t.emitExpression(node.initializer)}`;
   }
 
-  t.emitter.writeLine(decl, pos.line, pos.col);
+  t.emitter.writeLine(`${decoratorPrefix}${decl}`, pos.line, pos.col);
 }
 
 // ── Accessor Pair (get/set) ──────────────────────────────────
