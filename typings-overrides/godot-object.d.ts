@@ -27,6 +27,19 @@ declare class GodotObject {
     ...args: A
   ): Error.OK | Error.ERR_UNAVAILABLE;
   emit_signal(signal: string, ...args: any[]): Error.OK | Error.ERR_UNAVAILABLE;
+  /**
+   * `get_script()` is documented as returning `Variant`, so the generator maps
+   * it to `unknown` and every `.resource_path` / `.source_code` read on the
+   * result fails. At runtime it returns the attached `Script`, or `null` when
+   * there is none.
+   */
+  get_script(): Script | null;
+  /**
+   * `Object.xml` states that the `script` property "is not exposed like most
+   * properties" and never lists it as a `<member>`, so the generated typings
+   * omit it — yet GDScript accepts `node.script` directly.
+   */
+  script: Script | null;
   get<P extends keyof this>(property: P): this[P];
   get(property: string): unknown;
 }
