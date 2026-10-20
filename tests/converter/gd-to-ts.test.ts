@@ -808,3 +808,55 @@ describe('GD to TS: globals TypeScript cannot spell', () => {
     );
   });
 });
+
+describe('GD to TS: assignment bodies in a lambda', () => {
+  function convert(source: string) {
+    return convertGdToTs({
+      source,
+      filePath: join(FIXTURES_DIR, 'lambda-assignment-body.gd'),
+      registry,
+      projectSources,
+    });
+  }
+
+  // An assignment is a GDScript statement, not an expression: it has its own
+  // emitter, and going through `emitExpr` produced
+  // `/* ERROR: Unhandled GDScript expression: augmented_assignment */`.
+  it('emits an augmented assignment body', () => {
+    const result = convert(
+      [
+        'extends Node',
+        '',
+        'var _x: int = 0',
+        '',
+        'func g() -> void:',
+        '    var c = func(): _x += 1',
+        '    c.call()',
+        '',
+      ].join('\n'),
+    );
+
+    const errors = result.diagnostics.filter((d) => d.severity === 'error');
+    expect(errors.map((d) => d.message).join('\n')).toBe('');
+    expect(result.code).toContain('this._x += 1');
+  });
+
+  it('emits a plain assignment body', () => {
+    const result = convert(
+      [
+        'extends Node',
+        '',
+        'var _x: int = 0',
+        '',
+        'func g() -> void:',
+        '    var c = func(): _x = 2',
+        '    c.call()',
+        '',
+      ].join('\n'),
+    );
+
+    const errors = result.diagnostics.filter((d) => d.severity === 'error');
+    expect(errors.map((d) => d.message).join('\n')).toBe('');
+    expect(result.code).toContain('this._x = 2');
+  });
+});

@@ -9,7 +9,11 @@ import {
   isStaticFunction,
 } from './type-inference.ts';
 import { getAnnotations } from './members.ts';
-import { emitBody } from './statements.ts';
+import {
+  emitBody,
+  emitAssignment,
+  emitAugmentedAssignment,
+} from './statements.ts';
 import { emitExpr } from './expressions.ts';
 import { isReferenceType } from '../common/index.ts';
 import { escapeTsBindingName } from './identifiers.ts';
@@ -387,7 +391,17 @@ export function emitLambda(node: SyntaxNode, ctx: GdToTsContext): string {
       stmt.namedChildren.length > 0
     ) {
       const expr = stmt.namedChildren[0]!;
-      result = `${asyncPrefix}(${params})${returnType} => { ${emitExpr(expr, ctx)}; }`;
+      // Assignments are GDScript *statements* with their own emitters; routing
+      // them through `emitExpr` hits the "Unhandled expression" fallback.
+      let emitted: string;
+      if (expr.type === SyntaxType.Assignment) {
+        emitted = emitAssignment(expr, ctx);
+      } else if (expr.type === SyntaxType.AugmentedAssignment) {
+        emitted = emitAugmentedAssignment(expr, ctx);
+      } else {
+        emitted = emitExpr(expr, ctx);
+      }
+      result = `${asyncPrefix}(${params})${returnType} => { ${emitted}; }`;
     } else {
       const body = bodyNode ? emitBody(bodyNode, ctx, 2) : '';
       result = `${asyncPrefix}(${params})${returnType} => {\n${body}\n  }`;
