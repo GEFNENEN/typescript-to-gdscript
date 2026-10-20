@@ -338,6 +338,10 @@ export function generateGodotDocsTypings(
         const hasGenerics = override?.header?.includes('<') ?? false;
         const typeParam = hasGenerics ? '<T>' : '';
         fileLines.push('declare interface ArrayConstructor {');
+        // `prototype` is what `value instanceof Array` narrows to; without it
+        // the guard leaves the value as `{}` and every cast after it fails.
+        // Every other value-type constructor declares one.
+        fileLines.push('  readonly prototype: Array<unknown>;');
         fileLines.push(`  ${typeParam}(): Array${typeParam};`);
         fileLines.push(`  ${typeParam}(...items: ${hasGenerics ? 'T' : 'unknown'}[]): Array${typeParam};`);
         // "from" constructors from Godot XML (PackedByteArray → Array<int>, etc.)
